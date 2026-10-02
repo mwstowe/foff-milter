@@ -1,0 +1,317 @@
+Return-Path: <bounce-QNHW4HJPC3PUTJGW3QEQDEOHW4.500023@bounce.news.capitalwisejourney.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.2/8.18.1) with ESMTPS id 69231WuJ065498
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 2 Oct 2026 03:01:35 GMT
+	(envelope-from bounce-QNHW4HJPC3PUTJGW3QEQDEOHW4.500023@bounce.news.capitalwisejourney.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=news.capitalwisejourney.com header.i=contact@news.capitalwisejourney.com header.b=iVfcFa9L;
+	dkim=pass (2048-bit key; unprotected) header.d=s50.y.mc.salesforce.com header.i=@s50.y.mc.salesforce.com header.b=Hz0848V6
+Received: from on97.mta.exacttarget.com (on97.mta.exacttarget.com [161.71.77.97])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 69231IIM025312
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Thu, 1 Oct 2026 22:01:20 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 69231IIM025312
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=news.capitalwisejourney.com header.i=contact@news.capitalwisejourney.com header.a=rsa-sha256 header.s=50dkim1 header.b=iVfcFa9L;
+	dkim=pass (2048-bit key, unprotected) header.d=s50.y.mc.salesforce.com header.i=@s50.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim50 header.b=Hz0848V6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=50dkim1; d=news.capitalwisejourney.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=contact@news.capitalwisejourney.com;
+ bh=xGSn/efry7TSfy7MoAcwHXziOCmjDEHLU3naINxoTx4=;
+ b=iVfcFa9LfRAOfCbw8NVl/8xxnEO3fx9dFri0f+4Xzdp4n8aEsj9TfTQnDRGEm5eMzJoQ5AoHh6FV
+   MpIMn8x34JZC1HmKUR07ZWLIQH3nq6lkHADZBk+Zsx7GC9iallneppne5DO4r6UNBjIhPKT1ltHm
+   uc7+fLuyQezSvs6XAv2VxBqHQLp+Coze4KNS27WDtuSpiHOjWb7acOSd7krQX+XVobWTnRR02eI9
+   gXEoDAOyJKAcTLge3blveMplx0NqYXIJ4gaqG7WG7rGQoqj5g4w11SQVBwrBq16V0s45EvbZn3Lg
+   nPlhRYklrVRiDMpZJ/28O3odWOLYBIbR6yQbaQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim50; d=s50.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type;
+ bh=xGSn/efry7TSfy7MoAcwHXziOCmjDEHLU3naINxoTx4=;
+ b=Hz0848V6chFPKtsVTmUCWfXvwI+YY5OWMUInqLBgTYUs0QNk372wFXhjvxI3s+x8Q8waa6g0JgHE
+   4JMhth96tVIjrGBxTji0aI1Zf4irA69DAMQX3zy/CXxnqLnxojSI3PXcc10alyl3VDdIHlm7WOy2
+   6nZP6kAY79SRAU8KREn6uydf96uVBinVhKzzckQ5B6r9+Ht3B/7klQqgBT+S37p+3Ohjbw0BGLcG
+   K+2d5Cuezln5pdCEexZqBZ5ZVxXHDjErmpUMwHYzUV7RgACtC1gm8yaX6AAMXukmobiaECLyIVil
+   lR4x9EDiUb+DJa6BC8iPWuiLXRwWHfgxGBMwtw==
+Received: by on97.mta.exacttarget.com id hnsf7s39mjcd for <user@example.com>; Fri, 2 Oct 2026 03:01:17 +0000 (envelope-from <bounce-QNHW4HJPC3PUTJGW3QEQDEOHW4.500023@bounce.news.capitalwisejourney.com>)
+From: "Capital Wise Journey" <contact@news.capitalwisejourney.com>
+To: <user@example.com>
+Subject: Are You Cheating Yourself Out of a Slimmer Waistline? MD Says YES
+Date: Thu, 01 Oct 2026 21:01:17 -0600
+List-Unsubscribe: <https://click.news.capitalwisejourney.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MTAwMTI5NDQiLCJzIjoiOTk3NDkxNzEiLCJsaWQiOiIxNDk5IiwiaiI6IjQxNDAwMSIsImpiIjoiMzAwNiIsImQiOiI1MDAwMjMifQ.uMinRlXU6T0RRtbS8PBrDj9gLhOLowkoY_TYZrjPVC0>, <mailto:leave-HIYWJNAVMGEEZPFNJU6QFDPPDA.500023@leave.news.capitalwisejourney.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Capital Wise Journey" <reply-DEYVWUFBU7UEPFWWU2ZAYG3SZY.500023@news.capitalwisejourney.com>
+X-SFMC-Stack: 50
+x-job: 510012944_414001
+Message-ID: <ea1cadc2-0159-4514-b6cb-c12ca4700db4@fra3s50mta0105.xt.local>
+Content-Type: multipart/alternative;
+	boundary="x8uEiRAVT6s0=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Fri, 02 Oct 2026 03:01:35 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Thu, 01 Oct 2026 22:01:20 -0500 (CDT)
+
+This is a multi-part message in MIME format.
+
+--x8uEiRAVT6s0=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+If You&#39;re Cooking With Olive Oil, you
+
+NEED to Know The Truth About This &ldquo;Kitchen Test&rdquo;:
+
+There&rsquo;s a viral &ldquo;kitchen test&rdquo; making the rounds that&rsquo;s supposed to tell you if your olive oil is the real deal or not&hellip;
+
+But according to a renowned heart surgeon &mdash; most people are getting it completely wrong&hellip;
+
+In fact, he says even the most expensive bottles at your local store could be rancid or stripped of the very compounds that make olive oil healthy in the first place.
+
+That means you could be cheating yourself out of the very benefits olive oil is known for &mdash; like supporting a slimmer waistline, smoother skin, and better heart health.
+
+And the worst part?
+
+You can&rsquo;t tell by taste&hellip; smell&hellip; and you definitely can&rsquo;t tell by looking at the label.
+
+That&rsquo;s why he&rsquo;s finally pulling back the curtain on 
+https://click.news.capitalwisejourney.com/?qs=ABp7ImQiOjUwMTcsInQiOjIyOTEsInMiOjUwfQAyAAAAAAILJpQWK2CRkVa1Tu2LCAbjtRciIrB8Z1sYjPUDwwJVIVx2yMY4f45gVOaErt8zpHzrU1KEP93T1rJg1xKMKPfecrDQpVRjRY_UktAckNc 
+what to really look for&hellip;
+
+Because when you use the right kind of olive oil, it could help support a leaner body, radiant skin, and easier digestion &mdash; without extreme changes to your routine.*
+
+https://click.news.capitalwisejourney.com/?qs=ABp7ImQiOjUwMTcsInQiOjIyOTEsInMiOjUwfQAyAAAAAAILJpQWLO4KpCq9YTAdw6eKMV7CaG1Mh_aXu4Z09y4Aw96M1dDgQc7A0aQpJ7AFoJaPRS2Grb41Yg5MBDjH4t4V2lic5ij5vTo-Ul-x8M0 
+Click here to watch the short presentation now >>
+
+https://click.news.capitalwisejourney.com/?qs=ABp7ImQiOjUwMTcsInQiOjIyOTEsInMiOjUwfQAyAAAAAAILJpQWLTuNyUjgx04d3c_T618LQ9NO-h3KgUYAiX1erKkJyItpeVNEDG9Z3BcYwprSbztXgoZfi5WhEV6BE35GaodojHh_gsbkuedUGoI 
+
+*All individuals are unique. Results can and will vary.
+
+ 
+
+ 
+
+ 
+
+https://click.news.capitalwisejourney.com/?qs=ABp7ImQiOjUwMTcsInQiOjIyOTEsInMiOjUwfQAyAAAAAAILJpQWLqdR1JkkVO7PjkB1_Wn4qdqyHTRbpIFmu-FOwMiCSVnr_DB4wyj_4x6rP_8xkRLTOozSmMagz_31_wMb0jLXX9W6aAaUT8JJIEc 
+Unsubscribe 
+
+ 
+This email was sent by: ⠀⠀⠀
+
+Al Jerozolimskie 85 Warsaw, Mazowieckie, 02-001, PL
+
+https://click.news.capitalwisejourney.com/profile_center.aspx?qs=ACN7ImQiOjUwMTcsInQiOjIyOTEsInAiOiJQQyIsInMiOjUwfQAyAAAAAAILJpQWMC69k_tCCljceYzxTWvRRzn6dzU3wKwhkCvCw5fYkaJAgf7rqR8RY_3Oymtkpg2lcSm5BdTscfWVQM4oDNwRJJEsJDj8qxNTVDQaQbmoREflIRE 
+Update Profile 
+
+https://click.news.capitalwisejourney.com/unsub_center.aspx?qs=ACN7ImQiOjUwMTcsInQiOjIyOTEsInAiOiJVQyIsInMiOjUwfQAyAAAAAAILJpQWMtdzr891qjK9qtkjKKpxnsWZiHtF2-rips9KFqEeI57iRT5NbvfZXUgYNs9ntIpr1UDxZVj8I9QA9gEmHpublsLrjKC0wJEfzh_eC4Qqg8AGRtTA8g 
+Unsubscribe 
+
+https://click.news.capitalwisejourney.com/subscription_center.aspx?qs=ACN7ImQiOjUwMTcsInQiOjIyOTEsInAiOiJTQyIsInMiOjUwfQAyAAAAAAILJpQWNEbxuj_kOXCIMv-QQIb8ByzYycqK4hJrs0ck8SvlW1vEIMV_tauXEeaBs7Z-vhBYirsIfuVtBqoHxuGOPsZiR3bJiX0MDJILx6CwUKz2n5gTykM 
+Manage Subscriptions 
+
+
+--x8uEiRAVT6s0=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head><!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]--><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><meta content="width=device-width" name="viewport"/><!--[if !mso]> <meta content="IE=edge" http-equiv="X-UA-Compatible"/><!--<![endif]-->
+	<title></title>
+	<!--[if !mso]><!--<![endif]-->
+	<style type="text/css">body {
+   margin: 0;
+   padding: 0;
+  }
+
+  table,
+  td,
+  tr {
+   vertical-align: top;
+   border-collapse: collapse;
+  }
+
+  * {
+   line-height: inherit;
+  }
+
+  a[x-apple-data-detectors=true] {
+   color: inherit !important;
+   text-decoration: none !important;
+  }
+	</style>
+	<style id="media-query" type="text/css">@media (max-width: 520px) {
+
+   .block-grid,
+   .col {
+    min-width: 320px !important;
+    max-width: 100% !important;
+    display: block !important;
+   }
+
+   .block-grid {
+    width: 100% !important;
+   }
+
+   .col {
+    width: 100% !important;
+   }
+
+   .col_cont {
+    margin: 0 auto;
+   }
+
+   img.fullwidth,
+   img.fullwidthOnMobile {
+    max-width: 100% !important;
+   }
+
+   .no-stack .col {
+    min-width: 0 !important;
+    display: table-cell !important;
+   }
+
+   .no-stack.two-up .col {
+    width: 50% !important;
+   }
+
+   .no-stack .col.num2 {
+    width: 16.6% !important;
+   }
+
+   .no-stack .col.num3 {
+    width: 25% !important;
+   }
+
+   .no-stack .col.num4 {
+    width: 33% !important;
+   }
+
+   .no-stack .col.num5 {
+    width: 41.6% !important;
+   }
+
+   .no-stack .col.num6 {
+    width: 50% !important;
+   }
+
+   .no-stack .col.num7 {
+    width: 58.3% !important;
+   }
+
+   .no-stack .col.num8 {
+    width: 66.6% !important;
+   }
+
+   .no-stack .col.num9 {
+    width: 75% !important;
+   }
+
+   .no-stack .col.num10 {
+    width: 83.3% !important;
+   }
+
+   .video-block {
+    max-width: none !important;
+   }
+
+   .mobile_hide {
+    min-height: 0px;
+    max-height: 0px;
+    max-width: 0px;
+    display: none;
+    overflow: hidden;
+    font-size: 0px;
+   }
+
+   .desktop_hide {
+    display: block !important;
+    max-height: none !important;
+   }
+  }
+	</style>
+</head>
+<body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Right now, this stock is boring. No headlines. No hype.</div><!--[if IE]><div class="ie-browser"><![endif]-->
+<table bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="table-layout: fixed; vertical-align: top; min-width: 320px; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;" valign="top" width="100%">
+	<tbody>
+		<tr style="vertical-align: top;" valign="top">
+			<td style="word-break: break-word; vertical-align: top;" valign="top"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#FFFFFF"><![endif]-->
+			<div style="background-color:transparent;">
+			<div class="block-grid" style="min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; background-color: transparent;">
+			<div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:500px"><tr class="layout-full-width" style="background-color:transparent"><![endif]--><!--[if (mso)|(IE)]><td align="center" width="500" style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+<td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+			<div class="col num12" style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+			<div class="col_cont" style="width:100% !important;"><!--[if (!mso)&(!IE)]> <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"><!--<![endif]--><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Verdana, sans-serif"><![endif]-->
+			<div style="color:#393d47;font-family:Verdana, Geneva, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+			<div class="txtTinyMce-wrapper" style="font-size: 12px; line-height: 1.5; font-family: Verdana, Geneva, sans-serif; color: #393d47; mso-line-height-alt: 18px;">
+			<p style="font-family: Verdana; font-size: 16px; text-align: center; padding-top: 0.5em;"><b>If You&#39;re Cooking With Olive Oil, you<br />
+			NEED to Know The Truth About This &ldquo;Kitchen Test&rdquo;:</b></p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;">There&rsquo;s a viral &ldquo;kitchen test&rdquo; making the rounds that&rsquo;s supposed to tell you if your olive oil is the real deal or not&hellip;</p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;">But according to a renowned heart surgeon &mdash; most people are getting it completely wrong&hellip;</p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;">In fact, he says even the most expensive bottles at your local store could be rancid or stripped of the very compounds that make olive oil healthy in the first place.</p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;">That means you could be cheating yourself out of the very benefits olive oil is known for &mdash; like supporting a slimmer waistline, smoother skin, and better heart health.</p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;">And the worst part?</p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;">You can&rsquo;t tell by taste&hellip; smell&hellip; and you definitely can&rsquo;t tell by looking at the label.</p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;">That&rsquo;s why he&rsquo;s finally pulling back the curtain on <a href="https://click.news.capitalwisejourney.com/?qs=ABp7ImQiOjUwMTcsInQiOjIyOTEsInMiOjUwfQAyAAAAAAILJpQWINLCkSd6UVufupn9ebAM7IQD99sk_OAuSboOeL21ZkM5kzfm-9SI5cIGIYT3cf79-ypBQ435ypd4IILiGt5H2-Pe9V5eRFJPCZE" style="color: #1a5dab; text-decoration: underline;"><u><b>what to really look for&hellip;</b></u></a></p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;">Because when you use the right kind of olive oil, it could help support a leaner body, radiant skin, and easier digestion &mdash; without extreme changes to your routine.*</p>
+
+			<p style="font-family: Verdana; font-size: 16px; text-align: justify;"><a href="https://click.news.capitalwisejourney.com/?qs=ABp7ImQiOjUwMTcsInQiOjIyOTEsInMiOjUwfQAyAAAAAAILJpQWIZu5WIBkEM1r-ZgnDDCY2oIYWn9J5PAU5PGcipBFnCrVUn-LR27WRp_NZ7UH9f_YHVSEsDeKqf1ezjBgU9_SHXbnupCWNJUo8AI" style="color: #1a5dab; text-decoration: underline;"><u><b>Click here to watch the short presentation now &gt;&gt;</b></u></a></p>
+
+			<p><a href="https://click.news.capitalwisejourney.com/?qs=ABp7ImQiOjUwMTcsInQiOjIyOTEsInMiOjUwfQAyAAAAAAILJpQWIm0Bv5yZzrD9XPru7NokkPFmEu6Gxqoq_Ga8brFODSck9crbzGZsHKHZDs9yM3KL307QHAaZto3Mlktvz2WvZ8-8DYaBakAQsP8"><img src="https://dxi7l1ul0drll.cloudfront.net/image/GoHOlOil/GoHOlOil_5.jpg" style="width: 90%; height: auto; display: block; margin: 0 auto; border-radius: 6px;" /></a></p>
+
+			<p style="font-family: Verdana; font-size: 10.4px; text-align: justify;">*All individuals are unique. Results can and will vary.</p>
+
+			<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify">&nbsp;</p>
+
+			<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify">&nbsp;</p>
+
+			<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify">&nbsp;</p>
+
+			<div style="color:#393d47;font-family:Verdana, Geneva, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+			<div class="txtTinyMce-wrapper" style="font-size: 12px; line-height: 1.5; font-family: Verdana, Geneva, sans-serif; color: #393d47; mso-line-height-alt: 18px;">
+			<p style="margin: 0px; line-height: 1.5; word-break: break-word; font-size: 10px; font-family: Verdana, Geneva, sans-serif; text-align: center;"><a href="https://click.news.capitalwisejourney.com/?qs=ABp7ImQiOjUwMTcsInQiOjIyOTEsInMiOjUwfQAyAAAAAAILJpQWI0lwP2GqNWzGmNfIl7AKY77QRwV5eL-h2pu4G_Arx-aOUh5gkU_C7J4W7wUqV8QlSFHAvc92yxnWjxjT8rtwuDYFSl_-fojAAlY" rel="noopener noreferrer" target="_blank">Unsubscribe</a></p>
+			<!-- Footer placeholder -->
+
+			<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;">&nbsp;</p>
+			</div>
+			</div>
+			<!--[if mso]></td></tr></table><![endif]-->
+
+			<div style="font-size:16px;text-align:center;font-family:Arial, Helvetica Neue, Helvetica, sans-serif">
+			<div class="our-class" style="text-align: center;"><span style="font-size:9px;"><span style="font-family:verdana,geneva,sans-serif;">This email was sent by: <b>⠀⠀⠀</b><br />
+			Al Jerozolimskie 85 Warsaw, Mazowieckie, 02-001, PL<br />
+			<a href="https://click.news.capitalwisejourney.com/profile_center.aspx?qs=ACN7ImQiOjUwMTcsInQiOjIyOTEsInAiOiJQQyIsInMiOjUwfQAyAAAAAAILJpQWJAwD6kNuzN6UJAWce-AJ1ft1om-ZTsL-Y4HeVRRMLfFviq_j1BtD5hq8kyMzZ7Wc2kRaDj_dlvahuUxExxMmqzFn4nfjMDbhxiU5j0VEBoI-frc">Update Profile</a><br />
+			<a href="https://click.news.capitalwisejourney.com/unsub_center.aspx?qs=ACN7ImQiOjUwMTcsInQiOjIyOTEsInAiOiJVQyIsInMiOjUwfQAyAAAAAAILJpQWJfdYxwED3B0g25jdiS2euUZ1z8EM75j0rIyvKPOYKDags5vJOpVJiQb_mXprz5UFznbabND1eaJ972JFsmkpTKL6GlhWw_uxK3LrxdZqGrATaa89rg">Unsubscribe</a><br />
+			<a href="https://click.news.capitalwisejourney.com/subscription_center.aspx?qs=ACN7ImQiOjUwMTcsInQiOjIyOTEsInAiOiJTQyIsInMiOjUwfQAyAAAAAAILJpQWKCrZgfPF-pXDa3K-fSO0a82hI3iNHGdy8-FK2BvoIx3wU0f_HUdz7M9iNleNZ90bL8OXot17WTR19NtWdjXZ6XusiYjnBmdOcmR_9l549i2dvdY">Manage Subscriptions</a></span></span></div>
+			</div>
+			<!--[if (!mso)&(!IE)]></div> <!--<![endif]--></div>
+			</div>
+			<!--[if (mso)|(IE)]></td></tr></table><![endif]--><!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]--></div>
+			</div>
+			</div>
+			<!--[if (mso)|(IE)]></td></tr></table><![endif]--></div>
+			</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!--[if (IE)]></div><![endif]--><img src="https://click.news.capitalwisejourney.com/open.aspx?TENSGQUCZKXUTLXQKYL42FVPC4.500023&d=500023&bmt=0" width="1" height="1" alt=""></custom></body>
+</html>
+
+--x8uEiRAVT6s0=_?:--
+
+
