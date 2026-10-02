@@ -3111,6 +3111,73 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Health spam from non-health domain".to_string());
         }
 
+        // Health-supplement / "video sales letter" (VSL) affiliate marketing in the
+        // body: a health-benefit claim combined with a VSL-style call to action. This
+        // is the signature of affiliate health spam (weight-loss, supplements, miracle
+        // cures) laundered through legitimate ESPs, which otherwise scores nothing on
+        // content. Require BOTH a benefit claim AND a VSL cue so ordinary health
+        // newsletters (which rarely use both) are not swept up.
+        {
+            let body_l = body_lower.as_str();
+            let health_benefit_claims = [
+                "slimmer waistline",
+                "leaner body",
+                "belly fat",
+                "lose weight",
+                "weight loss",
+                "fat burning",
+                "fat-burning",
+                "metabolism",
+                "blood sugar",
+                "blood pressure",
+                "melt fat",
+                "shed pounds",
+                "flatten your belly",
+                "trim your waist",
+                "younger looking",
+                "smoother skin",
+                "wrinkles",
+                "erectile",
+                "libido",
+                "prostate",
+                "tinnitus",
+                "joint pain",
+                "detox",
+            ];
+            let vsl_cues = [
+                "watch the short presentation",
+                "watch this short",
+                "short presentation",
+                "pulling back the curtain",
+                "results can and will vary",
+                "results will vary",
+                "individual results may vary",
+                "watch the free presentation",
+                "watch this free",
+                "click here to watch",
+                "before it's taken down",
+                "before it is taken down",
+                "big pharma",
+                "doctors are stunned",
+                "renowned heart surgeon",
+                "weird trick",
+                "simple trick",
+                "this one trick",
+            ];
+            let benefit_hits = health_benefit_claims
+                .iter()
+                .filter(|k| body_l.contains(*k))
+                .count();
+            let vsl_hits = vsl_cues.iter().filter(|k| body_l.contains(*k)).count();
+            if benefit_hits >= 1 && vsl_hits >= 1 {
+                total_score += 80;
+                all_evidence.push(
+                    "Health-supplement VSL/affiliate marketing (benefit claim + sales cue)"
+                        .to_string(),
+                );
+            }
+        }
+
         // Government agency display name impersonation from non-.gov domains
         let from_display = context
             .from_header

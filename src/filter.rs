@@ -3396,22 +3396,30 @@ impl FilterEngine {
 
                         // Do not grant large trust bonuses to mail that carries
                         // high-confidence spam-content signals (insurance/solar investment
-                        // pitches). Legitimate ESPs and DKIM are abused to launder this
-                        // graymail; the "known legitimate mailing service" (-80) and
-                        // "Perfect Authentication" (-30) bonuses otherwise cancel the content
-                        // score and let it through. Generalizes across ESP-infrastructure and
+                        // pitches, or health-supplement VSL/affiliate marketing). Legitimate
+                        // ESPs and DKIM are abused to launder this graymail; the "known
+                        // legitimate mailing service" (-80) and "Perfect Authentication"
+                        // (-30) bonuses otherwise cancel the content score and let it
+                        // through. Generalizes across ESP-infrastructure and
                         // perfect-authentication trust rules.
+                        let has_health_vsl_content = ca_result
+                            .evidence
+                            .iter()
+                            .any(|e| e.contains("Health-supplement VSL/affiliate marketing"));
                         if rule.score.unwrap_or(0) < 0
                             && (module.name.contains("ESP Infrastructure")
                                 || rule.name.contains("Perfect Authentication"))
-                            && (insurance_spam_score > 0 || solar_spam_score > 0)
+                            && (insurance_spam_score > 0
+                                || solar_spam_score > 0
+                                || has_health_vsl_content)
                         {
                             log::info!(
-                                "Module '{}' Rule '{}' trust bonus withheld: spam content detected (insurance={}, solar={})",
+                                "Module '{}' Rule '{}' trust bonus withheld: spam content detected (insurance={}, solar={}, health_vsl={})",
                                 module.name,
                                 rule.name,
                                 insurance_spam_score,
-                                solar_spam_score
+                                solar_spam_score,
+                                has_health_vsl_content
                             );
                             continue;
                         }

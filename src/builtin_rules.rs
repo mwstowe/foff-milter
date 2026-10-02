@@ -405,6 +405,18 @@ pub fn builtin_modules() -> Vec<Module> {
                                     ),
                                     invert: None,
                                 },
+                                // Block Perfect Auth for health-supplement VSL/affiliate
+                                // marketing (benefit claim + video-sales-letter cue). Same
+                                // laundering pattern as above, delivered via a legit ESP.
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Context Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some(
+                                        "Health-supplement VSL/affiliate marketing".to_string(),
+                                    ),
+                                    invert: None,
+                                },
                                 // Block Perfect Auth when display name uses non-ASCII spoofing
                                 Criteria::FeatureAnalysis {
                                     feature_name: "Sender Alignment".to_string(),
