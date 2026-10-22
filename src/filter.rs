@@ -9694,14 +9694,20 @@ impl FilterEngine {
             String::new()
         };
 
-        // Only accept as same server if Return-Path domain matches recipient domain
-        if !actual_sender_domain.is_empty()
+        // Only accept as same server if Return-Path domain matches recipient domain.
+        // Allow subdomains of the recipient domain (e.g. root@juliett.baddomain.com
+        // delivering to mstowe@baddomain.com for system/cron mail).
+        let domains_match = !actual_sender_domain.is_empty()
             && !recipient_domain.is_empty()
-            && actual_sender_domain == recipient_domain
-        {
+            && (actual_sender_domain == recipient_domain
+                || actual_sender_domain.ends_with(&format!(".{}", recipient_domain)));
+        if domains_match {
             // Additional validation: check if this is actually from our server infrastructure
             let legitimate_server_domains = ["baddomain.com"];
-            if legitimate_server_domains.contains(&actual_sender_domain.as_str()) {
+            let matches_legitimate = legitimate_server_domains.iter().any(|d| {
+                actual_sender_domain == *d || actual_sender_domain.ends_with(&format!(".{}", d))
+            });
+            if matches_legitimate {
                 // Verify the email actually came from our own server, not spoofed externally
                 // Check the Received headers for the original connecting host
                 let received = context
@@ -9728,8 +9734,13 @@ impl FilterEngine {
                         .unwrap_or("");
                     // Check for authenticated submission (ESMTPSA)
                     let is_authenticated = received.contains("esmtpsa");
+                    // Check for local submission: "(from user@localhost)" or "from localhost"
+                    let is_local_submission = received.contains("@localhost")
+                        || received.contains("from localhost")
+                        || received.contains("[127.0.0.1]");
                     let is_trusted = trusted_hosts.iter().any(|h| connecting_host.contains(h))
-                        || is_authenticated;
+                        || is_authenticated
+                        || is_local_submission;
                     if !is_trusted {
                         log::warn!(
                             "Same-server email REJECTED: external host '{}' spoofing {}",

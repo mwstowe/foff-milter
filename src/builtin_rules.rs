@@ -371,6 +371,16 @@ pub fn builtin_modules() -> Vec<Module> {
                                     evidence_pattern: Some("Heavy unicode obfuscation in subject line".to_string()),
                                     invert: None,
                                 },
+                                // Block Perfect Auth when an unsolicited job listing is
+                                // detected. Recruitment/job scams from throwaway domains
+                                // must not earn the -30 trust bonus.
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Context Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("Unsolicited job listing detected".to_string()),
+                                    invert: None,
+                                },
                                 // Block Perfect Auth for foreign-language invoice from mismatched domain
                                 Criteria::FeatureAnalysis {
                                     feature_name: "Context Analysis".to_string(),
