@@ -45,7 +45,9 @@ impl AttachmentAnalyzer {
                 Ok(mut archive) => {
                     for i in 0..archive.len() {
                         if let Ok(file) = archive.by_index(i) {
-                            filenames.push(file.name().to_string());
+                            if let Ok(name) = file.name() {
+                                filenames.push(name.to_string());
+                            }
                         }
                     }
                 }

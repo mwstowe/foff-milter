@@ -3,4 +3,17 @@
 [advisories]
 # ttf-parser is unmaintained but pulled in transitively via lopdf → pdf-extract.
 # No replacement available yet; acknowledge the warning.
-ignore = ["RUSTSEC-2026-0192"]
+ignore = [
+    "RUSTSEC-2026-0192",
+    # zip 8.6.0 is pulled in ONLY as a build-time dependency of tesseract-rs
+    # (optional `ocr` feature), where it extracts trusted tessdata downloaded
+    # from Google at build time. Our own runtime attachment parsing uses
+    # zip 9.0.5. tesseract-rs has no release that depends on zip >=9 yet
+    # (0.4.0 still requires `zip ^8`), so these advisories cannot be resolved
+    # by a version bump. The affected API (ZipArchive::extract on
+    # attacker-controlled archives with symlinks/SUID bits) is not reachable
+    # from our runtime code paths.
+    "RUSTSEC-2026-0367", # SUID/SGID bit preservation during extraction
+    "RUSTSEC-2026-0368", # symlink target escapes destination directory
+    "RUSTSEC-2026-0369", # Unix permissions applied through symlinks
+]
