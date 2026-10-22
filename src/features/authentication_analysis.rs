@@ -573,6 +573,156 @@ impl AuthenticationFeature {
         }
     }
 
+    /// Detect generic "originator pretending to be someone else" — the display
+    /// name claims a company/brand identity that the sender domain does not back
+    /// up, and the sender domain is a throwaway/gibberish domain. This is a
+    /// brand-list-free signal that perfect authentication is meaningless: a
+    /// spammer can trivially earn aligned DKIM on their own throwaway domain
+    /// while putting any identity in the display name.
+    fn detect_identity_mismatch(&self, context: &MailContext) -> bool {
+        let from = context.from_header.as_deref().unwrap_or("");
+        if from.is_empty() {
+            return false;
+        }
+
+        // Extract display name (text before '<')
+        let display = match from.find('<') {
+            Some(i) => from[..i].trim().trim_matches('"').trim(),
+            None => return false, // No display name, nothing to mismatch
+        };
+        if display.is_empty() {
+            return false;
+        }
+
+        // Extract sender domain
+        let sender_domain = from
+            .find('<')
+            .and_then(|s| from[s + 1..].find('@').map(|a| &from[s + 1 + a + 1..]))
+            .map(|rest| rest.split(['>', ' ']).next().unwrap_or(rest))
+            .unwrap_or("")
+            .to_lowercase();
+        if sender_domain.is_empty() || !sender_domain.contains('.') {
+            return false;
+        }
+
+        // Registrable domain (last two labels) and its flattened form for matching
+        let labels: Vec<&str> = sender_domain.split('.').collect();
+        let registrable = if labels.len() >= 2 {
+            format!("{}.{}", labels[labels.len() - 2], labels[labels.len() - 1])
+        } else {
+            sender_domain.clone()
+        };
+        let domain_flat = sender_domain.replace(['.', '-'], "");
+
+        // Generic/role words that are not identity claims
+        let generic_words = [
+            "trader",
+            "notice",
+            "team",
+            "support",
+            "notification",
+            "notifications",
+            "service",
+            "services",
+            "north",
+            "south",
+            "east",
+            "west",
+            "billing",
+            "card",
+            "help",
+            "info",
+            "sales",
+            "mail",
+            "email",
+            "noreply",
+            "customer",
+            "admin",
+            "account",
+            "accounts",
+            "update",
+            "updates",
+            "alert",
+            "alerts",
+            "from",
+            "the",
+            "daily",
+            "weekly",
+            "newsletter",
+            "news",
+            "offer",
+            "offers",
+            "deal",
+            "deals",
+            "center",
+            "desk",
+            "group",
+            "online",
+            "secure",
+            "official",
+        ];
+
+        // Identity tokens: words >=4 chars, alphabetic, not generic/role words
+        let identity_tokens: Vec<String> = display
+            .split([' ', ',', '.'])
+            .map(|w| w.trim_matches(|c: char| !c.is_alphanumeric()))
+            .filter(|w| {
+                w.len() >= 4
+                    && w.chars().all(|c| c.is_ascii_alphabetic())
+                    && !generic_words.contains(&w.to_lowercase().as_str())
+            })
+            .map(|w| w.to_lowercase())
+            .collect();
+        if identity_tokens.is_empty() {
+            return false;
+        }
+
+        // A mismatch means an identity token does NOT appear in the sender domain
+        let has_mismatch = identity_tokens
+            .iter()
+            .any(|t| !domain_flat.contains(t.as_str()));
+        if !has_mismatch {
+            return false;
+        }
+
+        // Only treat as impersonation when the sender domain is a throwaway/
+        // gibberish domain. Established domains legitimately carry personal
+        // names ("Charlie Root") or brand names on their own infrastructure.
+        if let Some(registry) = &context.domain_registry {
+            if registry.is_legitimate(&registrable) || registry.is_legitimate(&sender_domain) {
+                return false;
+            }
+        }
+
+        self.is_gibberish_domain(&registrable)
+    }
+
+    /// Heuristic: is the registrable domain's main label a random/gibberish
+    /// string (4+ consonant cluster or very low vowel ratio)?
+    fn is_gibberish_domain(&self, registrable: &str) -> bool {
+        let name = registrable.split('.').next().unwrap_or(registrable);
+        if name.len() < 5 {
+            return false;
+        }
+        let vowels = "aeiou";
+        let mut run = 0;
+        let mut max_run = 0;
+        let mut vcount = 0;
+        for c in name.chars() {
+            if c.is_ascii_alphabetic() && !vowels.contains(c) {
+                run += 1;
+                max_run = max_run.max(run);
+            } else {
+                if vowels.contains(c) {
+                    vcount += 1;
+                }
+                run = 0;
+            }
+        }
+        let vratio = vcount as f32 / name.len() as f32;
+        max_run >= 4 || vratio < 0.30
+    }
+
     /// Detect potential brand impersonation
     fn detect_brand_impersonation(&self, context: &MailContext) -> bool {
         let subject = context.subject.as_deref().unwrap_or("");
@@ -766,6 +916,10 @@ impl FeatureExtractor for AuthenticationFeature {
         // Check for brand impersonation to reduce authentication bonuses
         let has_brand_impersonation = self.detect_brand_impersonation(context);
 
+        // Generic identity mismatch: display name claims an identity the throwaway
+        // sender domain does not support. Invalidates perfect authentication.
+        let has_identity_mismatch = self.detect_identity_mismatch(context);
+
         // Check for suspicious domains that shouldn't get authentication bonuses
         let sender_domain = context
             .from_header
@@ -844,19 +998,31 @@ impl FeatureExtractor for AuthenticationFeature {
             .any(|domain| sender_domain.contains(domain));
 
         let should_reduce_bonus = has_brand_impersonation
+            || has_identity_mismatch
             || is_suspicious_domain
             || (has_portuguese_content && !is_legitimate_retail);
 
         // Reduce authentication bonuses if suspicious content detected
         if should_reduce_bonus {
             // Only apply significant reduction for brand impersonation (not Portuguese content)
-            if has_brand_impersonation {
-                // No authentication bonus when brand impersonation detected
+            if has_brand_impersonation || has_identity_mismatch {
+                // No authentication bonus when impersonation/identity mismatch detected
                 if score < 0 {
                     score = 0;
                 }
-                evidence
-                    .push("Authentication bonus reduced due to brand impersonation".to_string());
+                if has_identity_mismatch {
+                    // Identity mismatch on a throwaway domain is itself a spam signal,
+                    // not merely an invalidated trust bonus.
+                    score += 35;
+                    evidence.push(
+                        "Authentication bonus reduced due to display name identity mismatch"
+                            .to_string(),
+                    );
+                } else {
+                    evidence.push(
+                        "Authentication bonus reduced due to brand impersonation".to_string(),
+                    );
+                }
             } else if is_suspicious_domain {
                 // Reduce authentication bonus by 50% for suspicious domains
                 score = (score as f32 * 0.5) as i32;

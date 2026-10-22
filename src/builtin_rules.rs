@@ -371,6 +371,16 @@ pub fn builtin_modules() -> Vec<Module> {
                                     evidence_pattern: Some("Heavy unicode obfuscation in subject line".to_string()),
                                     invert: None,
                                 },
+                                // Block Perfect Auth when the display name claims an
+                                // identity the throwaway sender domain does not support
+                                // (generic "pretending to be someone else" signal).
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Authentication Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("display name identity mismatch".to_string()),
+                                    invert: None,
+                                },
                                 // Block Perfect Auth when an unsolicited job listing is
                                 // detected. Recruitment/job scams from throwaway domains
                                 // must not earn the -30 trust bonus.
