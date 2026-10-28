@@ -4608,10 +4608,20 @@ impl FilterEngine {
         }
 
         // If any link is back to the sender's own organization, treat the mail
-        // as self-consistent and do not flag.
-        let any_aligned = link_hosts
-            .iter()
-            .any(|h| DomainUtils::same_registrable_domain(h, &sender_domain));
+        // as self-consistent and do not flag. "Same organization" means either
+        // the same registrable domain OR the same brand label (second-level
+        // label), so a brand's campaign domain on a different TLD (e.g.
+        // `asus.click` for a sender on `asus.com`) is not treated as unrelated.
+        let sender_sld = DomainUtils::registrable_domain(&sender_domain)
+            .split('.')
+            .next()
+            .unwrap_or("")
+            .to_string();
+        let any_aligned = link_hosts.iter().any(|h| {
+            DomainUtils::same_registrable_domain(h, &sender_domain)
+                || (!sender_sld.is_empty()
+                    && DomainUtils::registrable_domain(h).split('.').next() == Some(&sender_sld))
+        });
         if any_aligned {
             return false;
         }
@@ -4659,7 +4669,16 @@ impl FilterEngine {
             let all_hex = len >= 6 && sld.chars().all(|c| c.is_ascii_hexdigit());
             let mostly_digits =
                 len >= 5 && sld.chars().filter(|c| c.is_ascii_digit()).count() * 2 >= len;
-            all_hex || mostly_digits
+            // Abuse-prone / throwaway TLDs. A CTA link to an unrelated domain on
+            // one of these is itself throwaway-looking — e.g. a credential phish
+            // that claims to be a brand but links to `willowengine.live`.
+            const RISKY_TLDS: &[&str] = &[
+                ".live", ".shop", ".click", ".link", ".space", ".tk", ".ml", ".ga", ".cf", ".gq",
+                ".top", ".xyz", ".rest", ".cfd", ".sbs", ".icu", ".monster", ".quest", ".fit",
+                ".beauty", ".boats",
+            ];
+            let risky_tld = RISKY_TLDS.iter().any(|t| reg.ends_with(t));
+            all_hex || mostly_digits || risky_tld
         })
     }
 

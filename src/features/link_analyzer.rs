@@ -945,6 +945,20 @@ impl LinkAnalyzer {
         email.split('@').nth(1).map(|s| s.to_lowercase())
     }
 
+    /// True if the domain ends in an abuse-prone / throwaway TLD. A cross-domain
+    /// CTA link to such a domain is treated as "spam-like" so it both scores and
+    /// blocks the Perfect Authentication trust bonus (an aligned DKIM on a
+    /// throwaway sender domain must not launder a link to e.g. `*.live`).
+    fn is_risky_tld(domain: &str) -> bool {
+        const RISKY_TLDS: &[&str] = &[
+            ".live", ".shop", ".click", ".link", ".space", ".tk", ".ml", ".ga", ".cf", ".gq",
+            ".top", ".xyz", ".rest", ".cfd", ".sbs", ".icu", ".monster", ".quest", ".fit",
+            ".beauty", ".boats",
+        ];
+        let d = domain.trim_end_matches('.').to_lowercase();
+        RISKY_TLDS.iter().any(|t| d.ends_with(t))
+    }
+
     /// Get sender domain considering both From and Return-Path headers
     fn get_sender_domains(&self, context: &MailContext) -> Vec<String> {
         let mut domains = Vec::new();
@@ -1206,6 +1220,7 @@ impl FeatureExtractor for LinkAnalyzer {
                             || domain.ends_with(".tk")
                             || domain.ends_with(".ml")
                             || domain.ends_with(".ga")
+                            || Self::is_risky_tld(domain)
                             // Add more specific suspicious patterns
                             || domain.contains("randomstring")
                             || domain.contains("tempmail")
@@ -1223,7 +1238,7 @@ impl FeatureExtractor for LinkAnalyzer {
                                 "deals", "stuff", "offer", "promo", "discount", "freebie", "prize",
                                 "winner", "bonus", "reward", "cheap", "bargain",
                             ];
-                            spam_words.iter().any(|w| d.contains(w))
+                            spam_words.iter().any(|w| d.contains(w)) || Self::is_risky_tld(&d)
                         });
                         // Also flag when ALL links go to a single unrelated domain
                         let single_unrelated_domain = if unrelated_links.len() >= 3 {
