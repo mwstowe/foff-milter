@@ -161,6 +161,35 @@ impl InvoiceAnalyzer {
         let mut risk_factors = Vec::new();
 
         let text = format!("{} {} {}", subject, body, extracted_media_text);
+        let text_lower = text.to_lowercase();
+
+        // Whether the message actually carries financial/invoice/payment context.
+        // Several high-weight branches below (transport-document, brand) are only
+        // meaningful for real invoice fraud, so we gate them on this to avoid
+        // firing on unrelated marketing copy that happens to contain a matching
+        // substring.
+        let has_payment_context = [
+            "invoice",
+            "payment",
+            "amount due",
+            "amount:",
+            "total due",
+            "balance due",
+            "past due",
+            "overdue",
+            "remittance",
+            "wire transfer",
+            "bank transfer",
+            "pay now",
+            "pay your",
+            "outstanding balance",
+            "factura",
+            "fatura",
+            "boleto",
+            "pagamento",
+        ]
+        .iter()
+        .any(|kw| text_lower.contains(kw));
 
         // Check for invoice indicators
         let mut invoice_indicators = 0;
@@ -259,7 +288,10 @@ impl InvoiceAnalyzer {
         ];
 
         for pattern in &transport_scam_patterns {
-            if pattern.is_match(&text) && !self.is_legitimate_business(sender, from_header) {
+            if pattern.is_match(&text)
+                && has_payment_context
+                && !self.is_legitimate_business(sender, from_header)
+            {
                 patterns.push("Transport document scam".to_string());
                 score += 75.0;
                 risk_factors.push("Suspicious transport document references".to_string());
@@ -286,7 +318,7 @@ impl InvoiceAnalyzer {
         }
 
         // Check for brand impersonation
-        if self.has_brand_impersonation(&text, sender, from_header) {
+        if has_payment_context && self.has_brand_impersonation(&text, sender, from_header) {
             patterns.push("Brand impersonation detected".to_string());
             score += 30.0;
         }
@@ -322,7 +354,11 @@ impl InvoiceAnalyzer {
         }
 
         let confidence = (score / 100.0).min(1.0);
-        let is_fake = confidence > 0.7;
+        // A "fake invoice" verdict requires that the message actually be about a
+        // payment/invoice. Without any financial context, a high score is almost
+        // always an incidental pattern match on unrelated content (e.g. a product
+        // newsletter), so never declare a fake invoice in that case.
+        let is_fake = has_payment_context && confidence > 0.7;
 
         InvoiceAnalysis {
             is_fake_invoice: is_fake,

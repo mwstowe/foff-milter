@@ -32,7 +32,31 @@ pub struct ForwardingInfo {
 }
 
 fn extract_domain_from_email(email: &str) -> Option<String> {
-    email.split('@').nth(1).map(|s| s.to_string())
+    email
+        .split('@')
+        .nth(1)
+        .map(sanitize_domain)
+        .filter(|d| !d.is_empty())
+}
+
+/// Defensive cleanup for an extracted domain string.
+///
+/// A domain must not contain structural characters from surrounding header
+/// syntax. In the wild we have seen extractors accidentally glue trailing
+/// content onto a domain (e.g. a `List-Unsubscribe` hash producing
+/// `promo.newegg.com<rp-<64hex>`), which then fails TLD/reputation checks and
+/// flips a legitimate sender to spam. Truncate at the first character that
+/// cannot legally appear in a hostname so a parsing regression upstream can no
+/// longer silently corrupt the domain.
+fn sanitize_domain(raw: &str) -> String {
+    let trimmed = raw.trim().trim_matches(['<', '>', '"', '\'']).trim();
+    let end = trimmed
+        .find(|c: char| !(c.is_ascii_alphanumeric() || c == '.' || c == '-' || c == ':'))
+        .unwrap_or(trimmed.len());
+    trimmed[..end]
+        .trim_end_matches('.')
+        .trim_end_matches(':')
+        .to_lowercase()
 }
 
 /// Normalize text encoding to handle malformed UTF-8 and encoding evasion
@@ -2611,8 +2635,17 @@ impl FilterEngine {
                 }
         };
 
+        // Language-agnostic phishing invariant: the body's call-to-action links
+        // point to a domain unrelated to the sender, and at least one link lands
+        // on throwaway-looking infrastructure. This catches the "vague pretext +
+        // link to an unrelated random domain" pattern (e.g. a fake "your request
+        // was processed" notice linking to a random-hex host) without needing a
+        // per-language keyword list.
+        let has_unrelated_cta_link = self.has_unrelated_cta_link_domain(&context_with_attachments);
+
         let suppress_mailing_list = has_brand_impersonation
             || has_japanese_phishing
+            || has_unrelated_cta_link
             || (has_suspicious_domain_reputation
                 && !has_dmarc_pass
                 && !has_verified_group_platform)
@@ -2662,19 +2695,85 @@ impl FilterEngine {
             && !has_suspicious_list_id
             && !suppress_mailing_list
         {
+            // The -200 mailing-list bonus is powerful enough to single-handedly
+            // flip a verdict, so spammers farm it by adding a self-signed
+            // List-Unsubscribe/List-Id. Only grant the full bonus when the
+            // sender has *independently* earned trust (aligned DMARC pass, or a
+            // recognized ESP / legitimate provider). Otherwise cap it so the
+            // bonus can discount but not by itself whitewash an email.
+            let from_domain_ml = context_with_attachments
+                .from_header
+                .as_deref()
+                .and_then(extract_email_from_header)
+                .and_then(|e| extract_domain_from_email(&e))
+                .unwrap_or_default()
+                .to_lowercase();
+            let independently_trusted = has_dmarc_pass
+                || has_verified_group_platform
+                || self.is_legitimate_email_service_provider(&from_domain_ml)
+                || self.is_dkim_aligned_esp_sender(&context_with_attachments)
+                || {
+                    // A DKIM-aligned sender (header.d matches the From domain)
+                    // has independently earned trust even if we don't recognize
+                    // it as an ESP — e.g. aws.com signing its own invoicing mail.
+                    context_with_attachments
+                        .headers
+                        .get("authentication-results")
+                        .map(|ar| {
+                            let ar_l = ar.to_lowercase();
+                            ar_l.contains("dkim=pass")
+                                && ar_l.split("header.d=").skip(1).any(|rest| {
+                                    let d: String = rest
+                                        .chars()
+                                        .take_while(|c| {
+                                            c.is_ascii_alphanumeric() || *c == '.' || *c == '-'
+                                        })
+                                        .collect();
+                                    !d.is_empty()
+                                        && DomainUtils::same_registrable_domain(&d, &from_domain_ml)
+                                })
+                        })
+                        .unwrap_or(false)
+                };
+            let bonus = if independently_trusted { 200 } else { 75 };
             log::warn!(
-                "MAILING LIST DETECTED: Applying -200 score for email from: {}",
+                "MAILING LIST DETECTED: Applying -{} score (independently_trusted={}) for email from: {}",
+                bonus,
+                independently_trusted,
                 context_with_attachments
                     .from_header
                     .as_deref()
                     .unwrap_or("unknown")
             );
-            total_score -= 200; // Strong negative score to override false positives
-            scoring_rules
-                .push("Mailing List Detection: Legitimate mailing list (-200)".to_string());
+            total_score -= bonus; // Negative score to override false positives
+            scoring_rules.push(format!(
+                "Mailing List Detection: Legitimate mailing list (-{})",
+                bonus
+            ));
         } else {
             log::info!(
                 "No mailing list detected for email from: {}",
+                context_with_attachments
+                    .from_header
+                    .as_deref()
+                    .unwrap_or("unknown")
+            );
+        }
+
+        // Positive signal (not just a mailing-list suppressor): the body's
+        // call-to-action links point to a domain unrelated to the sender and at
+        // least one lands on throwaway-looking infrastructure. This is a strong,
+        // language-agnostic phishing indicator — e.g. a "your request was
+        // processed, click to review" notice whose link goes to a random-hex
+        // host on an unrelated domain.
+        if has_unrelated_cta_link {
+            total_score += 60;
+            scoring_rules.push(
+                "Link Analysis: Call-to-action link on unrelated throwaway domain (+60)"
+                    .to_string(),
+            );
+            log::info!(
+                "Unrelated CTA link domain detected (+60) for email from: {}",
                 context_with_attachments
                     .from_header
                     .as_deref()
@@ -4457,6 +4556,177 @@ impl FilterEngine {
     }
 
     /// Extract host from URL (handles http://, https://, and bare domains)
+    /// Detects when the body's call-to-action links point to a domain that is
+    /// unrelated to the sender/From organization — a language-agnostic phishing
+    /// invariant. Returns `true` only when the message actually links somewhere
+    /// *and* none of those links share the sender's registrable domain, and at
+    /// least one link lands on a throwaway-looking host (random hex/numeric
+    /// labels). This keeps legitimate multi-domain marketing mail (e.g. ESP
+    /// click-trackers on a cousin domain) from tripping while catching the
+    /// classic "vague pretext + link to an unrelated random domain" pattern.
+    fn has_unrelated_cta_link_domain(&self, context: &MailContext) -> bool {
+        // Legitimate ESP senders (DKIM aligned) always link through
+        // click-tracking/CDN domains that differ from the From domain, so this
+        // phishing heuristic must never apply to them.
+        if self.is_dkim_aligned_esp_sender(context) {
+            return false;
+        }
+
+        let sender_domain = context
+            .from_header
+            .as_deref()
+            .and_then(extract_email_from_header)
+            .and_then(|e| extract_domain_from_email(&e))
+            .or_else(|| {
+                context
+                    .sender
+                    .as_deref()
+                    .and_then(extract_domain_from_email)
+            })
+            .unwrap_or_default()
+            .to_lowercase();
+        if sender_domain.is_empty() {
+            return false;
+        }
+
+        let body = match context.body.as_deref() {
+            Some(b) if !b.is_empty() => b,
+            _ => return false,
+        };
+
+        let mut link_hosts: Vec<String> = Vec::new();
+        for m in RE_URL.find_iter(body) {
+            if let Some(host) = self.extract_host_from_url(m.as_str()) {
+                let host = host.trim_end_matches('.').to_lowercase();
+                if !host.is_empty() && !self.is_ipv4_address(&host) {
+                    link_hosts.push(host);
+                }
+            }
+        }
+        if link_hosts.is_empty() {
+            return false;
+        }
+
+        // If any link is back to the sender's own organization, treat the mail
+        // as self-consistent and do not flag.
+        let any_aligned = link_hosts
+            .iter()
+            .any(|h| DomainUtils::same_registrable_domain(h, &sender_domain));
+        if any_aligned {
+            return false;
+        }
+
+        // Require at least one link whose *registrable* domain is throwaway-
+        // looking and is not recognized link infrastructure. Keying on the
+        // registrable domain (not an arbitrary subdomain label) avoids flagging
+        // ESP tracking hosts like `u1187755.ct.sendgrid.net`.
+        const KNOWN_LINK_INFRA: &[&str] = &[
+            "sendgrid.net",
+            "cloudfront.net",
+            "mjt.lu",
+            "mailjet.com",
+            "cloudinary.com",
+            "googleapis.com",
+            "w3.org",
+            "toasttab.com",
+            "list-manage.com",
+            "mailchimp.com",
+            "mcsv.net",
+            "rsgsv.net",
+            "amazonaws.com",
+            "akamaihd.net",
+            "sparkpostmail.com",
+            "hubspotlinks.com",
+            "hs-sites.com",
+            "constantcontact.com",
+            "exct.net",
+            "bit.ly",
+            "t.co",
+        ];
+
+        link_hosts.iter().any(|h| {
+            let reg = DomainUtils::registrable_domain(h);
+            if reg.is_empty()
+                || KNOWN_LINK_INFRA
+                    .iter()
+                    .any(|k| reg == *k || reg.ends_with(&format!(".{k}")))
+            {
+                return false;
+            }
+            // Second-level label (registrable name without its TLD).
+            let sld = reg.split('.').next().unwrap_or("");
+            let len = sld.len();
+            let all_hex = len >= 6 && sld.chars().all(|c| c.is_ascii_hexdigit());
+            let mostly_digits =
+                len >= 5 && sld.chars().filter(|c| c.is_ascii_digit()).count() * 2 >= len;
+            all_hex || mostly_digits
+        })
+    }
+
+    /// True if the sender presents a valid DKIM-aligned signature on a
+    /// recognized ESP (via the trusted_esp field, the domain registry, or an
+    /// Authentication-Results `dkim=pass header.d=<aligned domain>`).
+    fn is_dkim_aligned_esp_sender(&self, context: &MailContext) -> bool {
+        let sender_domain = context
+            .from_header
+            .as_deref()
+            .and_then(extract_email_from_header)
+            .and_then(|e| extract_domain_from_email(&e))
+            .unwrap_or_default()
+            .to_lowercase();
+        if sender_domain.is_empty() {
+            return false;
+        }
+
+        let dkim_aligned = context
+            .dkim_verification
+            .as_ref()
+            .map(|d| {
+                d.signature_valid
+                    && matches!(
+                        d.domain_alignment,
+                        crate::dkim_verification::DomainAlignment::Aligned
+                    )
+            })
+            .unwrap_or(false)
+            || context
+                .headers
+                .get("authentication-results")
+                .map(|ar| {
+                    let ar_l = ar.to_lowercase();
+                    ar_l.contains("dkim=pass")
+                        && ar_l.split("header.d=").skip(1).any(|rest| {
+                            let d: String = rest
+                                .chars()
+                                .take_while(|c| c.is_ascii_alphanumeric() || *c == '.' || *c == '-')
+                                .collect();
+                            !d.is_empty()
+                                && DomainUtils::same_registrable_domain(&d, &sender_domain)
+                        })
+                })
+                .unwrap_or(false);
+
+        let on_esp = context.trusted_esp.is_some()
+            || context
+                .domain_registry
+                .as_ref()
+                .map(|r| r.is_esp(&sender_domain))
+                .unwrap_or(false)
+            || context.headers.iter().any(|(k, v)| {
+                let kl = k.to_lowercase();
+                kl.starts_with("x-mc-user")
+                    || kl == "x-campaign"
+                    || kl.starts_with("x-mailchimp")
+                    || kl.starts_with("x-sg-")
+                    || kl == "x-sendgrid-message-id"
+                    || kl.starts_with("x-mailjet")
+                    || kl.starts_with("x-csa-")
+                    || (kl == "x-mailer" && v.to_lowercase().contains("mailchimp"))
+            });
+
+        dkim_aligned && on_esp
+    }
+
     fn extract_host_from_url(&self, url: &str) -> Option<String> {
         // Handle URLs with protocol
         if url.starts_with("http://") || url.starts_with("https://") {
@@ -10123,10 +10393,16 @@ impl FilterEngine {
     fn extract_sender_domain(&self, context: &MailContext) -> Option<String> {
         if let Some(from_header) = &context.from_header {
             if let Some(at_pos) = from_header.rfind('@') {
-                if let Some(end_pos) = from_header[at_pos..].find('>') {
-                    Some(from_header[at_pos + 1..at_pos + end_pos].to_string())
+                let raw = if let Some(end_pos) = from_header[at_pos..].find('>') {
+                    &from_header[at_pos + 1..at_pos + end_pos]
                 } else {
-                    Some(from_header[at_pos + 1..].trim().to_string())
+                    &from_header[at_pos + 1..]
+                };
+                let domain = sanitize_domain(raw);
+                if domain.is_empty() {
+                    None
+                } else {
+                    Some(domain)
                 }
             } else {
                 None

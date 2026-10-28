@@ -305,7 +305,12 @@ impl ContextAnalyzer {
             || sender_lower.contains("foundation")
     }
 
-    fn detect_employment_scam(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
+    fn detect_employment_scam(
+        &self,
+        text: &str,
+        sender: &str,
+        trusted_authenticated_sender: bool,
+    ) -> (i32, Vec<String>) {
         const EMPLOYMENT_SCAM_PATTERNS: &[&str] = &[
             r"(?i)(work|live).*in.*(london|uk|canada|australia|usa|america)",
             r"(?i)hiring.*international.*workers",
@@ -322,23 +327,16 @@ impl ContextAnalyzer {
         let mut score = 0;
         let mut evidence = Vec::new();
 
-        // Skip employment scam detection for legitimate retail marketing and news organizations
-        let is_retail_marketing = sender.to_lowercase().contains("torrid")
-            || sender.to_lowercase().contains("michaels")
-            || sender.to_lowercase().contains("target")
-            || sender.to_lowercase().contains("walmart")
-            || sender.to_lowercase().contains("nytimes")
-            || sender.to_lowercase().contains("levi")
-            || sender.to_lowercase().contains("usps")
-            || sender.to_lowercase().contains("mtasv")
-            || sender.to_lowercase().contains("batemanhornecenter")
-            || sender.to_lowercase().contains("livenation")
-            || sender.to_lowercase().contains("silhouetteamerica")
-            || sender.to_lowercase().contains("arrived.com")
-            || text.to_lowercase().contains("in-store")
-            || text.to_lowercase().contains("save big");
+        // Suppress employment-scam detection for senders that have independently
+        // earned trust: a DKIM-aligned sender on a recognized ESP, or an
+        // established legitimate domain. This replaces the old hardcoded
+        // per-brand allowlist (torrid/michaels/nytimes/...) which failed open
+        // for any legitimate sender that simply wasn't on the list. Retail
+        // marketing phrasing is also kept as a secondary content hint.
+        let is_retail_marketing =
+            text.to_lowercase().contains("in-store") || text.to_lowercase().contains("save big");
 
-        if !is_retail_marketing {
+        if !trusted_authenticated_sender && !is_retail_marketing {
             // Check for employment scam patterns
             for pattern in EMPLOYMENT_SCAM_PATTERNS {
                 if let Ok(regex) = Regex::new(pattern) {
@@ -1258,6 +1256,71 @@ impl FeatureExtractor for ContextAnalyzer {
             .as_ref()
             .map(|r| r.is_legitimate(&sender_domain))
             .unwrap_or(false);
+
+        // A sender that has independently earned trust: DKIM-aligned on a
+        // recognized ESP, or an established legitimate domain. Used to suppress
+        // content-pattern false positives (e.g. employment-scam regexes hitting
+        // ordinary marketing copy) in a sender-agnostic way instead of relying
+        // on hardcoded per-brand allowlists.
+        let dkim_aligned = context
+            .dkim_verification
+            .as_ref()
+            .map(|d| {
+                d.signature_valid
+                    && matches!(
+                        d.domain_alignment,
+                        crate::dkim_verification::DomainAlignment::Aligned
+                    )
+            })
+            .unwrap_or(false)
+            || {
+                // Fall back to the Authentication-Results header, which is what
+                // downstream features and prod headers actually rely on. A
+                // `dkim=pass header.d=<domain>` whose registrable domain matches
+                // the From domain is an aligned DKIM pass regardless of whether
+                // the DkimVerificationResult struct was populated on this path.
+                context
+                    .headers
+                    .get("authentication-results")
+                    .map(|ar| {
+                        let ar_l = ar.to_lowercase();
+                        if !ar_l.contains("dkim=pass") {
+                            return false;
+                        }
+                        // Extract header.d=<domain> and compare organizationally.
+                        ar_l.split("header.d=").skip(1).any(|rest| {
+                            let d: String = rest
+                                .chars()
+                                .take_while(|c| c.is_ascii_alphanumeric() || *c == '.' || *c == '-')
+                                .collect();
+                            !d.is_empty()
+                                && crate::domain_utils::DomainUtils::same_registrable_domain(
+                                    &d,
+                                    &sender_domain,
+                                )
+                        })
+                    })
+                    .unwrap_or(false)
+            };
+        let on_trusted_esp = context.trusted_esp.is_some()
+            || context
+                .domain_registry
+                .as_ref()
+                .map(|r| r.is_esp(&sender_domain))
+                .unwrap_or(false)
+            || context.headers.iter().any(|(k, v)| {
+                // ESP fingerprints visible in headers even when the registry
+                // lookup or trusted_esp field isn't populated on this path.
+                let kl = k.to_lowercase();
+                kl.starts_with("x-mc-user")
+                    || kl == "x-campaign"
+                    || kl.starts_with("x-mailchimp")
+                    || kl == "x-sg-eid"
+                    || kl == "x-sendgrid-message-id"
+                    || (kl == "x-mailer" && v.to_lowercase().contains("mailchimp"))
+            });
+        let trusted_authenticated_sender =
+            is_established_sender || (dkim_aligned && on_trusted_esp);
 
         // Detect MAILER-DAEMON Return-Path with non-bounce content (spoofed)
         let return_path = context
@@ -2808,7 +2871,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Employment scam detection
         let (employment_scam_score, employment_scam_evidence) =
-            self.detect_employment_scam(&combined_text, sender);
+            self.detect_employment_scam(&combined_text, sender, trusted_authenticated_sender);
         if !is_dkim_aligned_brand {
             total_score += employment_scam_score;
         }
