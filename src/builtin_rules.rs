@@ -1275,6 +1275,21 @@ pub fn builtin_modules() -> Vec<Module> {
                                 pattern: "(?i).*@([a-z0-9.-]+\\.)?(microsoft|outlook|office365|google|gmail|apple|icloud|amazon|paypal|salesforce)\\.com>?$".to_string(),
                             }),
                         },
+                        // Don't fire when the DKIM signing domain matches the identity
+                        // claimed in the From display name (e.g. Pershing delivering via
+                        // Azure Communication Services: display name edelivery@investor.
+                        // pershing.com, DKIM d=investor.pershing.com). Cold-lead spam signs
+                        // only with its own throwaway From domain, which does NOT appear in
+                        // the display name.
+                        Criteria::Not {
+                            criteria: Box::new(Criteria::FeatureAnalysis {
+                                feature_name: "Authentication Analysis".to_string(),
+                                min_score: None,
+                                max_score: None,
+                                evidence_pattern: Some("DKIM domain matches display name identity".to_string()),
+                                invert: None,
+                            }),
+                        },
                         ],
                     },
                     action: None,

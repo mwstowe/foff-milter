@@ -81,6 +81,36 @@ impl AuthenticationAnalyzer {
             DkimAuthStatus::Pass => {
                 evidence.push("DKIM authentication passed".to_string());
 
+                // If the DKIM signing domain matches an email domain embedded in the
+                // From display name, the sender is cryptographically backing the identity
+                // it claims — even when delivered via a third-party ESP (e.g. Pershing
+                // via Azure: display name edelivery@investor.pershing.com, d=investor.
+                // pershing.com). This legitimizes an otherwise brand-borrowed Message-ID.
+                if let Some(from) = context.from_header.as_deref() {
+                    if let Some(lt) = from.find('<') {
+                        let display = &from[..lt];
+                        // Email domain embedded in the display name text
+                        if let Some(at) = display.find('@') {
+                            let claimed: String = display[at + 1..]
+                                .chars()
+                                .take_while(|c| c.is_ascii_alphanumeric() || *c == '.' || *c == '-')
+                                .collect::<String>()
+                                .to_lowercase();
+                            let matches = !claimed.is_empty()
+                                && dkim_result.domains.iter().any(|d| {
+                                    let dkim_dom = d.to_lowercase();
+                                    dkim_dom == claimed
+                                        || dkim_dom.ends_with(&format!(".{}", claimed))
+                                        || claimed.ends_with(&format!(".{}", dkim_dom))
+                                });
+                            if matches {
+                                evidence
+                                    .push("DKIM domain matches display name identity".to_string());
+                            }
+                        }
+                    }
+                }
+
                 // The dkim_pass_boost (a negative "trust" bonus) must only be granted
                 // when the signing domain (d=) is aligned with the From domain, or when
                 // the misalignment is explained by a recognized ESP. A bare "dkim=pass"

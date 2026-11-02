@@ -1322,6 +1322,8 @@ impl FeatureExtractor for LinkAnalyzer {
             "s3.amazonaws.com",
             "storage.googleapis.com",
             "blob.core.windows.net",
+            "web.core.windows.net",
+            "z13.web.core.windows.net",
             "firebasestorage.googleapis.com",
             "r2.cloudflarestorage.com",
         ];

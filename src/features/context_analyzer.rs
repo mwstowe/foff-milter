@@ -2296,6 +2296,38 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Email deactivation/deletion phishing pattern".to_string());
         }
 
+        // Account-termination phishing in body (HTML-stripped): panic lure that
+        // claims the account will be deleted and offers a "cancel request" link.
+        // The visible HTML payload often differs from the text/plain part.
+        let stripped_body = {
+            let raw = context.body.as_deref().unwrap_or("");
+            let no_tags = Regex::new(r"<[^>]+>").unwrap().replace_all(raw, " ");
+            Regex::new(r"\s+")
+                .unwrap()
+                .replace_all(&no_tags, " ")
+                .to_lowercase()
+        };
+        let termination_signals = [
+            "account termination",
+            "requesting for your account termination",
+            "account would be deleted",
+            "account will be deleted",
+            "your account would be terminated",
+            "deleted from our system",
+            "access to your account would be denied",
+        ];
+        let has_termination = termination_signals
+            .iter()
+            .any(|p| stripped_body.contains(p));
+        let has_cancel_lure = stripped_body.contains("cancel request")
+            || stripped_body.contains("cancel the termination")
+            || (stripped_body.contains("ignore this message") && stripped_body.contains("request"));
+        if has_termination && has_cancel_lure {
+            total_score += 90;
+            all_evidence
+                .push("Account-termination panic phishing (cancel-request lure)".to_string());
+        }
+
         // Check for Japanese delivery/order phishing from non-Japanese domains
         let jp_delivery_keywords = [
             "お届け",
@@ -3389,6 +3421,48 @@ impl FeatureExtractor for ContextAnalyzer {
         {
             total_score += 80;
             all_evidence.push("Challenge-response allow-list spam detected".to_string());
+        }
+
+        // Fake document-signing / e-signature phishing (DocuSign-style lures).
+        // "secure document to review and sign", "all parties have signed the
+        // envelope", etc. from a domain that is NOT a real e-signature provider.
+        let doc_sign_body = {
+            let raw = context.body.as_deref().unwrap_or("");
+            // Strip HTML tags and collapse whitespace so phrases aren't broken by markup
+            let no_tags = Regex::new(r"<[^>]+>").unwrap().replace_all(raw, " ");
+            let collapsed = Regex::new(r"\s+").unwrap().replace_all(&no_tags, " ");
+            collapsed.to_lowercase()
+        };
+        let doc_sign_phrases = [
+            "document to review and sign",
+            "review and sign",
+            "signed the envelope",
+            "secure document sent",
+            "new contract document",
+            "document is ready to sign",
+            "please review and sign",
+            "sign the document",
+        ];
+        let doc_sign_hit = doc_sign_phrases.iter().any(|p| doc_sign_body.contains(p));
+        if doc_sign_hit {
+            let legit_esign = [
+                "docusign",
+                "adobesign",
+                "adobe.com",
+                "hellosign",
+                "dropbox",
+                "pandadoc",
+                "echosign",
+                "signnow",
+                "onespan",
+            ];
+            let from_lc = sender.to_lowercase();
+            let is_legit_esign = legit_esign.iter().any(|s| from_lc.contains(s));
+            if !is_legit_esign {
+                total_score += 80;
+                all_evidence
+                    .push("Fake document-signing phishing from non-e-signature domain".to_string());
+            }
         }
 
         // Webmail/inbox phishing detection (fake "unread messages" notifications)
