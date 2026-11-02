@@ -242,6 +242,10 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         "salesforce.com",
         "sparkpostmail.com",
         "ccsend.com",
+        "emarsys.net",
+        "mailgun.org",
+        "omnisend.email",
+        "mktomail.com",
     ];
     for (_, v) in context
         .headers
@@ -307,6 +311,13 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         if v_lower.contains("marketo-platform")
             || v_lower.contains("mktomail.com")
             || v_lower.contains(".mktossl.com")
+        {
+            return true;
+        }
+        if v_lower.contains("emarsys.net")
+            || v_lower.contains("emsmtp.com")
+            || v_lower.contains("mailgun.net")
+            || v_lower.contains("omnisend.email")
         {
             return true;
         }

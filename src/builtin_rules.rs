@@ -4593,7 +4593,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             ],
                         },
                         Criteria::SubjectPattern { pattern: "(?i).{0,100}(account.{0,100}suspension|account.{0,100}suspended|domain.{0,100}impersonation|test.{0,100}subject).*".to_string() },
-                        Criteria::SubjectPattern { pattern: "(?i).{0,100}(nota.{0,100}fiscal|invoice.{0,100}eletronica|black.{0,100}friday.{0,100}sale|happening.{0,100}now).*".to_string() },
+                        Criteria::SubjectPattern { pattern: "(?i).{0,100}(nota.{0,100}fiscal|invoice.{0,100}eletronica).*".to_string() },
                         ],
                     },
                     action: None,
