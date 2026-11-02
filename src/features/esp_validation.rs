@@ -304,6 +304,12 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         if v_lower.contains("salesforce.com") || v_lower.contains(".sfdc-") {
             return true;
         }
+        if v_lower.contains("marketo-platform")
+            || v_lower.contains("mktomail.com")
+            || v_lower.contains(".mktossl.com")
+        {
+            return true;
+        }
     }
 
     // Check Return-Path header for ESP domains (milter parity)
@@ -613,6 +619,11 @@ impl FeatureExtractor for EspValidationFeature {
                     Some("salesforce.com".to_string())
                 } else if v_lower.contains("klaviyo") {
                     Some("klaviyodns.com".to_string())
+                } else if v_lower.contains("marketo-platform")
+                    || v_lower.contains("mktomail.com")
+                    || v_lower.contains(".mktossl.com")
+                {
+                    Some("marketo".to_string())
                 } else {
                     None
                 }

@@ -9680,6 +9680,13 @@ impl FilterEngine {
             }
         }
 
+        // Skip when the message was sent through recognized ESP infrastructure
+        // (e.g. Marketo, SendGrid). The customer's own domain in a VERP envelope
+        // is not a throwaway/gibberish spam domain.
+        if crate::features::esp_validation::is_from_trusted_esp(context) {
+            return 0;
+        }
+
         // Skip for newsletters sent via known ESPs (Return-Path indicates ESP)
         let return_path = context
             .headers

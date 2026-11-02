@@ -159,6 +159,21 @@ pub fn builtin_modules() -> Vec<Module> {
                                     Criteria::SenderPattern { pattern: ".*@.*\\.(onestopplus|airnz|amazon|walmart|target|bestbuy|costco|homedepot|sendgrid|mailchimp|klaviyo|constantcontact|twilio|commonspirit)\\.(com|co\\.nz|net|org)$".to_string() },
                                     Criteria::SenderPattern { pattern: ".*(bounce|campaign|track|newsletter|promo|marketing|email|mail|esp|delivery|notification)-.*[0-9]{8,}@.*".to_string() },
                                     Criteria::SenderPattern { pattern: ".*(do-not-reply|noreply|no-reply).*[0-9]{8,}@.*".to_string() },
+                                    // VERP/bounce numeric local-part delivered through
+                                    // recognized ESP infrastructure (e.g. Marketo) is
+                                    // legitimate bounce addressing, not a throwaway spam
+                                    // address.
+                                    Criteria::FeatureAnalysis {
+                                        feature_name: "ESP Validation".to_string(),
+                                        min_score: None,
+                                        max_score: None,
+                                        evidence_pattern: Some("Trusted ESP".to_string()),
+                                        invert: None,
+                                    },
+                                    Criteria::HeaderPattern {
+                                        header: "Received".to_string(),
+                                        pattern: "(?i)(marketo-platform|mktomail\\.com|\\.mktossl\\.com)".to_string(),
+                                    },
                                     ],
                                 }
                                 ),

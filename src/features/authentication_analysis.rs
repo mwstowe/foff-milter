@@ -707,11 +707,15 @@ impl AuthenticationFeature {
             return false;
         }
 
-        // A mismatch means an identity token does NOT appear in the sender domain
-        let has_mismatch = identity_tokens
+        // The sender is "pretending to be someone else" only when NONE of the
+        // identity tokens appear in the sender domain. If any token matches
+        // (e.g. display "Watts® Home Mobile App" with domain wattswater.com —
+        // "watts" matches), the sender is backing the identity it claims, and
+        // extra descriptor words ("Home", "Mobile") must not trigger a mismatch.
+        let any_token_backed = identity_tokens
             .iter()
-            .any(|t| !domain_flat.contains(t.as_str()));
-        if !has_mismatch {
+            .any(|t| domain_flat.contains(t.as_str()));
+        if any_token_backed {
             return false;
         }
 
