@@ -196,6 +196,9 @@ impl ServerRoleAnalyzer {
         if has_dkim && crate::features::esp_validation::is_from_trusted_esp(context) {
             return (false, String::new());
         }
+        if crate::features::context_analyzer::ContextAnalyzer::is_genuine_conversation(context) {
+            return (false, String::new());
+        }
         if let Some(domain) = self.extract_sender_domain(context) {
             let registry = context.domain_registry.as_ref().map(|arc| arc.as_ref());
             if self.is_suspicious_domain(&domain, registry) {

@@ -187,6 +187,85 @@ impl ContextAnalyzer {
         is_legitimate_business && (has_marketing_urgency || is_floral_retailer)
     }
 
+    /// Detect a genuine conversation: the message is a threaded reply
+    /// (In-Reply-To or References present) AND its quoted history contains a
+    /// message authored by one of the recipient's own addresses. A spammer can
+    /// fake reply headers and a "Re:" subject, but cannot plausibly quote a
+    /// prior message that the recipient actually wrote to them.
+    pub fn is_genuine_conversation(context: &MailContext) -> bool {
+        let has_reply_headers = context.headers.contains_key("in-reply-to")
+            || context.headers.contains_key("references");
+        if !has_reply_headers {
+            return false;
+        }
+
+        // Collect the recipient's own addresses (To header + envelope recipients)
+        let mut my_addrs: Vec<String> = Vec::new();
+        let addr_re = Regex::new(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}").unwrap();
+        if let Some(to) = context.headers.get("to") {
+            for m in addr_re.find_iter(to) {
+                my_addrs.push(m.as_str().to_lowercase());
+            }
+        }
+        for r in &context.recipients {
+            for m in addr_re.find_iter(r) {
+                my_addrs.push(m.as_str().to_lowercase());
+            }
+        }
+        my_addrs.sort();
+        my_addrs.dedup();
+        if my_addrs.is_empty() {
+            return false;
+        }
+
+        // The actual sender must not be the recipient (no self-quoting trick)
+        let sender_lower = context.from_header.as_deref().unwrap_or("").to_lowercase();
+        if my_addrs.iter().any(|a| sender_lower.contains(a.as_str())) {
+            return false;
+        }
+
+        // Quoted history: a "From:" header in the body naming one of my addresses.
+        // Scan a short window after each "from:" up to the next quoted header
+        // field. Search the raw body too, since Outlook HTML quotes keep the
+        // address only inside a mailto: link.
+        let body = context.body.as_deref().unwrap_or("").to_lowercase();
+        for (i, _) in body.match_indices("from:") {
+            let mut end = (i + 600).min(body.len());
+            while !body.is_char_boundary(end) {
+                end -= 1;
+            }
+            let window = &body[i + 5..end];
+            let cut = ["sent:", "date:", "subject:", "from:"]
+                .iter()
+                .filter_map(|m| window.find(m))
+                .min()
+                .unwrap_or(window.len());
+            let segment = &window[..cut];
+            if my_addrs.iter().any(|a| segment.contains(a.as_str())) {
+                return true;
+            }
+        }
+        // Attribution lines: "On <date>, Name <me@example.com> wrote:"
+        for (i, _) in body.match_indices("wrote:") {
+            let mut start = i.saturating_sub(250);
+            while !body.is_char_boundary(start) {
+                start += 1;
+            }
+            let window = &body[start..i];
+            // Only consider text after the previous attribution / paragraph break
+            let begin = ["wrote:", "\n\n", "\r\n\r\n"]
+                .iter()
+                .filter_map(|m| window.rfind(m).map(|p| p + m.len()))
+                .max()
+                .unwrap_or(0);
+            let segment = &window[begin..];
+            if my_addrs.iter().any(|a| segment.contains(a.as_str())) {
+                return true;
+            }
+        }
+        false
+    }
+
     fn detect_service_alert_phishing(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
         let service_alert_patterns = [
             r"(?i)service.*alert.*for.*[0-9]+.*suite.*[0-9]+",
@@ -2904,10 +2983,10 @@ impl FeatureExtractor for ContextAnalyzer {
         // Employment scam detection
         let (employment_scam_score, employment_scam_evidence) =
             self.detect_employment_scam(&combined_text, sender, trusted_authenticated_sender);
-        if !is_dkim_aligned_brand {
+        if !is_dkim_aligned_brand && !Self::is_genuine_conversation(context) {
             total_score += employment_scam_score;
+            all_evidence.extend(employment_scam_evidence);
         }
-        all_evidence.extend(employment_scam_evidence);
 
         // Survey/reward scam detection
         {
@@ -3395,7 +3474,17 @@ impl FeatureExtractor for ContextAnalyzer {
                     .is_match(&format!("{} {}", subject_lower, body_lower))
             })
             .count();
-        if fake_security_hits >= 2 {
+        // A genuine conversation (threaded reply whose quoted history contains a
+        // message the recipient themselves wrote) is not a fake alert, even when
+        // the topic is "security update" (e.g. a sysadmin support-ticket thread).
+        let in_genuine_conversation = Self::is_genuine_conversation(context);
+        if in_genuine_conversation {
+            all_evidence
+                .push("Genuine conversation: reply quotes recipient's own message".to_string());
+        }
+        if in_genuine_conversation {
+            // skip fake-security scoring entirely
+        } else if fake_security_hits >= 2 {
             total_score += 60;
             all_evidence.push("Fake security/protection alert detected".to_string());
         } else if fake_security_hits == 1
