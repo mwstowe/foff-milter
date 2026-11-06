@@ -611,6 +611,14 @@ impl SenderAlignmentAnalyzer {
             return issues;
         }
 
+        // Skip legitimate legal/class-action settlement notices. A DKIM-aligned
+        // settlement administrator names the defendant brand as part of the legal
+        // notice (e.g. "Amazon Return Policy Litigation" from returnsettlement.com);
+        // that is not impersonation.
+        if crate::features::is_legitimate_legal_settlement_notice(context) {
+            return issues;
+        }
+
         // Check if email body contains social media links (indicates legitimate business communication)
         let is_social_media_context = body.to_lowercase().contains("facebook.com")
             || body.to_lowercase().contains("twitter.com")
@@ -711,6 +719,31 @@ impl SenderAlignmentAnalyzer {
             ));
         }
 
+        // Co-branding / incidental-mention guard for the brand-pattern checks
+        // below. A brand named only in the subject or body -- but not in the
+        // From display name -- is a partner reference or footer link rather than
+        // the sender claiming to be that brand, BUT only when the sender is
+        // backed by both DKIM alignment and recognized ESP infrastructure.
+        // DKIM alignment alone is not enough: a spammer can self-sign a throwaway
+        // domain. Requiring a trusted ESP (e.g. Salesforce for JAL) separates a
+        // legitimate co-branding/footer mention from throwaway-domain spam.
+        // Example: JAL (japanairlines@email.jal.com via Salesforce) whose footer
+        // links to Google Play / Microsoft Store.
+        let co_branding_ok = context
+            .dkim_verification
+            .as_ref()
+            .map(|d| {
+                matches!(
+                    d.auth_status,
+                    crate::dkim_verification::DkimAuthStatus::Pass
+                ) && matches!(
+                    d.domain_alignment,
+                    crate::dkim_verification::DomainAlignment::Aligned
+                )
+            })
+            .unwrap_or(false)
+            && crate::features::esp_validation::is_from_trusted_esp(context);
+
         // Original brand pattern checking (for backward compatibility)
         for (brand, legitimate_domains) in &self.brand_patterns {
             // Check if brand is mentioned in display name, subject, or body
@@ -719,6 +752,14 @@ impl SenderAlignmentAnalyzer {
                 || body.to_lowercase().contains(brand);
 
             if brand_mentioned {
+                // Skip incidental partner/footer mentions from a DKIM-aligned
+                // sender delivered via a recognized ESP when the brand is not
+                // part of the sender's own From display name (i.e. the sender is
+                // not claiming to be the brand).
+                if co_branding_ok && !sender_info.from_display_name.to_lowercase().contains(brand) {
+                    continue;
+                }
+
                 // Skip AWS infrastructure references (not actual brand impersonation)
                 if brand == "amazon"
                     && self.is_aws_infrastructure_reference(body)

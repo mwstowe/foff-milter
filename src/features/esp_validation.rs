@@ -226,6 +226,7 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
                 "klaviyodns.com",
                 "klaviyomail.com",
                 "bloomerang-mail.com",
+                "shopifyemail.com",
             ];
 
             for esp in &trusted_esps {
@@ -246,6 +247,7 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         "mailgun.org",
         "omnisend.email",
         "mktomail.com",
+        "shopifyemail.com",
     ];
     for (_, v) in context
         .headers
@@ -274,6 +276,7 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
                 "mailchimp.com",
                 "klaviyomail.com",
                 "bloomerang-mail.com",
+                "shopifyemail.com",
             ];
             for esp in &trusted_esps {
                 if domain_lower.contains(esp) {
@@ -319,6 +322,9 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
             || v_lower.contains("mailgun.net")
             || v_lower.contains("omnisend.email")
         {
+            return true;
+        }
+        if v_lower.contains("shopifyemail.com") || v_lower.contains("mailer.shopify.com") {
             return true;
         }
     }
@@ -498,6 +504,22 @@ impl EspValidationFeature {
                 domains: vec!["klaviyomail.com".to_string(), "klaviyodns.com".to_string()],
                 reputation: EspReputation::Trusted,
                 aliases: vec!["shared.klaviyomail.com".to_string()],
+            },
+        );
+
+        providers.insert(
+            "shopify".to_string(),
+            EspProvider {
+                domains: vec![
+                    "shopifyemail.com".to_string(),
+                    "t.shopifyemail.com".to_string(),
+                    "shopify.com".to_string(),
+                ],
+                reputation: EspReputation::Trusted,
+                aliases: vec![
+                    "mailer.shopify.com".to_string(),
+                    "mailer3.t.shopifyemail.com".to_string(),
+                ],
             },
         );
 

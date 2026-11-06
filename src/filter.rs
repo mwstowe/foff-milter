@@ -9003,6 +9003,14 @@ impl FilterEngine {
 
     /// Detect brand impersonation (major brands on unrelated domains)
     fn get_brand_impersonation_score(&self, context: &MailContext) -> i32 {
+        // Legitimate legal/class-action settlement notices name the defendant
+        // brand as part of the notice (e.g. "Amazon Return Policy Litigation"
+        // from a DKIM-aligned settlement administrator). That is not
+        // impersonation.
+        if crate::features::is_legitimate_legal_settlement_notice(context) {
+            return 0;
+        }
+
         let domain = self
             .extract_sender_domain(context)
             .unwrap_or_default()

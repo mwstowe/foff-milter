@@ -33,6 +33,69 @@ pub fn get_header_case_insensitive<'a>(
         .map(|(_, v)| v)
 }
 
+/// Detect a legitimate legal / class-action settlement notice.
+///
+/// Court-appointed settlement administrators legitimately name the defendant
+/// brand in the From display name, subject, and body (e.g. "In re Amazon
+/// Return Policy Litigation" sent from returnsettlement.com). Those references
+/// look like brand impersonation to the heuristics, but they are a recognizable
+/// legal-notice content pattern, not impersonation.
+///
+/// To keep a spammer from simply pasting settlement language onto a throwaway
+/// domain, this requires DKIM alignment (the cryptographic identity matches the
+/// claimed From domain) in addition to the legal-content signal. A settlement
+/// administrator domain plus a single strong legal marker, or two independent
+/// legal markers on their own, qualifies.
+pub fn is_legitimate_legal_settlement_notice(context: &MailContext) -> bool {
+    // Require DKIM alignment: the signing domain matches the claimed From domain.
+    let dkim_aligned = context
+        .dkim_verification
+        .as_ref()
+        .map(|d| {
+            matches!(
+                d.auth_status,
+                crate::dkim_verification::DkimAuthStatus::Pass
+            ) && matches!(
+                d.domain_alignment,
+                crate::dkim_verification::DomainAlignment::Aligned
+            )
+        })
+        .unwrap_or(false);
+    if !dkim_aligned {
+        return false;
+    }
+
+    let subject = context.subject.as_deref().unwrap_or("").to_lowercase();
+    let body = context.body.as_deref().unwrap_or("").to_lowercase();
+    let hay = format!("{} {}", subject, body);
+
+    let legal_markers = [
+        "class action settlement",
+        "class action lawsuit",
+        "settlement administrator",
+        "legal notice",
+        "litigation",
+        "in re ",
+        "proposed settlement",
+        "notice of settlement",
+        "you may be entitled",
+    ];
+    let legal_hits = legal_markers.iter().filter(|m| hay.contains(*m)).count();
+
+    let sender_domain = context
+        .from_header
+        .as_ref()
+        .or(context.sender.as_ref())
+        .map(|s| s.to_lowercase())
+        .unwrap_or_default();
+    let is_settlement_domain = sender_domain.contains("settlement")
+        || sender_domain.contains("litigation")
+        || sender_domain.contains("classaction")
+        || sender_domain.contains("administration");
+
+    legal_hits >= 2 || (legal_hits >= 1 && is_settlement_domain)
+}
+
 /// Structured tags for inter-feature communication.
 /// Features emit tags alongside evidence strings. The trust system and other
 /// consumers read tags instead of parsing evidence text, giving compile-time safety.

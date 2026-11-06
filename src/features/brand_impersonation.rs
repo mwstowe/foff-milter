@@ -807,6 +807,25 @@ impl FeatureExtractor for BrandImpersonationFeature {
             };
         }
 
+        // Skip brand impersonation for legal/class-action settlement notices.
+        // A court-appointed settlement administrator legitimately names the
+        // defendant brand (e.g. "In re Amazon Return Policy Litigation" from
+        // returnsettlement.com). These are a recognizable content pattern, not
+        // impersonation. The shared helper requires DKIM alignment so a spammer
+        // can't just paste settlement language from a throwaway domain.
+        if crate::features::is_legitimate_legal_settlement_notice(context) {
+            return FeatureScore {
+                feature_name: "Brand Impersonation".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![
+                    "Legal/class-action settlement notice (DKIM-aligned, not impersonation)"
+                        .to_string(),
+                ],
+                tags: vec![],
+            };
+        }
+
         // Check for recipient domain impersonation in display name
         if let Some(to_header) = context.headers.get("to") {
             if let Some(recipient_domain) = self.extract_domain(to_header) {
@@ -973,9 +992,59 @@ impl FeatureExtractor for BrandImpersonationFeature {
                 confidence += 0.7;
             }
 
+            // Co-branding / partnership guard.
+            //
+            // Impersonation means the sender claims to *be* a brand it does not
+            // control. A legitimate sender promoting a partner brand (e.g. JAL
+            // promoting a "JAL & Marriott Bonvoy Partnership") is distinguished
+            // from a spammer by two signals together: the message is DKIM-aligned
+            // (cryptographically signed by the From domain) AND it is delivered
+            // through recognized ESP infrastructure (e.g. Salesforce Marketing
+            // Cloud). DKIM alignment alone is insufficient -- a spammer can
+            // self-sign a throwaway domain (c0stc0 <...@pisoyalquiler.com>) and
+            // still earn aligned DKIM. Requiring a trusted ESP closes that gap.
+            // We also only skip a brand that is NOT part of the sender's own
+            // From identity (display name / local-part); a brand claimed in the
+            // sender's own identity is still impersonation.
+            let dkim_aligned = context
+                .dkim_verification
+                .as_ref()
+                .map(|d| {
+                    matches!(
+                        d.auth_status,
+                        crate::dkim_verification::DkimAuthStatus::Pass
+                    ) && matches!(
+                        d.domain_alignment,
+                        crate::dkim_verification::DomainAlignment::Aligned
+                    )
+                })
+                .unwrap_or(false);
+            let co_branding_ok = dkim_aligned
+                && crate::features::esp_validation::is_from_trusted_esp(context)
+                && !self.is_suspicious_domain_pattern(domain);
+
+            let from_identity = {
+                let local_part = context
+                    .from_header
+                    .as_deref()
+                    .and_then(|f| f.split('<').nth(1))
+                    .and_then(|f| f.split('@').next())
+                    .unwrap_or("");
+                // Normalize homoglyphs so "C0STC0" -> "costco" is caught as an
+                // identity claim rather than treated as an unrelated token.
+                self.normalize_homoglyphs(&format!("{} {}", from_display_name, local_part))
+                    .to_lowercase()
+            };
+
             // Check for brand impersonation
             for brand in all_brands {
                 if !self.is_legitimate_domain_for_brand(brand, domain) {
+                    // Skip co-branding mentions: DKIM-aligned sender delivered
+                    // via a recognized ESP, naming a partner brand that is not
+                    // part of the sender's own From identity.
+                    if co_branding_ok && !from_identity.contains(&brand.to_lowercase()) {
+                        continue;
+                    }
                     score += 90;
                     if has_evasion {
                         score += 30; // Extra penalty for deliberate evasion
