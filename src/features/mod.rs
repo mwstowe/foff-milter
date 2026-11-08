@@ -96,6 +96,72 @@ pub fn is_legitimate_legal_settlement_notice(context: &MailContext) -> bool {
     legal_hits >= 2 || (legal_hits >= 1 && is_settlement_domain)
 }
 
+/// Recognize a DKIM-authenticated *organizational* identity delivered via a
+/// recognized ESP, even when the From header domain differs from the signing
+/// domain.
+///
+/// Some large brands send through an ESP (e.g. Salesforce Marketing Cloud) with
+/// a CDN/Akamai-fronted From domain, while the DKIM signature and the envelope
+/// Return-Path both belong to the brand's real registrable domain. Example
+/// (Travelers Insurance):
+///   From:         "Travelers Insurance" <reply@e7269.dscx.akamaiedge.net>
+///   DKIM d=:      email.travelers.com (+ s1.y.mc.salesforce.com)
+///   Return-Path:  bounce-...@bounce.email.travelers.com
+///   Received:     mta.email.travelers.com (Salesforce/ExactTarget)
+/// Here the From domain (akamaiedge.net) is not the organization, but the
+/// cryptographically-signed identity (travelers.com) matches the envelope
+/// return path, and delivery is through a recognized ESP. The message is
+/// authentically from the organization; feature checks that penalize the From
+/// domain for not aligning with the Return-Path/Sender are false positives.
+///
+/// This is deliberately a *conjunction* — DKIM pass AND signing-domain /
+/// Return-Path registrable-domain match AND trusted ESP. DKIM alignment alone
+/// is NOT sufficient: a spammer can self-sign a throwaway domain and set a
+/// matching Return-Path. Requiring recognized ESP infrastructure is what makes
+/// this safe, mirroring the trusted-ESP gate used elsewhere in the codebase.
+pub fn is_dkim_authenticated_org_identity(context: &MailContext) -> bool {
+    let dkim = match context.dkim_verification.as_ref() {
+        Some(d) => d,
+        None => return false,
+    };
+
+    // 1. DKIM must pass.
+    if !matches!(
+        dkim.auth_status,
+        crate::dkim_verification::DkimAuthStatus::Pass
+    ) {
+        return false;
+    }
+
+    // 2. Some DKIM signing domain must share the registrable (organizational)
+    //    domain of the envelope Return-Path. This ties the cryptographic
+    //    identity to the envelope originator rather than to the (possibly
+    //    CDN-fronted) From header.
+    let return_path = get_header_case_insensitive(&context.headers, "return-path")
+        .or_else(|| get_header_case_insensitive(&context.headers, "Return-Path"));
+    let return_path_domain = match return_path.and_then(|rp| {
+        rp.rsplit('@')
+            .next()
+            .map(|d| d.trim_end_matches('>').trim().to_string())
+    }) {
+        Some(d) if !d.is_empty() => d,
+        _ => return false,
+    };
+
+    let signing_matches_return_path = dkim
+        .domains
+        .iter()
+        .any(|d| crate::domain_utils::DomainUtils::same_registrable_domain(d, &return_path_domain));
+    if !signing_matches_return_path {
+        return false;
+    }
+
+    // 3. Must be delivered through recognized ESP infrastructure. This is the
+    //    anti-abuse gate: a self-signed throwaway domain with a matching
+    //    Return-Path still fails here because it is not a recognized ESP.
+    esp_validation::is_from_trusted_esp(context)
+}
+
 /// Structured tags for inter-feature communication.
 /// Features emit tags alongside evidence strings. The trust system and other
 /// consumers read tags instead of parsing evidence text, giving compile-time safety.

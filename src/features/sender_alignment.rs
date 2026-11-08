@@ -1846,10 +1846,24 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
 
         // Analyze domain consistency
         let domain_issues = self.analyze_domain_consistency(&sender_info, &context.headers);
+        // A DKIM-authenticated organizational identity delivered via a recognized
+        // ESP legitimately uses a CDN-fronted From domain that differs from the
+        // envelope Sender/Return-Path (e.g. Travelers via Salesforce:
+        // From reply@e7269.dscx.akamaiedge.net, d=email.travelers.com,
+        // Return-Path bounce.email.travelers.com). The From-vs-Return-Path and
+        // From-vs-Sender mismatch penalties are false positives in that case.
+        let authenticated_org_identity =
+            crate::features::is_dkim_authenticated_org_identity(context);
         // Score consumer email spoofing higher (100 points) than regular domain mismatches (20 points)
         for issue in &domain_issues {
             if issue.contains("Consumer email domain") && issue.contains("likely spoofed") {
                 score += 100;
+            } else if authenticated_org_identity
+                && (issue.contains("doesn't align with Return-Path")
+                    || issue.contains("doesn't match Sender domain"))
+            {
+                // Suppressed: authenticated organizational identity via trusted ESP.
+                continue;
             } else {
                 score += 20;
             }

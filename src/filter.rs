@@ -1297,6 +1297,22 @@ impl FilterEngine {
         let sender = context.sender.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
 
+        // Skip invoice-fraud scoring for a DKIM-authenticated organizational
+        // identity delivered via a recognized ESP (e.g. a Travelers Insurance
+        // bill sent through Salesforce with a CDN-fronted From domain). A real
+        // bill/receipt from the authenticated brand is not fraud, and the
+        // generic invoice keyword patterns ("total amount", "invoice number",
+        // "overdue") would otherwise push confidence past the fake-invoice
+        // threshold purely because the CDN From domain is not on any allow-list.
+        if crate::features::is_dkim_authenticated_org_identity(context) {
+            return InvoiceAnalysis {
+                is_fake_invoice: false,
+                confidence_score: 0.0,
+                detected_patterns: vec![],
+                risk_factors: vec![],
+            };
+        }
+
         // Skip for medical appointment confirmations
         let subject_lower = subject.to_lowercase();
         let from_lower = from_header.to_lowercase();

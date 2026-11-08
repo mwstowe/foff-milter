@@ -1850,7 +1850,14 @@ impl FeatureExtractor for ContextAnalyzer {
             let is_legit_cname = legit_cname_patterns
                 .iter()
                 .any(|p| sender_domain.ends_with(p) || sender_domain.contains(p));
-            if dot_count >= 3 && !is_legit_cname {
+            // A DKIM-authenticated organizational identity delivered via a
+            // recognized ESP legitimately uses a deeply-nested CDN-fronted From
+            // domain (e.g. e7269.dscx.akamaiedge.net for Travelers via
+            // Salesforce). That is ESP/CDN infrastructure, not free-hosting
+            // abuse, so exempt it from the nested-subdomain penalty.
+            let authenticated_org_identity =
+                crate::features::is_dkim_authenticated_org_identity(context);
+            if dot_count >= 3 && !is_legit_cname && !authenticated_org_identity {
                 total_score += 40;
                 all_evidence
                     .push("Deeply nested subdomain (likely free hosting abuse)".to_string());

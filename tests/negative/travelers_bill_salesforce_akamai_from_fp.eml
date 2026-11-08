@@ -1,0 +1,1454 @@
+Return-Path: <bounce-KOBMAUMQCVVE7ITHMXGV3X6C5M.10209@bounce.email.travelers.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 6A8JHues042593
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <MSTOWE@BADDOMAIN.COM>; Sun, 8 Nov 2026 19:17:57 GMT
+	(envelope-from bounce-KOBMAUMQCVVE7ITHMXGV3X6C5M.10209@bounce.email.travelers.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=email.travelers.com header.i=reply@email.travelers.com header.b=hrESPFp4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=s1.y.mc.salesforce.com header.i=@s1.y.mc.salesforce.com header.b=akbxH2z8
+Received: from mta.email.travelers.com (mta.email.travelers.com [13.111.33.90])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 6A8JHptR091084
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <MSTOWE@BADDOMAIN.COM>; Sun, 8 Nov 2026 13:17:52 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 6A8JHptR091084
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=email.travelers.com header.i=reply@email.travelers.com header.a=rsa-sha256 header.s=1dkim1 header.b=hrESPFp4;
+	dkim=pass (2048-bit key, unprotected) header.d=s1.y.mc.salesforce.com header.i=@s1.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim1 header.b=akbxH2z8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=1dkim1; d=email.travelers.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:Message-ID:Content-Type;
+ i=reply@email.travelers.com;
+ bh=k6VQGpB00gZ2wQqWwlt85RqLmzyz9MAsqF3mpWHkuOk=;
+ b=hrESPFp4wF8Oxt2O+T6RPPKOLDiWmpzTby90qpdiOr8x28LvP0Bu2KBVCeEJJtguBz26Vp+KR2ay
+   EdNEDdlnoSVevU0hVrBD88mIBDdJhH2m5UFo5oZiVXmRQwOdF7TW+A/UV7kX8pLANNjxwN3OLZBC
+   FzxGsH+ZB94YIwlRN/8Ko6jkpgHDWUhULFvKp/A9diRGx0G1BTD4k9Zj7Ne5S5sXuCFwPTqJHzC8
+   +Yy9tmBlkw8EmeSNJKFUjwbk+rrF8OmVAnzqzitY9e6D8enbd3JinQlBUFnKDW1y/Gn9KTu96hF7
+   r8GBc2MS8O80rv4bRK/1zFlblSZNmGKLk2ifMg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim1; d=s1.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:Message-ID:Content-Type;
+ bh=k6VQGpB00gZ2wQqWwlt85RqLmzyz9MAsqF3mpWHkuOk=;
+ b=akbxH2z8VcyixSkWfBt2/YLlKKDI94NPvD1h5QD6MqbToeqx7h6TbOSIWceo2CQhxLmBSLCfAdu1
+   2j6SGMmFcaych1CC9jll8F5z8SgbFuA8aMIzyhNw16MnVwqzjYnPljTcIjut3VohWanN0ZvmjlSD
+   OxAvilShIBBlM3pQ65/TtO46xB810hwqETVjBzrUf7IP+FcOIZ/0hiIoB8EZlb60A/7+xlWtK7kz
+   xMERUdGzb/Qs/iSITppCUk0R+JbSNmq8fJgRuk7L7l2gJD1JKfYXLJ5M0Kmf7E9l/ZXK+P6l6zLN
+   PgyCKAe1TXunxrCZOCjItioFdN/28+vsp2y1Kg==
+Received: by mta.email.travelers.com id hu35du39mjcp for <MSTOWE@BADDOMAIN.COM>; Sun, 8 Nov 2026 19:17:50 +0000 (envelope-from <bounce-KOBMAUMQCVVE7ITHMXGV3X6C5M.10209@bounce.email.travelers.com>)
+From: "Travelers Insurance" <reply@e7269.dscx.akamaiedge.net>
+To: <MSTOWE@BADDOMAIN.COM>
+Subject: Your bill is now available
+Date: Sun, 08 Nov 2026 13:17:50 -0600
+List-Help: <https://click.email.travelers.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDk2NDcwOSIsInMiOiIxNjYwMDMzNTIiLCJsaWQiOiIyOTAiLCJqIjoiMzA4NzE2NSIsImpiIjoiMTk1MTYiLCJkIjoiMTAyMDkifQ.3DCU4ZR8Cw5nueWbDxoDkBFk-W5UJxE9mVsFCxqN2Qw>
+MIME-Version: 1.0
+Reply-To: "Unmonitored Inbox" <reply-K6PI7RST2AYE7B5IQZOM6AR76Q.10209@e7269.dscx.akamaiedge.net>
+X-SFMC-Stack: 1
+x-job: 10964709_3087165
+Message-ID: <5a8066cc-7e31-44a7-b1c9-4205fba0e9e2@ind1s01mta0254.xt.local>
+Content-Type: multipart/alternative;
+	boundary="4oFPAPpt47Te=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sun, 08 Nov 2026 19:17:57 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 08 Nov 2026 13:17:52 -0600 (CST)
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication bonus reduced due to suspicious content (juliett.baddomain.com) [ed5235f6]
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication risk level: Standard (juliett.baddomain.com) [84d681e8]
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication bonus reduced due to brand impersonation (juliett.baddomain.com) [f6d0c7a2]
+X-FOFF-Feature-Evidence: Authentication Analysis: DMARC result unknown (juliett.baddomain.com) [30e3b12c]
+X-FOFF-Feature-Evidence: Authentication Analysis: SPF result unknown (juliett.baddomain.com) [f318740e]
+X-FOFF-Feature-Evidence: Authentication Analysis: DKIM domain misaligned: email.travelers.com vs e7269.dscx.akamaiedge.net (juliett.baddomain.com) [ff8fa1a5]
+X-FOFF-Feature-Evidence: Authentication Analysis: DKIM authentication passed (juliett.baddomain.com) [55e44c80]
+X-FOFF-Feature-Evidence: ESP Validation: Trusted ESP: salesforce (juliett.baddomain.com) [22159a7e]
+X-FOFF-Feature-Evidence: Domain Reputation: Email service provider: s1.y.mc.salesforce.com (juliett.baddomain.com) [a03f3498]
+X-FOFF-Feature-Evidence: Invoice Analysis: Invoice scam pattern detected: (?i)(overdue|total amount|invoice number) (legitimate sender: false) (juliett.baddomain.com) [346a0cc7]
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (juliett.baddomain.com) [8c765852]
+X-FOFF-Feature-Evidence: Context Analysis: Deeply nested subdomain (likely free hosting abuse) (juliett.baddomain.com) [191ee40e]
+X-FOFF-Feature-Evidence: Sender Alignment: From domain 'e7269.dscx.akamaiedge.net' doesn't align with Return-Path domain 'bounce.email.travelers.com' (juliett.baddomain.com) [fd7f992d]
+X-FOFF-Feature-Evidence: Sender Alignment: From domain 'e7269.dscx.akamaiedge.net' doesn't match Sender domain 'bounce.email.travelers.com' (juliett.baddomain.com) [4237b16a]
+X-FOFF-Feature-Evidence: ESP Validation: Trusted ESP: salesforce (hotel.baddomain.com) [22159a7e]
+X-FOFF-Feature-Evidence: Domain Reputation: Email service provider: s1.y.mc.salesforce.com (hotel.baddomain.com) [a03f3498]
+X-FOFF-Feature-Evidence: Invoice Analysis: Invoice scam pattern detected: (?i)(overdue|total amount|invoice number) (legitimate sender: false) (hotel.baddomain.com) [346a0cc7]
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (hotel.baddomain.com) [8c765852]
+X-FOFF-Rule-Matched: ESP Infrastructure: Major ESP Infrastructure (juliett.baddomain.com) [builtin]
+X-FOFF-Rule-Matched: Authentication Validation: Perfect Authentication (hotel.baddomain.com) [builtin]
+X-FOFF-Score: 60 - foff-milter v0.10.45+ca10622a-dirty (juliett.baddomain.com)
+X-FOFF-Score: 35 - foff-milter v0.10.45+ca10622a-dirty (hotel.baddomain.com)
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=-10, content=20, total=3, adj=0
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=-10, content=20, total=3, adj=0
+X-FOFF-Business-Analysis: comm=20, legit=20, industry=20, compliance=0, total=17, adj=0
+X-FOFF-Business-Analysis: comm=20, legit=20, industry=20, compliance=0, total=17, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=10, patterns=0, timing=10, total=5, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=10, patterns=0, timing=10, total=5, adj=0
+X-Spam-Flag: YES
+
+This is a multi-part message in MIME format.
+
+--4oFPAPpt47Te=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+The Travelers Indemnity Company
+ &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;  &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;  &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;  &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;
+ &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; 
+ 
+ 
+Trouble reading this email? 
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RLEhKGvyHKzIYPrn-zrUscT_UOoOQgeW37DMr-rfeDOHRcspQea6rrKrxu4tP_MvZzaGJ0xOprAXzz3PVgpyWfUvxqMQH6_c 
+View as webpage 
+ 
+ 
+
+
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+
+<img src="http://image.email.travelers.com/lib/fe5b15707c62007a751d/m/1/33f6c3eb-fb95-45de-a704-8a90dd0b577d.jpg" height="auto" width="185" alt="GEICO Portfolio" border="0" style="display:block;" title="GEICO Portfolio Logo">
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+Your bill is now available in MyTravelers®
+
+
+ 
+
+
+  
+ 
+ We recently upgraded our billing system. Some customers may have experienced unexpected account issues as a result. For customers affected, coverage remains active and no fees will be charged as a result of the billing system upgrade. No action is required. Log in to the Help Center on the MyTravelers(R) website to 
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RLcyyqyDQoqsKSgNtiqF0TBCwg6aHDf9i6tI2v0NniNH0j4aviremPBLQdZKtVSOEwebot6GZjoOiK6NU1Xezvn8mIBHnvSU 
+learn more .
+ 
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+  
+
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RLgM4-UOE9ZXpb6BgeDbqrf77vlc2dQjKTE2fZ5UVzjetCE-5Jarg70DHJ5z0gOBNu2TIQ2QEsuKfLbjcbCGSo_LDxw2zw7w5MqGl 
+
+
+
+  
+
+ BILLING ACCOUNT614257685
+
+
+  
+
+ You can also make a payment through our automated voice system, by check, money order, Online Bank payment or your insurance representative at 
+tel:+1-800-841-3005 
+1-800-841-3005 .
+
+
+
+
+ POLICY NUMBER
+
+
+
+EXPIRED PAYMENT METHOD 
+
+
+
+
+ POLICY NUMBER
+
+ MINIMUM DUE$2,934.00
+
+ PAST DUE 
+
+ POLICY EXPIRATION DATE
+
+ 
+ DUE DATE / CANCELLATION EFFECTIVE DATE
+ DUE DATE
+
+
+
+ RETURN AMOUNT 
+
+ REPLACEMENT AMOUNT 
+
+ PAYMENT METHOD x
+
+
+
+ $2,934.00 Beginning on November 
+
+ PAYMENT FREQUENCY  
+ on the 
+PAYMENT METHOD x
+
+ REFUND AMOUNT 
+
+ REFUND METHOD x
+
+
+
+ MINIMUM DUE$2,934.00By November 27<sup>th
+</sup>
+
+ TOTAL ACCOUNT BALANCE
+ 
+ TOTAL DUE
+ $2,934.00By November 27<sup>th
+</sup>
+
+
+
+
+ 
+ 
+
+  
+
+
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RL6Ii0peX8B5SjADQPX9HoMQbB3k4TQlxGlhTsItPTOG-3igDRIZeg8XcImcXXtmYk-EgKrZBMGjDZQss9ETAi14TFTyw2td6PMbu 
+VIEW AND PAY BILL 
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RMBPB2TiLXC_BWAOrVlF9f7-_GXD-sixua1mYoESvQjquQo7HLJIhCz4bREPqSWwzghXu0Umro0TeC415Usas4E2vobEfTauT3V0y 
+VIEW AND PAY BILL
+
+
+  
+
+
+
+  
+A VALUED CUSTOMER OF
+ 
+GEICO INS AGENCY LLC
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RMVNn7BS4TtazwRw-zwIYqTnqdhLUU0vtv6yRec0ucXnnX8F4OYSKnWQXL7dnwbZmgbbj_ofoOqTs3G5dAi5KE0cX0ZZWjww 
+
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RMi1YZ4IK65fA5MSH9BnKmdXeBVSjfpEp_WQm_1haVM0wEIXtv-Z3k0yv1bXQf0YgnyR2uPIUG8uvRi0_QZBYwnetzqRODyo 
+
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RM8N2CCijD-Jritd1ngfx5hqxqjg4sUR6gXn5k7DSV4CEqe0DpwZj_Oak1nZ_R_NO65Tv9P5xZOP7T5HDW0W-EbY6I5xuaM8 
+
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RNGN6eGLYlgXp5kKrbQLa4exkUfJZLhCFfvmyjsS-NNgZa9a2aUIq_9y_PcGiNxXwHJuy3x3_gVaNk7tt9zwZLTdH4YNGWic 
+
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RNZY6Jmd0y6x_UjGw-cqCxGk0iotbcDoTQCZeRnuAszaZW3ZgpN2Xt9T93wcu-M8t8Oe7v8QBgzM-IadPqpdTrFDohd2lSvs 
+
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RNh2wxsEm1G-4wi3yJgchL50oEtYw9KHATBM9Hlgi_ymbHY1SAPKWaIBz9k0Cw7HMQn8uJSEXUZ_H5agG9xVinDOAA6VEFSU 
+
+
+
+
+ 
+
+
+ 
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RNw_iwFLwSipdxsGX5bOiGuFr_tR_L5WDG-4dT8RwZKxglgCZAW19lmlHAN9yXkhqUi2cc8DvQrMbMmJRwo0o3u0ZgLcGaJs 
+Privacy & Security |
+https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0ROEX8Aw96OtdqlRzAy8YJeVwGccKtCLCm0kz31G3EHKb3z5tYpCZ7h-o2Mc_EuFTXsd0l2CbLiEmW32zYZA5JHcV6Mj7iLpU 
+Terms of Service 
+
+
+ 
+
+ 
+(c) 2026 The Travelers Indemnity Company.
+All rights reserved.
+ 
+The Travelers Indemnity Company, One Tower Square, Hartford, CT 06183
+ 
+
+ 
+ 
+ 
+
+ 
+
+ 
+
+
+ 
+ 
+
+
+--4oFPAPpt47Te=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!Doctype html>
+<html lang="en" xmlns="https://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<!--[if mso]>   <style>     span, td, table, div {       font-family: Arial, serif !important;     } </style>   <![endif]-->
+<!--[if mso]>     <style type="text/css">     h1,h2,h3,h4,h5,h6,p,a,td,strong,li {         font-family:Batterson Sans Light, Arial, serif  !important;     }     </style> <![endif]--> 
+ <!--[if mso]>     <style type="text/css">     div {         font-family:Batterson Sans Black, Arial Black, serif  !important;      }     </style> <![endif]-->  
+ <!--[if mso]>     <style type="text/css">     span {         font-family:Batterson Sans, Arial, serif  !important;      }     </style> <![endif]--> 
+ <!--[if mso]>     <style type="text/css">     dt {         font-family:Batterson Slab, Arial, serif  !important;      }     </style> <![endif]--> 
+<meta http-equiv="Content-Type" content="text-html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"> 
+<meta name="supported-color-schemes" content="light dark">
+<title>The Travelers Indemnity Company</title>
+
+<style>
+
+  */
+html {
+    font-feature-settings: "lnum";
+    font-variant-numeric: lining-nums;
+}
+
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Thin.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Thin.woff) format("woff");font-display:block;font-weight:200;font-style:normal}
+
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Light.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Light.woff) format("woff");font-display:block;font-weight:300;font-style:normal}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Regular.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Regular.woff) format("woff");font-display:block;font-weight:400;font-style:normal}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-SemiBold.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-SemiBold.woff) format("woff");font-display:block;font-weight:600;font-style:normal}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Bold.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Bold.woff) format("woff");font-display:block;font-weight:700;font-style:normal}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Black.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Black.woff) format("woff");font-display:block;font-weight:900;font-style:normal}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Thin.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Thin.woff) format("woff");font-display:block;font-weight:200;font-style:normal}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Light.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Light.woff) format("woff");font-display:block;font-weight:300;font-style:normal}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Regular.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Regular.woff) format("woff");font-display:block;font-weight:400;font-style:normal}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-SemiBold.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-SemiBold.woff) format("woff");font-display:block;font-weight:600;font-style:normal}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Bold.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Bold.woff) format("woff");font-display:block;font-weight:700;font-style:normal}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Black.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Black.woff) format("woff");font-display:block;font-weight:900;font-style:normal}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-ThinItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-ThinItalic.woff) format("woff");font-display:block;font-weight:200;font-style:italic}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-LightItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-LightItalic.woff) format("woff");font-display:block;font-weight:300;font-style:italic}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Italic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-Italic.woff) format("woff");font-display:block;font-weight:400;font-style:italic}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-SemiBoldItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-SemiBoldItalic.woff) format("woff");font-display:block;font-weight:600;font-style:italic}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-BoldItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-BoldItalic.woff) format("woff");font-display:block;font-weight:700;font-style:italic}
+  
+@font-face{font-family:"BattersonSans";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-BlackItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSansUI-BlackItalic.woff) format("woff");font-display:block;font-weight:900;font-style:italic}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-ThinItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-ThinItalic.woff) format("woff");font-display:block;font-weight:200;font-style:italic}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-LightItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-LightItalic.woff) format("woff");font-display:block;font-weight:300;font-style:italic}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Italic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-Italic.woff) format("woff");font-display:block;font-weight:400;font-style:italic}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-SemiBoldItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-SemiBoldItalic.woff) format("woff");font-display:block;font-weight:600;font-style:italic}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-BoldItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-BoldItalic.woff) format("woff");font-display:block;font-weight:700;font-style:italic}
+  
+@font-face{font-family:"BattersonSlab";src:url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-BlackItalic.woff2) format("woff2"),url(https://cdn.travelers.com/fonts/2.1/fonts/BattersonSlabUI-BlackItalic.woff) format("woff");font-display:block;font-weight:900;font-style:italic}
+
+ 
+
+body {
+ margin-top:0;
+ margin-right:0;
+ margin-bottom:0;
+ margin-left:0;
+ -webkit-text-size adjust: none;
+}
+
+a {
+ color: #007395;
+}
+
+
+/* removes gap within tables in outlook 2007, 2010 */
+
+table {
+ border-collapse:collapse;
+ mso-table-lspace:0;
+ mso-table-rspace:0;
+}
+
+
+/* fixes spacing when superscript is used */
+
+sup {
+ font-size:85%;
+ line-height:1.5;
+ top:-0.25em;
+ vertical-align:top;
+ mso-text-raise:30%;
+ position:relative;
+}
+
+
+/* outlook bug fix */
+
+.ExternalClass * {line-height: 100%}
+
+
+/* styles for link color on device detection */
+
+.deviceLinks a {
+ color: #007395;
+ text-decoration: none;
+}
+
+.deviceLinksText a {
+ color: #46494d;
+ text-decoration: none;
+}
+
+.deviceLinksWhite a {
+ color: #ffffff;
+ text-decoration: none;
+}
+
+.deviceLinksDisabled a {
+ color: #b5b6b7;
+ text-decoration: none;
+}
+
+
+/* styles for button hover */
+
+.trv-button {
+ transition: all 100ms ease-in;
+ }
+
+.trv-button:hover {
+ background: #af1213 !important;
+ border-color: #af1213 !important;
+ }
+ 
+.trv-sbutton {
+ transition: all 100ms ease-in;
+ }
+
+.trv-sbutton:hover {
+ background: #af1213 !important;
+ border-color: #af1213 !important;
+ color:#ffffff !important;
+ }
+
+
+/* mobile design */
+ 
+@media only screen and (max-width: 568px){
+html{
+ min-width:100% !important;
+}
+
+body{
+ min-width:100% !important;
+}
+
+.trv-mobile-page-width {
+ width:100% !important;
+}
+
+.trv-mobile-no-width {
+ width:auto !important;
+}
+
+.trv-mobile-image-width {
+ width:100% !important;
+ height:auto !important;
+}
+
+.trv-mobile-column {
+ width:15px !important;
+}
+
+.trv-mobile-profile {
+ width:100px !important;
+ height:auto !important;
+}
+
+.trv-mobile-wrap-column {
+ float:left !important; 
+ width:100% !important;
+ margin-top:15px !important;
+}
+
+.trv-mobile-wrap-column-0 {
+ float:left !important; 
+ width:100% !important;
+ margin-top:0px !important;
+}
+
+.trv-mobile-wrap-column-0b {
+ float:left !important; 
+ width:100% !important;
+ margin-top:0px !important;
+ border-bottom:none !important;
+}
+
+.trv-mobile-off { 
+ width: 0px !important; 
+ display: none !important; 
+}
+
+.trv-mobile-on { 
+ display: block !important; 
+ max-height:none !important; 
+}
+
+.trv-column-width { 
+ width: 100px !important;
+}
+
+
+.trv-mobile-button-width {
+ max-width:320px !important;
+ width:100% !important; 
+}
+
+.trv-mobile-hide {
+ display:none !important;
+}
+
+.trv-mobile-footer-url {
+ padding-right:40px !important; 
+ line-height:40px !important;
+}
+
+.trv-mobile-font {
+ font-size:16px !important; 
+ line-height:24px !important; 
+}
+
+.trv-mobile-font-lg {
+ font-size:19px !important; 
+ line-height:24px !important; 
+}
+  
+.trv-mobile-font-xl {
+ font-size:30px !important; 
+ line-height:36px !important; 
+}  
+ 
+ .trv-mobile-font-xl-light {
+ font-size:30px !important; 
+ line-height:36px !important; 
+} 
+ 
+.trv-mobile-font-xl-dark {
+ font-size:30px !important; 
+ line-height:36px !important; 
+}    
+  
+.trv-mobile-font-lg-Center {
+ font-size:19px !important; 
+ line-height:24px !important;
+ text-align:center !important;
+}
+
+.trv-mobile-font-Center {
+ text-align:center !important;
+}
+
+.trv-mobile-wrap-column-font {
+ margin-top:0px !important;
+ float:left !important;
+ width:100% !important;
+ font-size:16px !important;
+ line-height:24px !important;
+}
+  
+ .trv-mobile-border {
+ border:none !important;
+ box-shadow:none !important;
+}
+}
+  /* Dark Mode Styles */
+
+  
+
+@media (prefers-color-scheme: dark ) { 
+
+.trv-dark-mode-image { 
+
+  display:block !important; 
+
+  overﬂow: visible !important; 
+
+  ﬂoat: none !important; 
+
+  max-height:inherit !important; 
+
+  max-width:inherit !important; 
+
+  line-height: auto !important; 
+
+  margin-top:0px !important; 
+
+  visibility:visible !important; 
+
+  } 
+
+  
+
+  
+
+  
+
+.trv-light-mode-image 
+
+  { 
+
+    display:none; 
+
+    display:none !important; 
+
+  } 
+
+
+
+  
+
+  
+
+.trv-body-background {
+
+ background-color: #272a2d !important;
+
+}
+
+ .trv-darkmode-font {
+
+ color: #ffffff !important;
+
+} 
+
+ 
+.trv-mobile-font {
+
+ color: #ffffff !important;
+
+}
+
+  
+
+.trv-mobile-font-lg {
+
+ color: #ffffff !important;
+
+}
+
+.trv-mobile-font-xl {
+
+ color: #ffffff !important;
+
+} 
+
+.trv-mobile-font-xl-light {
+
+ color: #ffffff !important;
+
+}
+ 
+.trv-mobile-font-xl-dark {
+
+ color: #46494D !important;
+
+} 
+
+.trv-secondary-body-background {
+
+   background-color: #000000 !important;
+
+  }
+
+ 
+ /* Added for DM */
+ 
+ 
+  .dark-mode-bg {
+    background-color: #66abbf !important;
+  }
+
+  
+  .dark-mode-button {
+    color: #fff !important;
+    text-decoration: none !important;
+    background: #302E2F !important;
+    border: 15px solid #302E2F !important;
+    border-radius: 5px 5px 5px 5px !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.1 !important;
+    text-align: center !important;
+    display: block !important;
+    font-weight: bold !important;
+  }
+
+  .dark-mode-button-border {
+    border-color: #fff !important;
+  }
+
+ 
+}
+
+  
+
+[data-ogsc] 
+
+  .trv-light-mode-image { 
+
+  display:none; 
+
+  display:none !important; 
+
+  } 
+
+[data-ogsc] 
+
+  .trv-dark-mode-image {
+
+    display:block !important; 
+
+    width: auto !important; 
+
+    overﬂow: visible !important; 
+
+    ﬂoat: none !important; 
+
+    max-height:inherit !important; 
+
+    max-width:inherit !important; 
+
+    line-height: auto !important; 
+
+    margin-top:0px !important; 
+
+    visibility:inherit !important; 
+
+  }
+
+  a[x-apple-data-detectors] {
+          color: inherit !important;
+          text-decoration: none !important;
+          font-size: inherit !important;
+          font-family: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+      }
+
+  
+</style>
+  
+<!-- -->
+
+<!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OffliceDocumentSettings> </xml><![endif]-->
+
+</head>
+
+<body style="padding:0;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">View your bill and make a payment </div>
+
+<!-- Insert &zwnj;&nbsp; hack after hidden preview text -->
+<div style="display: none; max-height: 0px; overflow: hidden;">
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+</div>
+
+<table cellpadding="0" cellspacing="0" border="0" height="100%" width="100%" bgcolor="#dadadb" style="background-color:#dadadb;">
+<tr>
+<td valign="top" class="trv-mobile-hide">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+<td height="1" style="font-size:1px; line-height:1px;">&nbsp;</td>
+</tr>
+</table>
+
+</td>
+
+<!--begin content area-->
+<td valign="top" align="center" width="600" style="width:600px;" class="trv-mobile-page-width">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+
+<!--begin view in browser area-->
+<!-- --> 
+
+<tr class="trv-mobile-hide">
+<td height="10" style="font-size:1px; line-height:10px;">&nbsp;</td>
+</tr>
+
+<tr>
+<td valign="top" class="trv-mobile-hide" align="center" style="color:#46494D; font-size:14px; font-family: BattersonSans, Arial, sans-serif; font-weight:300;">Trouble reading this email? <a href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RIT4zvfj4nygndWA6H1ve_Rc8CRu4Xa-D2OcRPmuAJLcWPznkDoD3_EM9AvxmGhfNBfu1I_Nz8eLQq2_SFDcUdSSUXr1LVno"  style="color:#007395; text-decoration:underline;" title="View in Browser">View as webpage</a></td>
+</tr>
+
+
+<tr class="trv-mobile-hide">
+<td height="15" style="font-size:1px; line-height:15px;">&nbsp;</td>
+</tr>
+
+<!---->
+<!--end view in browser area-->
+
+<tr>
+<td valign="top">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" style="background-color:#ffffff" class="trv-body-background">
+
+<!--begin content-->
+<tr>
+<td valign="top">
+
+<table cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffffff" style="background-color:#ffffff;" class="trv-body-background">
+<tr>
+<td width="20" style="width:20px;"></td>
+
+<td valign="top">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+
+<tr>
+<td height="12" style="font-size:1px; line-height:12px;">&nbsp;</td>
+</tr>
+<!--end view in browser area-->
+
+<!--begin header-->
+<tr>
+<td valign="top">
+
+ 
+<span style="display:none;">
+<!-- -->
+</span> 
+
+<span style="display:none;">
+<!---->
+</span> 
+
+<span style="display:none;">
+<!---->
+</span> 
+<span style="display:none; line-height:0px;">
+<!---->
+</span> 
+<span style="display:none;">
+ <!----> </span> 
+<span style="display:none;">
+<!-- -->
+</span><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"> <!----></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td valign="top">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					
+						<tr>
+							<td align="left" style="width:148px;" valign="bottom" width="148">
+								<img alt="Travelers Logo" border="0" height="30" src="http://image.email.travelers.com/lib/fe5f15707c62007a7410/m/1/0bd29a6e-18c3-47f7-9b6a-c51437c9ab30.png" style="display:block;" title="Travelers Logo" width="148"></td><td align="right" valign="bottom">
+								<img src="http://image.email.travelers.com/lib/fe5b15707c62007a751d/m/1/33f6c3eb-fb95-45de-a704-8a90dd0b577d.jpg" height="auto" width="185" alt="GEICO Portfolio" border="0" style="display:block;" title="GEICO Portfolio Logo"></td></tr></table></td></tr><tr>
+			<td height="20" style="font-size:1px; line-height:20px;">
+				&nbsp;</td></tr></table></td></tr></table>
+
+
+</td>
+</tr>
+<!--end header-->
+
+
+
+</table>
+</td>
+
+<td width="20" style="width:20px;"></td>
+</tr>
+</table>
+
+</td>
+</tr>
+
+<tr>
+<td valign="top">
+
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table bgcolor="#003557" border="0" cellpadding="0" cellspacing="0" style="background-color: rgb(0, 53, 87);" width="100%">
+	
+		<tr>
+			<td height="30" style="line-height: 30px; font-size: 1px;">
+				&nbsp;</td></tr><tr>
+			<td valign="top">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					
+						<tr>
+							<td style="width: 20px;" width="20">
+							</td><td valign="top">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									
+										<tr>
+											<td align="center" style="color: rgb(255, 255, 255); line-height: 38px; font-family: Arial Black, sans-serif; font-size: 24px; font-weight:bold" valign="top">
+												Your bill is now available in MyTravelers®</td></tr></table></td><td style="width: 20px;" width="20">
+							</td></tr></table></td></tr><tr>
+			<td height="30" style="line-height: 30px; font-size: 1px;">
+				&nbsp;</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" height="10" style="line-height: 10px;" valign="top" width="100%">
+				<img border="0" height="11" src="http://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/3/cf0289d3-91f6-42ed-8c05-e8c0b7e1d48e.png" style="display: block;" width="30"></td></tr><tr>
+			<td height="20" style="line-height: 20px; font-size: 1px;">
+				&nbsp;</td></tr></table></td></tr></table><!-- set up alert for carry forward invoice -->
+<!----><!-- end alert --->
+
+
+</td>
+</tr>
+
+<tr>
+<td valign="top">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+<td width="20" style="width:20px;"></td>
+
+<td valign="top">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+
+<tr>
+<td valign="top">
+
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+ <!--begin paragraph-->
+  <tr>
+   <td align="left" class="trv-mobile-font" style="color:#46494D; line-height: 24px; font-size:16px; font-family: Batterson Sans, Arial Black, 'Trebuchet MS', sans-serif;" valign="top">
+   </td></tr>
+  <!--end paragraph-->
+</table><!----><!---->
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <!--begin billing account info-->
+  <tr>
+   <td height="20" style="font-size:1px; line-height:20px;">
+    &nbsp;</td></tr>
+  <tr>
+   <td valign="top">
+    <table border="0" cellpadding="10" cellspacing="0" class="trv-mobile-page-width">
+     <!--begin paragraph-->
+      <tr>
+      <td class="trv-mobile-font-lg" style="color:#003557; line-height: 22px; font-size:14px; font-family: Batterson Sans, Arial Black, sans-serif; font-weight:900" valign="top">
+       BILLING ACCOUNT<br/><span style="color:#000; font-weight:normal">614257685</span>
+     <br/>
+        </td>        
+      </tr>
+      <!--end paragraph-->
+     </table>
+    </td>
+  </tr>
+  <!--end billing account info-->
+</table>
+<!---->
+<!----><!---->
+
+<!---->
+<!--
+    @BoatInd,
+    @BuildingInd,
+    @BuildingAndKeyInd,
+    @CarInd,
+    @HouseInd,
+    @HouseAndCarInd,
+    @HouseAndKeyInd,
+    @KeyInd,
+    @RingInd,
+    @YachtInd,
+-->
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ 
+  <tr>
+   <td valign="top">
+    <table border="0" cellpadding="10" cellspacing="0" class="trv-mobile-page-width">
+     <!--Policy Icons-->
+      <tr>
+       <td align="center" style="color:#003557; line-height: 28px;">
+<!---->
+
+<!---->  
+         
+<!----> 
+
+<!----> 
+         
+<!---->
+         <img border="0" height="20" src="https://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/98/2dfbb455-b25b-49a2-8855-ce728b372dd3.png" style="display:inline;vertical-align:middle;" width="auto">&nbsp; 
+ <!---->
+         
+<!---->
+         
+<!---->
+         
+<!---->
+         
+<!---->
+         
+<!---->         
+         
+        </td>
+      </tr>
+      <!--end paragraph-->
+     </table>
+    </td>
+  </tr>
+  <tr>
+   <td style="line-height: 20px; font-size:20px;">
+    &nbsp;
+    </td>
+  </tr>
+  <!--End Policy Icons-->
+</table>
+
+<!----><!---->
+<!-- start of IF statement that goes through the different template types -->
+
+
+<!-- start reinstate split code B62 -->
+
+<!--  -->
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+   <td valign="top">
+    <table border="0" cellpadding="0" cellspacing="0" class="trv-mobile-page-width">
+     <!--begin paragraph-->
+     <!-- show the minimum due amount if we have it -->
+      <!--  -->      
+      <tr>
+        <td class="trv-mobile-font-lg" style="color:#003557; line-height: 22px; font-size:14px; font-family: Batterson Sans, Arial Black, sans-serif; font-weight:900" valign="top">
+          MINIMUM DUE<br/>
+        <span style="color:#46494d; line-height: 36px; font-size:24px; font-family: Batterson Sans, Arial Black, sans-serif;" valign="top">$2,934.00</span><br/>
+        <!--  -->
+          <span style="color:#000; font-weight:normal">By November 27<sup>th
+</sup></span><!--  --><br/><br/>
+        </td>
+      </tr>
+      
+      <!-- show the total amount due if we have it -->
+      <!-- -->     
+     </table>
+    </td>
+  </tr>      
+</table>
+
+<!-- end accountbill split codes B01, B06, B07, B86, B70A, B70C, B70V, B70E, B70M, B70P -->
+
+
+<!--  -->
+
+
+
+<!-- END of IF statement that goes through the different template types --><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td height="20" style="line-height: 20px; font-size: 1px;">
+				&nbsp;</td></tr></table></td></tr></table>
+<!---->
+<!---->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+   <td valign="top">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+     
+      <tr>
+       <td align="center" valign="top">
+        <table border="0" cellpadding="0" cellspacing="0" class="trv-mobile-button-width" style="width:270px; border-collapse:separate;" width="270">
+         
+          <tr>
+           <!-- -->
+
+
+<td class="trv-button" style="background:#e01719; text-align:center; border-radius:5px 5px 5px 5px; height:46px;">
+        <a  class="trv-button"  data-linkto="other" href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RIgugrm32MBum7NFTBtsPCU82eKkwTNS3CRRWAbFAWH6rQxafN0mpCcwauAg54cd81p8QW2cM5QHGpowXSmZDX3KuIq0H8HBLtkyU" style="text-decoration:none;background:#e01719; border:15px solid #e01719; border-radius:5px 5px 5px 5px; font-family: Batterson Sans, Arial Black, sans-serif; font-size:16px; line-height:1.1; text-align:center; display:block; font-weight:bold;" title=""><font color="#ffffff">VIEW AND PAY BILL</font></a>
+        </td>
+
+<!---->
+            
+          </tr>
+         </table>
+        </td>
+      </tr>
+     </table></td></tr><tr>
+   <td height="30" style="font-size:1px; line-height:30px;">
+    &nbsp;</td></tr></table>
+
+<!---->
+<!---->
+<table align="center" border="0px" style="max-width:600px;" width="90%">
+ <!--horizontal line-->
+  <tr>
+   <td>
+    <hr border="none" color="#DADADB" size="1">
+   </td>
+  </tr> 
+  <!--spacer-->
+  <tr>
+   <td height="20" style="line-height: 20px; font-size: 1px;">
+    &nbsp;</td></tr></table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td align="center" class="trv-mobile-font-lg" style="color:#003557; line-height: 22px; font-size:14px; font-family: Batterson Sans, Arial Black, sans-serif; font-weight:900" valign="top">A VALUED CUSTOMER OF
+    </td>
+  </tr>
+  <tr>
+   <td align="center" class="trv-mobile-font-lg" style="color:#003557; line-height: 22px; font-size:14px; font-family: Batterson Sans, Arial Black, sans-serif; font-weight:900" valign="top"><span style="color:#000; font-weight:normal">GEICO INS AGENCY LLC</span></td>
+  </tr>
+  <tr>
+   <td height="20" style="font-size:1px; line-height:20px;">
+    &nbsp;</td>
+  </tr>
+</table>
+<!---->
+
+
+</td>
+</tr>
+
+
+
+
+
+
+
+
+
+</table>
+</td>
+
+<td width="20" style="width:20px;"></td>
+</tr>
+</table>
+
+</td>
+</tr>
+
+
+<!--end content-->
+<tr>
+<td valign="top">
+
+
+
+
+
+</td>
+</tr>
+
+<tr>
+<td valign="top">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+<td width="20" style="width:20px;"></td>
+
+<td valign="top">
+
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td height="20" style="line-height: 20px; font-size: 1px;">
+				&nbsp;</td></tr></table></td></tr></table>
+
+
+</td>
+
+<td width="20" style="width:20px;"></td>
+</tr>
+</table>
+
+
+</td>
+</tr>
+
+
+
+<!--begin curve-->
+
+<tr>
+<td valign="top" align="center">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+<td valign="top">
+
+<img src="https://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/140/1e4249ca-5e0d-46cb-b8c4-34c32316a41a.png" height="25" width="600" alt="Legal Section" border="0" style="display:block;" class="trv-mobile-image-width"/>
+
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+
+<!--end curve-->
+
+
+<!--begin legal-->
+<tr>
+<td valign="top">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#f6f6f6" style="background-color:#f6f6f6">
+<tr>
+<td width="20" style="width:20px;"></td>
+
+<td valign="top">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+
+<tr>
+<td height="15" style="font-size:1px; line-height: 15px;">&nbsp;</td>
+</tr>
+
+<tr>
+<td align="center" valign="top">
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ 
+  <tr>
+   <td valign="top">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+     
+      <tr>
+       <td align="center" style="width:148px;" valign="bottom" width="148">
+        <img alt="Travelers Logo" border="0" height="20" src="http://image.email.travelers.com/lib/fe5f15707c62007a7410/m/1/0bd29a6e-18c3-47f7-9b6a-c51437c9ab30.png" style="display:block;" title="Travelers Logo" width="100">
+        </td>
+      </tr>
+     </table>
+    </td>
+  </tr>
+</table>
+                                   
+                                                        
+
+</td>
+</tr>
+
+
+<!--begin tagline-->
+<tr>
+<td valign="top" align="center">
+
+
+
+</td>
+
+</tr>
+<!--end tagline-->
+
+
+
+<tr>
+<td height="20" style="font-size:1px; line-height: 20px;">&nbsp;</td>
+</tr>
+
+
+<!--begin social icons-->
+<tr>
+<td valign="top" align="center">
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" valign="middle">
+				<table border="0" cellpadding="0" cellspacing="0">
+					
+						<tr>
+							<!--begin facebook--><td style="width:17px;" valign="middle" width="17">
+								<a   data-linkto="https://" href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RIyHh3sJXPM5Bd47GqMr6OBsPTLfTkx22e8mkJPMJ0GhczTW5QlAl32nHwqy-CgNydFAOm9aaR1-rZ_YA7-5HKG3uWlYPdKM" title="Facebook"><img alt="Facebook" data-assetid="421103" height="17" src="https://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/53/8c88d896-832a-4417-8475-a5e9a43e503a.png" style="height: 17px; width: 17px; padding: 0px; text-align: center;" width="17"></a></td><!--end facebook--><td style="width:30px;" width="30">
+							</td><!--begin youTube--><td style="width:17px;" valign="middle" width="17">
+								<a   data-linkto="https://" href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RJAtAPgFi-c9pWz0mfiwjiHThOymkQrZHIp3R92Yc7SMRsQbnP5G2mN3aoIYmHTnuswG4uzHaG_VsYJzWuldM7hnnmTWPu9A" title=""><img alt="youTube" data-assetid="445551" height="17" src="https://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/55/1f546211-bc97-4691-8e04-f71857f453b0.png" style="height: 17px; width: 17px; padding: 0px; text-align: center;" width="17"></a></td><!--end youTube--><td style="width:30px;" width="30">
+							</td><!--begin twitter--><td style="width:17px;" valign="middle" width="17">
+								<a   data-linkto="https://" href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RJY11F0i4ID0g_KcqviaOk5VMoiw8kIZdl-R9BlWsLcDVlEiufyJ_9bHuSsmJhET07jF_NASphM15gUh78gmvwt5Fq66Q7wE" title=""><img alt="Twitter" data-assetid="445540" height="17" src="https://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/55/a0a0207d-4d39-4131-94ba-91c7ba45ee80.png" style="height: 17px; width: 17px; padding: 0px; text-align: center;" width="17"></a></td><!--end twitter--><td style="width:30px;" width="30">
+							</td><!--begin linkedin--><td style="width:17px;" valign="middle" width="17">
+								<a   data-linkto="https://" href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RJlOa2JjhREyEn9CHdwzRUy8xbTl8Dv_VYU3hv8FGLQbC_3c60XBdhqPD4T1bh--SHpVIL_eX5b5wrm6SYSWJpq370Hc9JcY" title=""><img alt="LinkedIn" data-assetid="445567" height="17" src="https://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/55/bf881ee8-c246-4caf-8e5e-71a67e4c005e.png" style="height: 17px; width: 17px; padding: 0px; text-align: center;" width="17"></a></td><!--end linkedin--><td style="width:30px;" width="30">
+							</td><!--begin instagram--><td style="width:17px;" valign="middle" width="17">
+								<a   data-linkto="https://" href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RJ5mqUCipf3s7L_hlvybzScBwTnk_lbjtErJvtP46At9rfDurD7xTlpnR9Pn1_ZDAYjEp9kLgQfH3-vc78IeiHb8L8p_FAiA" title="Instagram"><img alt="Instagram" data-assetid="445556" height="17" src="https://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/55/288cf8cb-1b75-46b1-8533-c6378c7afc64.png" style="height: 17px; width: 17px; padding: 0px; text-align: center;" width="17"></a></td><!--end instagram--><td style="width:30px;" width="30">
+							</td><!--begin pinterest--><td style="width:17px;" valign="middle" width="17">
+								<a   data-linkto="https://" href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RKFLfYUAGQpo01sgYjv2kYE_2Ac_fPspEYStht5WOOaVdPKkqHYo30wMoFxEPWcsV4c9irW_Tfqs4ZpAE6poj7dgqJWbeS4U" title="Pinterest"><img alt="Pinterest" data-assetid="445548" height="17" src="https://image.email.travelers.com/lib/fe5815707c62007f7d1d/m/55/e7629afc-f18d-4084-8e7d-e75b738c4e6d.png" style="height: 17px; width: 17px; padding: 0px; text-align: center;" width="17"></a></td><!--end pinterest--></tr></table></td></tr></table></td></tr></table>
+
+</td>
+
+</tr>
+<!--end social icons-->
+
+
+<!--begin view in browser area-->
+
+<tr>
+<td height="20" style="font-size:1px; line-height:20px;">&nbsp;</td>
+</tr>
+
+<tr>
+<td valign="top">
+
+  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <!--begin paragraph-->
+  <tr>
+   <td align="center" style="color:#46494D; line-height: 21px; font-size:14px; font-family: BattersonSans, Arial, sans-serif; font-weight:300;" valign="top">
+    <span class="trv-mobile-footer-url"><a  href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RKbuDFwY6M6yZTGuYIFVi6NCQDluHRdv5n_5mgygPzCmlvZ-DX88H7xzPhslqjw7t2PPJrS1EaOGr-RIwP6iDprqoZJX2r-Y" style="color:#007395;text-decoration:underline;">Privacy&nbsp;&amp;&nbsp;Security</a></span> <span class="trv-mobile-hide">|</span> <span class="trv-mobile-footer-url"><a  href="https://click.email.travelers.com/?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RKubzwh4IvWbBpuPvy341JUrrE9yVw7A3VSj3YAK1TTbXaGvAtw13AA_qG_IoAGiZfG1nyd6adbPo0Ud6TaouxxlqvH6GZfQ" style="color:#007395;text-decoration:underline;">Terms&nbsp;of&nbsp;Service</a></span></td></tr><!--end paragraph--></table></td></tr></table>
+  
+</td>  
+</tr>         
+
+<!--end view in browser area-->
+  
+  <tr>
+<td height="20" style="font-size:1px; line-height: 20px;">&nbsp;</td>
+</tr>
+
+  <!--begin paragraph-->
+<tr>
+<td align="center" valign="top" style="color:#46494D; line-height: 18px; font-size:11px; font-family: BattersonSans, Arial, sans-serif; font-weight:300;">&#169; 2026 The Travelers Indemnity Company.</td>
+</tr>
+<!--end paragraph-->          
+
+<!--begin paragraph-->
+<tr>
+<td align="center" valign="top" style="color:#46494D; line-height: 18px; font-size:11px; font-family: BattersonSans, Arial, sans-serif; font-weight:300;">All rights reserved.</td>
+</tr>
+<!--end paragraph-->   
+  
+<tr>
+<td height="10" style="font-size:1px; line-height:10px;">&nbsp;</td>
+</tr>
+
+
+
+<!--begin paragraph-->
+<tr>
+<td align="center" valign="top" style="color:#46494D; line-height: 18px; font-size:11px; font-family: BattersonSans, Arial, sans-serif; font-weight:300;">The Travelers Indemnity Company, One Tower Square, Hartford, CT 06183</td>
+</tr>
+<!--end paragraph-->
+
+<tr>
+<td height="20" style="font-size:1px; line-height: 20px;">&nbsp;</td>
+</tr>
+
+<tr>
+<td valign="top">
+  
+ <span style="display:none;">
+<!--
+--> 
+</span>
+  
+</td>
+</tr>
+
+<tr>
+<td height="20" style="font-size:1px; line-height:20px;">&nbsp;</td>
+</tr>     
+
+</table>
+</td>
+
+<td width="20" style="width:20px;"></td>
+</tr>
+</table>
+
+</td>
+</tr>
+<!--end legal-->
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</td>
+<!--end content area-->
+
+<!--begin right rail-->
+<td valign="top" class="trv-mobile-hide">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+<td height="1" style="font-size:1px; line-height:1px;">&nbsp;</td>
+</tr>
+</table> 
+
+</td>
+<!--end right rail-->
+
+</tr>
+</table>
+<!--begin view in browser area-->
+<!-- --> 
+<img src="https://click.email.travelers.com/open.aspx?qs=ABp7ImQiOjUwNTQsInQiOjEzNDA5LCJzIjoxfQABAAAAAAKQBJ0RKwF5L5fER5LFTbpPtONNAsK-bHs0pa6TkTjCMmVYberrEar0U4SofJauPFkA2bwFi8UtVGbFcXmvKJJ7rgzO-DQ&d=10209&bmt=0" width="1" height="1" alt="">
+  
+  
+<!---->
+<!--end view in browser area-->
+
+</body>
+</html>
+
+--4oFPAPpt47Te=_?:--
+

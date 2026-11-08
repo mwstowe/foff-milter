@@ -132,7 +132,18 @@ impl AuthenticationAnalyzer {
                                 dkim_domain.contains(esp) || sender_domain.contains(esp)
                             });
 
-                        if is_esp_misalignment {
+                        // A DKIM-authenticated organizational identity delivered
+                        // via a recognized ESP (signing domain shares the envelope
+                        // Return-Path's registrable domain) is legitimate even when
+                        // the From header is CDN-fronted and thus "misaligned" with
+                        // the signing domain. Example: Travelers via Salesforce
+                        // (From ...@e7269.dscx.akamaiedge.net, d=email.travelers.com,
+                        // Return-Path bounce.email.travelers.com). Treat like an ESP
+                        // misalignment: keep the pass bonus, add no risk factor.
+                        let authenticated_org_identity =
+                            crate::features::is_dkim_authenticated_org_identity(context);
+
+                        if is_esp_misalignment || authenticated_org_identity {
                             // Recognized ESP: still trustworthy, keep the pass bonus.
                             score += self.config.scoring.dkim_pass_boost;
                             evidence.push(format!(
@@ -945,6 +956,17 @@ impl FeatureExtractor for AuthenticationFeature {
             .any(|e| e.contains("DKIM domain misaligned but legitimate ESP"))
         {
             tags.push(crate::features::FeatureTag::DkimMisalignedLegitimateEsp);
+        }
+
+        // Emit a blocker evidence string for a DKIM-authenticated organizational
+        // identity delivered via a recognized ESP (signing domain shares the
+        // envelope Return-Path's registrable domain). Builtin authentication-
+        // failure rules use this to avoid penalizing a genuinely authenticated
+        // brand that fronts its From domain through a CDN (e.g. Travelers via
+        // Salesforce). Requires a trusted ESP, so a self-signed throwaway domain
+        // cannot earn it.
+        if crate::features::is_dkim_authenticated_org_identity(context) {
+            evidence.push("DKIM-authenticated organizational identity via trusted ESP".to_string());
         }
 
         // Check for brand impersonation to reduce authentication bonuses

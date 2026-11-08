@@ -33,6 +33,21 @@ pub fn builtin_modules() -> Vec<Module> {
                             Criteria::SenderPattern { pattern: ".*@.*(amazonses|sendgrid|mailchimp|sparkpostmail)\\.(com|net)$".to_string() }
                             ),
                         },
+                        // Don't penalize a DKIM-authenticated organizational
+                        // identity delivered via a recognized ESP (signing domain
+                        // matches the envelope Return-Path's registrable domain),
+                        // e.g. Travelers via Salesforce with a CDN-fronted From.
+                        Criteria::Not {
+                            criteria: Box::new(
+                            Criteria::FeatureAnalysis {
+                                feature_name: "Authentication Analysis".to_string(),
+                                min_score: None,
+                                max_score: None,
+                                evidence_pattern: Some("DKIM-authenticated organizational identity via trusted ESP".to_string()),
+                                invert: None,
+                            }
+                            ),
+                        },
                         ],
                     },
                     action: None,
@@ -66,6 +81,17 @@ pub fn builtin_modules() -> Vec<Module> {
                                     Criteria::SubjectPattern { pattern: "(?i).{0,100}(invoice|receipt|statement|bill|payment|quote|estimate).*".to_string() },
                                     Criteria::SenderPattern { pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$".to_string() },
                                     ],
+                                },
+                                // DKIM-authenticated organizational identity via a
+                                // recognized ESP (signing domain matches envelope
+                                // Return-Path registrable domain) -- not a real
+                                // DKIM failure for the organization.
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Authentication Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("DKIM-authenticated organizational identity via trusted ESP".to_string()),
+                                    invert: None,
                                 },
                                 ],
                             }
