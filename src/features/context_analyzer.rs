@@ -1919,7 +1919,20 @@ impl FeatureExtractor for ContextAnalyzer {
                         && !css_words.contains(&w.to_lowercase().as_str())
                 })
                 .count();
-            if word_count > 20 && !skip_hidden_text {
+            // Standard marketing preheader: a short sentence followed by a long run of
+            // zero-width/nbsp padding entities (&zwnj; &nbsp; &shy; &#847; ...) that ESPs
+            // add so inbox clients don't pull body text into the preview. Real
+            // Bayesian-poisoning filler is a large block of conversational words with
+            // no such padding, so only treat the block as a preheader when padding
+            // dominates and the amount of real text is small.
+            let padding_entities = Regex::new(
+                r"(?i)&(?:zwnj|zwj|nbsp|shy|#847|#8199|#8204|#8203|#65279|#x200[bcd]|#x34f);",
+            )
+            .unwrap()
+            .find_iter(hidden_text)
+            .count();
+            let is_preheader_padding = padding_entities >= 20 && word_count <= 40;
+            if word_count > 20 && !skip_hidden_text && !is_preheader_padding {
                 total_score += 60;
                 all_evidence.push("Hidden text detected (spam evasion technique)".to_string());
             }
@@ -2243,6 +2256,93 @@ impl FeatureExtractor for ContextAnalyzer {
             if !is_financial {
                 total_score += 80;
                 all_evidence.push("Investment/stock scam from non-financial domain".to_string());
+            }
+        }
+
+        // Sextortion / webcam-blackmail scam. The attacker claims to have
+        // compromised the recipient's device and recorded them, threatens to send
+        // the footage to their contacts, and demands cryptocurrency. Requires ALL of:
+        // a crypto payment demand, >=2 distinct surveillance/compromise claims, a
+        // distribution threat, and first-person demand language -- so ordinary
+        // security-awareness mail that merely discusses these scams does not match.
+        {
+            let hay = format!("{} {}", subject_lower, body.to_lowercase());
+            let has_btc_address = Regex::new(r"\bbc1[a-z0-9]{25,62}\b")
+                .unwrap()
+                .is_match(&hay)
+                || (Regex::new(r"\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b")
+                    .unwrap()
+                    .is_match(&format!("{} {}", subject_lower, body))
+                    && (hay.contains("bitcoin") || hay.contains("btc")));
+            let crypto_demand = has_btc_address
+                || ((hay.contains("bitcoin")
+                    || hay.contains("btc")
+                    || hay.contains("cryptocurrency"))
+                    && (hay.contains("usd") || hay.contains("$") || hay.contains("pay")));
+            let surveillance_claims = [
+                "malware",
+                "remote desktop",
+                "rdp",
+                "webcam",
+                "your camera",
+                "microphone",
+                "your screen",
+                "your device",
+                "adult site",
+                "adult website",
+                "porn",
+                "recordings",
+                "recorded you",
+                "videos of you",
+                "your digital footprint",
+            ]
+            .iter()
+            .filter(|p| hay.contains(*p))
+            .count();
+            let distribution_threat = [
+                "your contacts",
+                "every contact",
+                "all your contacts",
+                "your friends",
+                "your colleagues",
+                "your entire network",
+                "your family",
+                "release the video",
+                "send this video",
+                "publish",
+                "leak",
+            ]
+            .iter()
+            .any(|p| hay.contains(p));
+            let first_person_demand = [
+                "i secretly",
+                "i have recorded",
+                "i recorded",
+                "i have access",
+                "i've saved",
+                "i have saved",
+                "i have all the",
+                "my terms",
+                "i'll erase",
+                "i will erase",
+                "i will delete",
+                "pay me",
+                "my bitcoin",
+                "my wallet",
+                "non-negotiable",
+            ]
+            .iter()
+            .any(|p| hay.contains(p));
+            if crypto_demand
+                && surveillance_claims >= 2
+                && distribution_threat
+                && first_person_demand
+            {
+                total_score += 120;
+                all_evidence.push(
+                    "Sextortion/blackmail scam: device-compromise claim with crypto payment demand"
+                        .to_string(),
+                );
             }
         }
 

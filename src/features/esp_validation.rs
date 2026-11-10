@@ -205,8 +205,59 @@ impl EspValidationAnalyzer {
     }
 }
 
+/// Provider-list analyzer shared with the ESP Validation feature (default config).
+/// Built once; lets the global helper below stay in sync with the provider list
+/// instead of maintaining a second, drifting copy of trusted ESP domains.
+fn default_provider_analyzer() -> &'static EspValidationAnalyzer {
+    static ANALYZER: std::sync::OnceLock<EspValidationAnalyzer> = std::sync::OnceLock::new();
+    ANALYZER.get_or_init(|| EspValidationFeature::new().analyzer)
+}
+
 /// Global helper to check if a context is from a trusted ESP
 pub fn is_from_trusted_esp(context: &MailContext) -> bool {
+    // Consult the shared provider list (envelope sender, From, Return-Path, and every
+    // DKIM d= domain -- ESPs typically add their own countersignature).
+    {
+        let analyzer = default_provider_analyzer();
+        let domain_of = |addr: &str| -> String {
+            addr.rsplit('@')
+                .next()
+                .unwrap_or("")
+                .trim()
+                .trim_matches(['<', '>', ' ', ';', ','])
+                .to_lowercase()
+        };
+        let mut candidates: Vec<String> = Vec::new();
+        if let Some(s) = &context.sender {
+            candidates.push(domain_of(s));
+        }
+        if let Some(f) = &context.from_header {
+            candidates.push(domain_of(f));
+        }
+        if let Some(rp) = context.headers.get("return-path") {
+            candidates.push(domain_of(rp));
+        }
+        for (_, v) in context
+            .headers
+            .iter()
+            .filter(|(k, _)| k.starts_with("dkim-signature"))
+        {
+            if let Some(d) = v
+                .split(';')
+                .map(|p| p.trim())
+                .find_map(|p| p.strip_prefix("d="))
+            {
+                candidates.push(d.trim().to_lowercase());
+            }
+        }
+        if candidates
+            .iter()
+            .any(|d| d.contains('.') && analyzer.is_trusted_esp(d))
+        {
+            return true;
+        }
+    }
+
     // Check sender domain
     if let Some(sender) = &context.sender {
         if let Some(domain) = sender.split('@').nth(1) {
@@ -327,6 +378,9 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         if v_lower.contains("shopifyemail.com") || v_lower.contains("mailer.shopify.com") {
             return true;
         }
+        if v_lower.contains("acemsrvb.com") || v_lower.contains("acems1.com") {
+            return true;
+        }
     }
 
     // Check Return-Path header for ESP domains (milter parity)
@@ -440,7 +494,14 @@ impl EspValidationFeature {
             EspProvider {
                 domains: vec!["emsend1.com".to_string()],
                 reputation: EspReputation::Trusted,
-                aliases: vec![],
+                // The platform countersigns with its own DKIM domain (acems2.com) and
+                // relays through acems1.com / *.acemsrvb.com. Recognizing them keeps ESP
+                // detection working when the envelope sender is not the emsend1.com bounce.
+                aliases: vec![
+                    "acems1.com".to_string(),
+                    "acems2.com".to_string(),
+                    "acemsrvb.com".to_string(),
+                ],
             },
         );
 
@@ -657,6 +718,8 @@ impl FeatureExtractor for EspValidationFeature {
                     || v_lower.contains(".mktossl.com")
                 {
                     Some("marketo".to_string())
+                } else if v_lower.contains("acemsrvb.com") || v_lower.contains("acems1.com") {
+                    Some("emsend1.com".to_string())
                 } else {
                     None
                 }

@@ -1,0 +1,1352 @@
+Return-Path: <bounce-1276268-1677-247352-mstowe=baddomain.com@cmd.emsend1.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 6AAHh43B030562
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Tue, 10 Nov 2026 17:43:04 GMT
+	(envelope-from bounce-1276268-1677-247352-mstowe=baddomain.com@cmd.emsend1.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=make.co header.i=@make.co header.b=hGYwiAf3;
+	dkim=pass (2048-bit key; unprotected) header.d=acems2.com header.i=@acems2.com header.b=hMLXAket
+Received: from s14.avl2.acemsrvb.com (s14.avl2.acemsrvb.com [192.92.97.198])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 6AAHgvoT160707
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Tue, 10 Nov 2026 11:42:58 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 6AAHgvoT160707
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=make.co header.i=@make.co header.a=rsa-sha256 header.s=acdkim1 header.b=hGYwiAf3;
+	dkim=pass (2048-bit key, unprotected) header.d=acems2.com header.i=@acems2.com header.a=rsa-sha256 header.s=acdkim1 header.b=hMLXAket
+X-KumoRef: eyJfQF8iOiJcXF8vIiwicmVjaXBpZW50IjoibXN0b3dlQGJhZGRvbWFpbi5jb20ifQ==
+DKIM-Signature: v=1; a=rsa-sha256; d=make.co; s=acdkim1; c=relaxed/relaxed;
+	bh=pMlF78DqOvDwBBpHf359fjJ1sg3vyl1y/0Tv8OOx3tM=;
+	h=from:to:subject:date:mime-version:content-type:sender:cc:date:message-id:
+		list-unsubscribe:list-unsubscribe-post:cfbl-address; t=1794332572;
+	x=1794937372;
+	b=hGYwiAf3Q7lByppqfkCC62lfNz17AtGyHEHxa1CZWM5U9gQBfTv/bAvQk4bcQsiKjBmho2TBI
+	18GoCywEHZOsEQiIAK0QHxXYSHUiSenXoXh8iYBX923SOa7l4bwX7OWFtkOmvVkt2bG7TkzE0tF
+	YgAU0CBXJKpDoQN8+BbmbET9lmEkd5Mox640y+Glp/3En1ZHD2XwVx6CwaplWZ2NlWMOLOXk5Za
+	QHbuBOOYHZaffs5+RdPdWv6Qs3rPaiGRkORkHWJ2OdlEcfQlJc1l013KVU/4qwdc+9iDbn4lF2T
+	gkx8ebzpwj5pEprKDg2oreK27+aFIB78rbZ5I92ZmIVA==;
+DKIM-Signature: v=1; a=rsa-sha256; d=acems2.com; s=acdkim1; c=relaxed/relaxed;
+	bh=pMlF78DqOvDwBBpHf359fjJ1sg3vyl1y/0Tv8OOx3tM=;
+	h=from:to:subject:date:mime-version:content-type:sender:cc:date:message-id:
+		list-unsubscribe:list-unsubscribe-post:cfbl-address; t=1794332572;
+	x=1794937372;
+	b=hMLXAkettapIon2UoHydI2SAyTu0PpZyUbrlmBAwgOexCTZnL1bzM6eLPW6q7rnCM9mM1bMqf
+	NHe0k/URXnncxp8It2cAQFnZA5QIp9t29FgdwUChXdUTg7QZElcPDlIotliTf2CrkIZc24vYxE+
+	hAWmH4AdhiOqyo4MVwE3igR94EwYpieAbaI7mb9CmFV4UoBHjvlQCG9q2EZR2Nvd73D4hKNGXQn
+	D6ksD9k/Cx+GqL8/uhQpSe1SD5fI+BCVpobvpAUHiHLY/OZAqJaAaH2z8QCrBDL8Qpuzo9FghOt
+	VTo2iBzc6wLhLg3OatiNJfsXp4dnxNZt2oP2pLHUow3A==;
+CFBL-Address: fbl-report@acems2.com; report=arf
+X-Mailer: ActiveCampaign Mailer
+Received: from service-v2-564d696dfc-46tq9 (10.15.93.103)
+  by acems1.com (KumoMTA 10.0.70.4) 
+  with ESMTPS (TLSv1_3:TLS13_AES_256_GCM_SHA384)  id 27258366dd2e11f18a1d12ffcf4c1af1 for <mstowe@baddomain.com>;
+  Tue, 10 Nov 2026 17:42:52 +0000
+Date: Tue, 10 Nov 2026 17:42:52 +0000 (GMT)
+From: "Make:" <make@make.co>
+To: mstowe@baddomain.com
+Message-ID: <1518242709.67805.1794332572013@service-v2-564d696dfc-46tq9>
+Subject: How Duck Droids Learn to Waddle
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_67804_2038780856.1794332572013"
+X-DKIM-Options: s=acdkim1
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Virtual-Mta: s14.avl2.acemsrvb.com
+X-250ok-CID: 1276268-1677
+List-Unsubscribe: <https://newsletter.make.co/box.php?nl=8&c=1677&m=10446&s=39773a5609d6c717562a080b167fd908&funcml=unsub2&luha=1>,<mailto:unsubscribe-6b23431c24f137cd0d3a12f5dce6aa2c-1677-39773a5609d6c717562a080b167fd908@s3.acemsrvf.com>
+Feedback-ID: 1276268:activecampaign
+X-Sending-Engine: Hedwig PCS
+X-Report-Abuse: Please report abuse to abuse@activecampaign.com
+X-lid: bXN0b3dlQGJhZGRvbWFpbi5jb20gLCBjMTY3NyAsIG0xMDQ0NiAsIHMzNjY2MSAsIGw4
+X-mid: bXN0b3dlQGJhZGRvbWFpbi5jb20gLCBjMTY3NyAsIG0xMDQ0NiAsIHMzNjY2MQ==
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Tue, 10 Nov 2026 17:43:05 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Tue, 10 Nov 2026 11:42:58 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Health Spam: Memory/cognitive enhancement spam detected (hotel.baddomain.com) [16db7032]
+X-FOFF-Rule-Matched: Authentication Validation: Perfect Authentication (hotel.baddomain.com) [builtin]
+X-FOFF-Score: 52 - trusted from upstream foff-milter v0.10.46 on juliett.baddomain.com
+X-FOFF-Score: 52 - foff-milter v0.10.46+e47d42d9-dirty (hotel.baddomain.com)
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=-10, content=20, total=3, adj=0
+X-FOFF-Business-Analysis: comm=45, legit=20, industry=10, compliance=25, total=28, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=10, patterns=0, timing=0, total=4, adj=0
+
+------=_Part_67804_2038780856.1794332572013
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Plus, highlights from Maker Faire Romehttps://make.co/=20
+
+https://makezine.com/article/technology/robotics/openbdx-duck-robot-learnin=
+g-to-waddle/=20
+
+**OpenBDX Duck Robot: Learning to Waddle**
+
+**From the new issue of=20
+
+**Make:** magazine:**Disney=E2=80=99s BDX =E2=80=9Cduck=E2=80=9D droids hav=
+e made a splash at Disney parks over the last few years. And it hasn=E2=80=
+=99t taken long for Droid builders to reverse engineer these adorable addit=
+ions to the=20
+
+**Star Wars** universe.
+
+Read More https://makezine.com/article/technology/robotics/openbdx-duck-rob=
+ot-learning-to-waddle/
+
+**Sponsored:**
+
+https://www.epiloglaser.com/contact/fall-sale/?utm_source=3Dmake-magazine&u=
+tm_medium=3Demail&utm_campaign=3Dfall_sale_2026&utm_content=3Dnewsletter=20
+
+**Upgrade Your Workshop and Save This Fall**
+
+**Exclusive Fall Savings on Epilog Laser Systems!** Ready to take your proj=
+ects to the next level? Whether you're a maker, entrepreneur, educator, or =
+growing business, now is the perfect time to invest in an Epilog Laser. Enj=
+oy limited-time Fall Sale pricing and create more, produce faster, and expa=
+nd what's possible with your laser.
+
+Learn More https://www.epiloglaser.com/contact/fall-sale/?utm_source=3Dmake=
+-magazine&utm_medium=3Demail&utm_campaign=3Dfall_sale_2026&utm_content=3Dne=
+wsletter
+
+https://makezine.com/article/maker-news/maker-faire/maker-faire-rome-is-the=
+-greatest-show-and-tell-in-europe/=20
+
+**Maker Faire Rome Is the Greatest Show-and-Tell in Europe**
+
+Maker Faire Rome rocks! Three full days October 23-25 were dedicated to the=
+ maker spirit of open innovation and hands-on creativity, with hundreds of =
+exhibits and demonstrations, workshops and hands-on activities at the spect=
+acular Gazometro event site. Make: Editor-in-Chief Keith Hammond was on han=
+d to check out the show. Here are some of his favorite things from the show=
+.
+
+Read More https://makezine.com/article/maker-news/maker-faire/maker-faire-r=
+ome-is-the-greatest-show-and-tell-in-europe/
+
+https://makezine.com/projects/3d-print-a-star-wars-control-panel/=20
+
+**3D Print a=20
+
+**Star Wars** Control Panel**
+
+**From the new issue of=20
+
+**Make:** magazine:** Decorate your own Rebel Hideout https://makezine.com/=
+article/craft/cosplay-props/tour-the-hidden-worlds-of-ilm/ with a=20
+
+**Star Wars** set decoration, closely modeled after an actual prop from Lut=
+hen Rael=E2=80=99s workshop on Coruscant! This simple control panel project=
+ is the base for a larger electronics project; you can just connect the lig=
+hts to a power source and switch, or you can use a microcontroller to read =
+the potentiometers for interactivity (along with some shift registers if yo=
+u want many panels) and really bring this prop to life!
+
+Read More https://makezine.com/projects/3d-print-a-star-wars-control-panel/
+
+https://makezine.com/article/craft/a-shapeshifting-led-mask-for-halloween/=
+=20
+
+**A Shapeshifting LED Mask for Halloween**
+
+There=E2=80=99s finally a hood full of pixels. Sebastian Staacks from There=
+ Oughta Be built a mask that can change into any face using grids of LEDs. =
+Made for his uncle=E2=80=99s Halloween party, the mask is built from two 12=
+8=C3=9764 LED matrixes driven by a Raspberry Pi Pico 2 W, plus a face shiel=
+d and enough magnets, zip ties, and 3D-printed brackets to hold them all to=
+gether.
+
+Read More https://makezine.com/article/craft/a-shapeshifting-led-mask-for-h=
+alloween/
+
+https://makezine.com/projects/udderly-fantastic-game-controller/=20
+
+**Udderly Fantastic Game Controller**
+
+**From the new issue of=20
+
+**Make:** magazine:** Why settle for a standard controller setup for your n=
+ext video game. Make it weirder! Here=E2=80=99s how to make a squishy cow c=
+ontroller for your indie game.
+
+Read More https://makezine.com/projects/udderly-fantastic-game-controller/
+
+https://makezine.com/article/craft/music/review-banan-a-synth-is-an-adorabl=
+e-yellow-synthesizer/=20
+
+**Review: Banan-a-Synth Is an Adorable Yellow Synthesizer**
+
+**From=20
+
+**Make:** magazine:** Banan-a-Synth is just what it sounds like: a banana-s=
+ized, 20-note, capacitive touch keyboard that can mimic different instrumen=
+ts and layer multiple effects such as pitch bend, high/low pass, and delay.=
+ Thanks to a successful Kickstarter stretch goal by inventor David Levi, th=
+e back of the board is protected by a flexible yellow peel. And it sounds g=
+reat.
+
+Read More https://makezine.com/article/craft/music/review-banan-a-synth-is-=
+an-adorable-yellow-synthesizer/
+
+https://www.makershed.com/products/make-oxocard-connect-2-pack=20
+
+**Make: Oxocard Connect 2 Starter Pack**
+
+**From the Maker Shed:**
+
+Plug in a cartridge and start building. The Oxocard Connect 2 is a pocket-s=
+ized ESP32 computer with a bright screen, a new and improved non-slip joyst=
+ick, and snap-in electronics cartridges that run a demo the moment you plug=
+ them in. There=E2=80=99s nothing to install. The pack includes Pixelmatrix=
+, Synthesizer, and Expansion cartridges, plus the Make: Getting Started wit=
+h Oxocard Connect book. Code in NanoPy, a Python-style language with more t=
+han 100 examples to start from.=C2=A0
+
+Shop Now https://www.makershed.com/products/make-oxocard-connect-2-pack
+
+https://www.facebook.com/makemagazine/=20
+
+https://twitter.com/make=20
+
+https://www.youtube.com/channel/UChtY6O8Ahw2cz05PS2GhUbg=20
+
+https://www.instagram.com/makemagazine/=20
+
+http://www.makezine.com=20
+
+mailto:community@make.co=20
+
+Sent to: mstowe@baddomain.com=20
+
+Unsubscribe https://newsletter.make.co/proc.php?c=3D1677&m=3D10446&s=3D3977=
+3a5609d6c717562a080b167fd908&d=3D36661&v=3D3&nl=3D8&act=3Dunsub=20
+
+Make:, 150 Todd Road, Santa Rosa, CA 95407, United States
+------=_Part_67804_2038780856.1794332572013
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html><html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, minimal-ui, initia=
+l-scale=3D1.0, maximum-scale=3D1.0, user-scalable=3D0;">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+<meta name=3D"format-detection" content=3D"telephone=3Dno, date=3Dno, email=
+=3Dno, address=3Dno">
+<meta name=3D"x-apple-disable-message-reformatting">
+<title></title><!--[if (mso 16)]><style type=3D"text/css"> a { text-decorat=
+ion: none; } </style><![endif]--><!--[if gte mso 9]><style> sup { font-size=
+: 100% !important; } </style><![endif]--><!--[if gte mso 9]><noscript>
+<xml>
+<o:OfficeDocumentSettings>
+<o:AllowPNG></o:AllowPNG>
+<o:PixelsPerInch>96</o:PixelsPerInch>
+</o:OfficeDocumentSettings>
+</xml>
+</noscript><![endif]--><!--[if gte mso 9]><style>sup { font-size: 100% !imp=
+ortant; }</style><![endif]--><!--[if mso]><xml>
+<w:WordDocument xmlns:w=3D"urn:schemas-microsoft-com:office:word">
+<w:DontUseAdvancedTypographyReadingMail/>
+</w:WordDocument>
+</xml>
+<![endif]--><!--[if !mso]><!-- --><!--<![endif]--><!--[if !mso]><!-- --><!-=
+-<![endif]--><!--[if !mso]><!-- -->
+<link href=3D"https://fonts.bunny.net/css?family=3Dalegreya:400,400i,700,70=
+0i%7Calegreya-sans:400,400i,700,700i%7Canton:400%7Carchivo:400,400i,700,700=
+i%7Carimo:400,400i,700,700i%7Carvo:400,400i,700,700i%7Casap:400,400i,700,70=
+0i%7Cassistant:400,700%7Cbarlow:400,400i,700,700i%7Cbebas-neue:400%7Cbitter=
+:400,400i,700,700i%7Cbodoni-moda:400,400i,700,700i%7Ccabin:400,400i,700,700=
+i%7Ccabin-condensed:400,700%7Ccardo:400,400i,700,700i%7Ccatamaran:400,700%7=
+Ccaveat:400,700%7Ccormorant:400,400i,700,700i%7Ccormorant-garamond:400,400i=
+,700,700i%7Ccrimson-text:400,400i,700,700i%7Cdm-sans:400,400i,700,700i%7Cda=
+ncing-script:400,700%7Cdomine:400,700%7Ceb-garamond:400,400i,700,700i%7Cexo=
+-2:400,400i,700,700i%7Cfigtree:400,400i,700,700i%7Cfira-code:400,700%7Cfira=
+-sans:400,400i,700,700i%7Cfrank-ruhl-libre:400,700%7Cheebo:400,700%7Chind:4=
+00,700%7Cibm-plex-sans:400,400i,700,700i%7Cinconsolata:400,700%7Cinter:400,=
+400i,700,700i%7Cjetbrains-mono:400,400i,700,700i%7Cjosefin-sans:400,400i,70=
+0,700i%7Cjosefin-slab:400,400i,700,700i%7Ckarla:400,400i,700,700i%7Clato:40=
+0,400i,700,700i%7Clexend:400,700%7Clibre-baskerville:400,400i,700,700i%7Cli=
+bre-franklin:400,400i,700,700i%7Clora:400,400i,700,700i%7Cmanrope:400,700%7=
+Cmarcellus:400%7Cmerriweather:400,400i,700,700i%7Cmerriweather-sans:400,400=
+i,700,700i%7Cmontserrat:400,400i,700,700i%7Cmulish:400,400i,700,700i%7Cneut=
+on:400,400i,700,700i%7Cnoticia-text:400,400i,700,700i%7Cnoto-sans:400,400i,=
+700,700i%7Cnunito:400,400i,700,700i%7Copen-sans:400,400i,700,700i%7Coswald:=
+400,700%7Coutfit:400,700%7Coverpass:400,400i,700,700i%7Cpt-sans:400,400i,70=
+0,700i%7Cpacifico:400%7Cplayfair-display:400,400i,700,700i%7Cplus-jakarta-s=
+ans:400,400i,700,700i%7Cpoppins:400,400i,700,700i%7Cprompt:400,400i,700,700=
+i%7Cpublic-sans:400,400i,700,700i%7Cquicksand:400,700%7Craleway:400,400i,70=
+0,700i%7Crecursive:400,700%7Cred-hat-display:400,400i,700,700i%7Croboto:400=
+,400i,700,700i%7Croboto-mono:400,400i,700,700i%7Crubik:400,400i,700,700i%7C=
+satisfy:400%7Csora:400,700%7Csource-code-pro:400,400i,700,700i%7Csource-san=
+s-pro:400,400i,700,700i%7Cspace-mono:400,400i,700,700i%7Cspectral:400,400i,=
+700,700i%7Ctitillium-web:400,400i,700,700i%7Cubuntu:400,400i,700,700i%7Curb=
+anist:400,400i,700,700i%7Cwork-sans:400,400i,700,700i&amp;display=3Dswap" r=
+el=3D"stylesheet"><!--<![endif]-->
+<style type=3D"text/css">
+#outlook a { padding:0;}.es-button { mso-style-priority:100!important; text=
+-decoration:none!important;}a[x-apple-data-detectors] { color:inherit!impor=
+tant; text-decoration:none!important; font-size:inherit!important; font-fam=
+ily:inherit!important; font-weight:inherit!important; line-height:inherit!i=
+mportant;}.es-desk-hidden { display:none; float:left; overflow:hidden; widt=
+h:0; max-height:0; line-height:0; mso-hide:all;}@media only screen and (max=
+-width:600px) {p, ul li, ol li, a { line-height:150%!important } h1, h2, h3=
+, h1 a, h2 a, h3 a { line-height:120% } h1 { font-size:30px!important; text=
+-align:center } h2 { font-size:26px!important; text-align:center } h3 { fon=
+t-size:20px!important; text-align:center } .es-header-body h1 a, .es-conten=
+t-body h1 a, .es-footer-body h1 a { font-size:30px!important; text-align:le=
+ft } .es-header-body h2 a, .es-content-body h2 a, .es-footer-body h2 a { fo=
+nt-size:26px!important; text-align:left }
+.es-header-body h3 a, .es-content-body h3 a, .es-footer-body h3 a { font-si=
+ze:20px!important; text-align:left } .es-menu td a { font-size:13px!importa=
+nt } .es-header-body p, .es-header-body ul li, .es-header-body ol li, .es-h=
+eader-body a { font-size:16px!important } .es-content-body p, .es-content-b=
+ody ul li, .es-content-body ol li, .es-content-body a { font-size:16px!impo=
+rtant } .es-footer-body p, .es-footer-body ul li, .es-footer-body ol li, .e=
+s-footer-body a { font-size:16px!important } .es-infoblock p, .es-infoblock=
+ ul li, .es-infoblock ol li, .es-infoblock a { font-size:12px!important } *=
+[class=3D"gmail-fix"] { display:none!important } .es-m-txt-c, .es-m-txt-c h=
+1, .es-m-txt-c h2, .es-m-txt-c h3 { text-align:center!important } .es-m-txt=
+-r, .es-m-txt-r h1, .es-m-txt-r h2, .es-m-txt-r h3 { text-align:right!impor=
+tant } .es-m-txt-l, .es-m-txt-l h1, .es-m-txt-l h2, .es-m-txt-l h3 { text-a=
+lign:left!important }
+.es-m-txt-r img, .es-m-txt-c img, .es-m-txt-l img { display:inline!importan=
+t } .es-button-border { display:inline-block!important } a.es-button, butto=
+n.es-button { font-size:20px!important; display:inline-block!important } .e=
+s-adaptive table, .es-left, .es-right { width:100%!important } .ac-footer, =
+.es-content table, .es-header table, .es-footer table, .es-content, .es-foo=
+ter, .es-header { width:100%!important; max-width:600px!important } .ac-foo=
+ter td, .ac-footer p, .es-adapt-td { display:block!important; width:100%!im=
+portant } .adapt-img { width:100%!important; height:auto!important } .es-m-=
+p0 { padding:0px!important } .es-m-p0r { padding-right:0px!important } .es-=
+m-p0l { padding-left:0px!important } .es-m-p0t { padding-top:0px!important =
+} .es-m-p0b { padding-bottom:0!important } .es-m-p20b { padding-bottom:20px=
+!important } .es-mobile-hidden, .es-hidden { display:none!important }
+tr.es-desk-hidden, td.es-desk-hidden, table.es-desk-hidden { width:auto!imp=
+ortant; overflow:visible!important; float:none!important; max-height:inheri=
+t!important; line-height:inherit!important } tr.es-desk-hidden { display:ta=
+ble-row!important } table.es-desk-hidden { display:table!important } td.es-=
+desk-menu-hidden { display:table-cell!important } .es-menu td { width:1%!im=
+portant } .es-adapt-td { display:block!important; width:100%!important } ta=
+ble.es-table-not-adapt, .esd-block-html table { width:auto!important } tabl=
+e.es-social { display:inline-block!important } table.es-social td { display=
+:inline-block!important } .es-desk-hidden { display:table-row!important; wi=
+dth:auto!important; overflow:visible!important; max-height:inherit!importan=
+t } }@media screen and (max-width:384px) {.mail-message-content { width:414=
+px!important } }</style>
+<style type=3D"text/css" data-ac-email-fonts=3D"">@import url("https://font=
+s.bunny.net/css?family=3Droboto:400,400i,700,700i|open-sans:400,400i,700,70=
+0i&display=3Dswap");@font-face{font-family:"Roboto";mso-generic-font-family=
+:swiss;mso-font-alt:"Arial";}@font-face{font-family:"Open Sans";mso-generic=
+-font-family:swiss;mso-font-alt:"Arial";}</style>
+</head>
+<body class=3D"es-wrapper-color" lang=3D"und" style=3D"width:100%;font-fami=
+ly:roboto, 'helvetica neue', helvetica, arial, sans-serif;-webkit-text-size=
+-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;background-color:=
+#FFFFFF">
+<div style=3D"display: none !important; padding: 0; height: 1px; font-size:=
+ 1px; background-color: inherit !important; opacity: 0; color: transparent;=
+ mso-line-height-rule: exactly; line-height:1px; mso-hide:all;">
+Plus, highlights from Maker Faire Rome=20
+<div style=3D"display: none; max-height: 0px; overflow: hidden;">
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C
+</div>
+</div>
+<table class=3D"es-wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D=
+"0" role=3D"none" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border=
+-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:=
+100%;background-repeat:repeat;background-position:center top;background-col=
+or:#FFFFFF">
+<tr>
+<td valign=3D"top" style=3D"padding:0;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" class=3D"es-content" align=3D"ce=
+nter" role=3D"none" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;bord=
+er-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width=
+:100%">
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0">
+<table class=3D"es-content-body" align=3D"center" cellpadding=3D"0" cellspa=
+cing=3D"0" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collap=
+se:collapse;border-spacing:0px;background-color:#ffffff;width:650px" bgcolo=
+r=3D"#ffffff" role=3D"none">
+<tr>
+<td align=3D"left" style=3D"padding:20px 20px 0;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0;font-size:0px"><a target=
+=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7z=
+N~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XIn=
+ju~vjekzYYHLMnSi5pNA" style=3D"-webkit-text-size-adjust:none;-ms-text-size-=
+adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#0=
+000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.app-u=
+s1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Dauto,one=
+rror=3Dredirect/z3mvK/2024/12/03/69905457-678d-483f-983e-e242ae21f477.png" =
+alt=3D"" style=3D"display:block;border:0;outline:none;text-decoration:none;=
+-ms-interpolation-mode:bicubic" data-cf-ir-is-resized=3D"true" width=3D"610=
+"></a></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:20px 20px 0;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:0 0 10px;Margin:0;font-size:0px"><a t=
+arget=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd=
+5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRn=
+t1XInju~vjekzYYHLMnSi5pV_" style=3D"-webkit-text-size-adjust:none;-ms-text-=
+size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;col=
+or:#0000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.=
+app-us1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Daut=
+o,onerror=3Dredirect/z3mvK/2026/11/10/02652cee-e06e-4a32-9389-fc5fafcab29e.=
+jpeg" alt=3D"26-11-10-OpenBDX-Duck-Droid-IMG_0050-scaled.jpg" style=3D"disp=
+lay:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode=
+:bicubic" data-cf-ir-is-resized=3D"true" width=3D"610" title=3D"26-11-10-Op=
+enBDX-Duck-Droid-IMG_0050-scaled.jpg"></a></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 5px;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:36px;color:#333333;font-size:24px">=
+<strong>OpenBDX Duck Robot: Learning to Waddle</strong></p></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"Margin:0;padding:10px 5px">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">=
+<strong>From the new issue of <em>Make:</em> magazine: </strong>Disney=E2=
+=80=99s BDX =E2=80=9Cduck=E2=80=9D droids have made a splash at Disney park=
+s over the last few years. And it hasn=E2=80=99t taken long for Droid build=
+ers to reverse engineer these adorable additions to the <em>Star Wars</em> =
+universe.</p></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0"><!--[if mso]><a href=3D"h=
+ttps://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5=
+o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pV_"=
+ target=3D"_blank" hidden>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word" esdevVmlButton href=3D"https://newsletter.mak=
+e.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2=
+mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pV_"=20
+style=3D"height:49px; v-text-anchor:middle; width:610px" arcsize=3D"6%" str=
+oke=3D"f"  fillcolor=3D"#000000">
+<w:anchorlock></w:anchorlock>
+<center style=3D'color:#ffffff; font-family:"open sans", "helvetica neue", =
+helvetica, arial, sans-serif; font-size:16px; font-weight:700; line-height:=
+16px;  mso-text-raise:1px'>Read More</center>
+</v:roundrect></a>
+<![endif]--><!--[if !mso]><!-- --><span class=3D"msohide es-button-border" =
+style=3D"border-style:solid;border-color:#004CFF;background:#000000;border-=
+width:0px;display:block;border-radius:3px;width:auto;mso-hide:all"><a href=
+=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxv=
+uo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi=
+5pV_" class=3D"es-button msohide es-button-1773091435869" target=3D"_blank"=
+ style=3D"mso-style-priority:100 !important;text-decoration:none !important=
+;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;color:#FFFFFF;font-size:16px;padding:15px 5px;display:block;back=
+ground:#000000;border-radius:3px;font-family:'open sans', 'helvetica neue',=
+ helvetica, arial, sans-serif;font-weight:bold;font-style:normal;line-heigh=
+t:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px s=
+olid #000000;mso-hide:all">Read More</a> </span><!--<![endif]--></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:20px 0;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:1px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:20px 20px 0;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"left" style=3D"padding:0;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:18px;color:#333333;font-size:12px">=
+<em>Sponsored:</em></p></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0 0 10px;Margin:0;font-size:0px"><a t=
+arget=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd=
+5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRn=
+t1XInju~vjekzYYHLMnSi55z7" style=3D"-webkit-text-size-adjust:none;-ms-text-=
+size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;col=
+or:#0000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.=
+app-us1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Daut=
+o,onerror=3Dredirect/z3mvK/2026/11/10/f0a1355e-d6a5-495d-adad-39d745524fd5.=
+jpeg" alt=3D"26-11-10-epilog-fall-sale_img_11-3-26.jpg" style=3D"display:bl=
+ock;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicub=
+ic" data-cf-ir-is-resized=3D"true" width=3D"610" title=3D"26-11-10-epilog-f=
+all-sale_img_11-3-26.jpg"></a></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 5px;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:36px;color:#333333;font-size:24px">=
+<strong>Upgrade Your Workshop and Save This Fall</strong></p></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 20px;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"left" style=3D"padding:0;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">=
+<strong>Exclusive Fall Savings on Epilog Laser Systems!</strong> Ready to t=
+ake your projects to the next level? Whether you're a maker, entrepreneur, =
+educator, or growing business, now is the perfect time to invest in an Epil=
+og Laser. Enjoy limited-time Fall Sale pricing and create more, produce fas=
+ter, and expand what's possible with your laser.</p></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0"><!--[if mso]><a href=3D"h=
+ttps://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5=
+o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi55z7"=
+ target=3D"_blank" hidden>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word" esdevVmlButton href=3D"https://newsletter.mak=
+e.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2=
+mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi55z7"=20
+style=3D"height:49px; v-text-anchor:middle; width:610px" arcsize=3D"6%" str=
+oke=3D"f"  fillcolor=3D"#000000">
+<w:anchorlock></w:anchorlock>
+<center style=3D'color:#ffffff; font-family:"open sans", "helvetica neue", =
+helvetica, arial, sans-serif; font-size:16px; font-weight:700; line-height:=
+16px;  mso-text-raise:1px'>Learn More</center>
+</v:roundrect></a>
+<![endif]--><!--[if !mso]><!-- --><span class=3D"msohide es-button-border" =
+style=3D"border-style:solid;border-color:#004CFF;background:#000000;border-=
+width:0px;display:block;border-radius:3px;width:auto;mso-hide:all"><a href=
+=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxv=
+uo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi=
+55z7" class=3D"es-button msohide es-button-1785427935571" target=3D"_blank"=
+ style=3D"mso-style-priority:100 !important;text-decoration:none !important=
+;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;color:#FFFFFF;font-size:16px;padding:15px 5px;display:block;back=
+ground:#000000;border-radius:3px;font-family:'open sans', 'helvetica neue',=
+ helvetica, arial, sans-serif;font-weight:bold;font-style:normal;line-heigh=
+t:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px s=
+olid #000000;mso-hide:all">Learn More</a> </span><!--<![endif]--></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:20px 0;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:1px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:20px 20px 0;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:0 0 10px;Margin:0;font-size:0px"><a t=
+arget=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd=
+5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRn=
+t1XInju~vjekzYYHLMnSi5pV." style=3D"-webkit-text-size-adjust:none;-ms-text-=
+size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;col=
+or:#0000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.=
+app-us1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Daut=
+o,onerror=3Dredirect/z3mvK/2026/11/10/2fc89958-5018-47d1-be60-2e749644f63e.=
+jpeg" alt=3D"A large crowd walking between historic industrial buildings un=
+der a bright sky." style=3D"display:block;border:0;outline:none;text-decora=
+tion:none;-ms-interpolation-mode:bicubic" data-cf-ir-is-resized=3D"true" wi=
+dth=3D"610" title=3D"A large crowd walking between historic industrial buil=
+dings under a bright sky."></a></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 5px;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:36px;color:#333333;font-size:24px">=
+<strong>Maker Faire Rome Is the Greatest Show-and-Tell in Europe</strong></=
+p></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"Margin:0;padding:10px 5px">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">=
+Maker Faire Rome rocks! Three full days October 23-25 were dedicated to the=
+ maker spirit of open innovation and hands-on creativity, with hundreds of =
+exhibits and demonstrations, workshops and hands-on activities at the spect=
+acular Gazometro event site. Make: Editor-in-Chief Keith Hammond was on han=
+d to check out the show. Here are some of his favorite things from the show=
+.</p></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0"><!--[if mso]><a href=3D"h=
+ttps://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5=
+o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pV."=
+ target=3D"_blank" hidden>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word" esdevVmlButton href=3D"https://newsletter.mak=
+e.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2=
+mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pV."=20
+style=3D"height:49px; v-text-anchor:middle; width:610px" arcsize=3D"6%" str=
+oke=3D"f"  fillcolor=3D"#000000">
+<w:anchorlock></w:anchorlock>
+<center style=3D'color:#ffffff; font-family:"open sans", "helvetica neue", =
+helvetica, arial, sans-serif; font-size:16px; font-weight:700; line-height:=
+16px;  mso-text-raise:1px'>Read More</center>
+</v:roundrect></a>
+<![endif]--><!--[if !mso]><!-- --><span class=3D"msohide es-button-border" =
+style=3D"border-style:solid;border-color:#004CFF;background:#000000;border-=
+width:0px;display:block;border-radius:3px;width:auto;mso-hide:all"><a href=
+=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxv=
+uo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi=
+5pV." class=3D"es-button msohide es-button-1790194089947" target=3D"_blank"=
+ style=3D"mso-style-priority:100 !important;text-decoration:none !important=
+;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;color:#FFFFFF;font-size:16px;padding:15px 5px;display:block;back=
+ground:#000000;border-radius:3px;font-family:'open sans', 'helvetica neue',=
+ helvetica, arial, sans-serif;font-weight:bold;font-style:normal;line-heigh=
+t:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px s=
+olid #000000;mso-hide:all">Read More</a> </span><!--<![endif]--></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:20px 0;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:1px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 20px;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:0 0 10px;Margin:0;font-size:0px"><a t=
+arget=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd=
+5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRn=
+t1XInju~vjekzYYHLMnSi5pV~" style=3D"-webkit-text-size-adjust:none;-ms-text-=
+size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;col=
+or:#0000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.=
+app-us1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Daut=
+o,onerror=3Dredirect/z3mvK/2026/11/10/31ce12a1-681d-429d-9081-ae69327ef895.=
+jpeg" alt=3D"A copper-colored control panel with dials, switches, buttons, =
+and indicator lights" style=3D"display:block;border:0;outline:none;text-dec=
+oration:none;-ms-interpolation-mode:bicubic" data-cf-ir-is-resized=3D"true"=
+ width=3D"610" title=3D"A copper-colored control panel with dials, switches=
+, buttons, and indicator lights"></a></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 5px;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:36px;color:#333333;font-size:24px">=
+<strong>3D Print a <em>Star Wars</em> Control Panel</strong></p></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"Margin:0;padding:10px 5px">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">=
+<strong>From the new issue of <em>Make:</em> magazine:</strong> Decorate yo=
+ur own <a target=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D4=
+1dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf=
+6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pR8" style=3D"-webkit-text-size-adjust:non=
+e;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:un=
+derline;color:#0000EE;font-size:16px;font-family:'open sans', 'helvetica ne=
+ue', helvetica, arial, sans-serif">Rebel Hideout</a> with a <em>Star Wars</=
+em> set decoration, closely modeled after an actual prop from Luthen Rael=
+=E2=80=99s workshop on Coruscant! This simple control panel project is the =
+base for a larger electronics project; you can just connect the lights to a=
+ power source and switch, or you can use a microcontroller to read the pote=
+ntiometers for interactivity (along with some shift registers if you want m=
+any panels) and really bring this prop to life!</p></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0"><!--[if mso]><a href=3D"h=
+ttps://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5=
+o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pV~"=
+ target=3D"_blank" hidden>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word" esdevVmlButton href=3D"https://newsletter.mak=
+e.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2=
+mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pV~"=20
+style=3D"height:49px; v-text-anchor:middle; width:610px" arcsize=3D"6%" str=
+oke=3D"f"  fillcolor=3D"#000000">
+<w:anchorlock></w:anchorlock>
+<center style=3D'color:#ffffff; font-family:"open sans", "helvetica neue", =
+helvetica, arial, sans-serif; font-size:16px; font-weight:700; line-height:=
+16px;  mso-text-raise:1px'>Read More</center>
+</v:roundrect></a>
+<![endif]--><!--[if !mso]><!-- --><span class=3D"msohide es-button-border" =
+style=3D"border-style:solid;border-color:#004CFF;background:#000000;border-=
+width:0px;display:block;border-radius:3px;width:auto;mso-hide:all"><a href=
+=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxv=
+uo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi=
+5pV~" class=3D"es-button msohide es-button-1788911441406" target=3D"_blank"=
+ style=3D"mso-style-priority:100 !important;text-decoration:none !important=
+;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;color:#FFFFFF;font-size:16px;padding:15px 5px;display:block;back=
+ground:#000000;border-radius:3px;font-family:'open sans', 'helvetica neue',=
+ helvetica, arial, sans-serif;font-weight:bold;font-style:normal;line-heigh=
+t:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px s=
+olid #000000;mso-hide:all">Read More</a> </span><!--<![endif]--></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:20px 0;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:1px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0 0 10px;Margin:0;font-size:0px"><a t=
+arget=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd=
+5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRn=
+t1XInju~vjekzYYHLMnSi5pVA" style=3D"-webkit-text-size-adjust:none;-ms-text-=
+size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;col=
+or:#0000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.=
+app-us1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Daut=
+o,onerror=3Dredirect/z3mvK/2026/11/10/52d140ac-c5fb-4a4f-8d84-45053941c5f2.=
+jpeg" alt=3D"A glowing jack-o'-lantern and illuminated decorations against =
+a black background." style=3D"display:block;border:0;outline:none;text-deco=
+ration:none;-ms-interpolation-mode:bicubic" data-cf-ir-is-resized=3D"true" =
+width=3D"610" title=3D"A glowing jack-o'-lantern and illuminated decoration=
+s against a black background."></a></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 5px;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:36px;color:#333333;font-size:24px">=
+<strong>A Shapeshifting LED Mask for Halloween</strong></p></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"Margin:0;padding:10px 5px">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">=
+There=E2=80=99s finally a hood full of pixels. Sebastian Staacks from There=
+ Oughta Be built a mask that can change into any face using grids of LEDs. =
+Made for his uncle=E2=80=99s Halloween party, the mask is built from two 12=
+8=C3=9764 LED matrixes driven by a Raspberry Pi Pico 2 W, plus a face shiel=
+d and enough magnets, zip ties, and 3D-printed brackets to hold them all to=
+gether.</p></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0"><!--[if mso]><a href=3D"h=
+ttps://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5=
+o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pVA"=
+ target=3D"_blank" hidden>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word" esdevVmlButton href=3D"https://newsletter.mak=
+e.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2=
+mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi5pVA"=20
+style=3D"height:49px; v-text-anchor:middle; width:610px" arcsize=3D"6%" str=
+oke=3D"f"  fillcolor=3D"#000000">
+<w:anchorlock></w:anchorlock>
+<center style=3D'color:#ffffff; font-family:"open sans", "helvetica neue", =
+helvetica, arial, sans-serif; font-size:16px; font-weight:700; line-height:=
+16px;  mso-text-raise:1px'>Read More</center>
+</v:roundrect></a>
+<![endif]--><!--[if !mso]><!-- --><span class=3D"msohide es-button-border" =
+style=3D"border-style:solid;border-color:#004CFF;background:#000000;border-=
+width:0px;display:block;border-radius:3px;width:auto;mso-hide:all"><a href=
+=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxv=
+uo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi=
+5pVA" class=3D"es-button msohide es-button-1787548018945" target=3D"_blank"=
+ style=3D"mso-style-priority:100 !important;text-decoration:none !important=
+;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;color:#FFFFFF;font-size:16px;padding:15px 5px;display:block;back=
+ground:#000000;border-radius:3px;font-family:'open sans', 'helvetica neue',=
+ helvetica, arial, sans-serif;font-weight:bold;font-style:normal;line-heigh=
+t:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px s=
+olid #000000;mso-hide:all">Read More</a> </span><!--<![endif]--></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:20px 0;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:1px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:20px 20px 0;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:0 0 10px;Margin:0;font-size:0px"><a t=
+arget=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd=
+5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRn=
+t1XInju~vjekzYYHLMnSi55z5" style=3D"-webkit-text-size-adjust:none;-ms-text-=
+size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;col=
+or:#0000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.=
+app-us1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Daut=
+o,onerror=3Dredirect/z3mvK/2026/11/10/dd433540-d437-4b18-92f6-940774b02886.=
+jpeg" alt=3D"People gather around colorful robots and interactive displays =
+in a dark, neon-lit venue." style=3D"display:block;border:0;outline:none;te=
+xt-decoration:none;-ms-interpolation-mode:bicubic" data-cf-ir-is-resized=3D=
+"true" width=3D"610" title=3D"People gather around colorful robots and inte=
+ractive displays in a dark, neon-lit venue."></a></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 5px;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:36px;color:#333333;font-size:24px">=
+<strong>Udderly Fantastic Game Controller</strong></p></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"Margin:0;padding:10px 5px">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">=
+<strong>From the new issue of <em>Make:</em> magazine:</strong> Why settle =
+for a standard controller setup for your next video game. Make it weirder! =
+Here=E2=80=99s how to make a squishy cow controller for your indie game.</p=
+></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0"><!--[if mso]><a href=3D"h=
+ttps://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5=
+o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi55z5"=
+ target=3D"_blank" hidden>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word" esdevVmlButton href=3D"https://newsletter.mak=
+e.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2=
+mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi55z5"=20
+style=3D"height:49px; v-text-anchor:middle; width:610px" arcsize=3D"6%" str=
+oke=3D"f"  fillcolor=3D"#000000">
+<w:anchorlock></w:anchorlock>
+<center style=3D'color:#ffffff; font-family:"open sans", "helvetica neue", =
+helvetica, arial, sans-serif; font-size:16px; font-weight:700; line-height:=
+16px;  mso-text-raise:1px'>Read More</center>
+</v:roundrect></a>
+<![endif]--><!--[if !mso]><!-- --><span class=3D"msohide es-button-border" =
+style=3D"border-style:solid;border-color:#004CFF;background:#000000;border-=
+width:0px;display:block;border-radius:3px;width:auto;mso-hide:all"><a href=
+=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxv=
+uo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi=
+55z5" class=3D"es-button msohide es-button-1744661249565" target=3D"_blank"=
+ style=3D"mso-style-priority:100 !important;text-decoration:none !important=
+;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;color:#FFFFFF;font-size:16px;padding:15px 5px;display:block;back=
+ground:#000000;border-radius:3px;font-family:'open sans', 'helvetica neue',=
+ helvetica, arial, sans-serif;font-weight:bold;font-style:normal;line-heigh=
+t:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px s=
+olid #000000;mso-hide:all">Read More</a> </span><!--<![endif]--></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 20px;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:20px 0;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:1px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 20px;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:0 0 10px;Margin:0;font-size:0px"><a t=
+arget=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd=
+5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRn=
+t1XInju~vjekzYYHLMnSi55z6" style=3D"-webkit-text-size-adjust:none;-ms-text-=
+size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;col=
+or:#0000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.=
+app-us1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Daut=
+o,onerror=3Dredirect/z3mvK/2026/11/10/3d351719-75ef-4801-8fa0-36656272d620.=
+jpeg" alt=3D"A yellow handheld keyboard controller held in front of green l=
+eaves" style=3D"display:block;border:0;outline:none;text-decoration:none;-m=
+s-interpolation-mode:bicubic" data-cf-ir-is-resized=3D"true" width=3D"610" =
+title=3D"A yellow handheld keyboard controller held in front of green leave=
+s"></a></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 5px;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:36px;color:#333333;font-size:24px">=
+<strong>Review: Banan-a-Synth Is an Adorable Yellow Synthesizer</strong></p=
+></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"Margin:0;padding:10px 5px">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">=
+<strong>From <em>Make:</em> magazine:</strong> Banan-a-Synth is just what i=
+t sounds like: a banana-sized, 20-note, capacitive touch keyboard that can =
+mimic different instruments and layer multiple effects such as pitch bend, =
+high/low pass, and delay. Thanks to a successful Kickstarter stretch goal b=
+y inventor David Levi, the back of the board is protected by a flexible yel=
+low peel. And it sounds great.</p></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0"><!--[if mso]><a href=3D"h=
+ttps://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5=
+o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi55z6"=
+ target=3D"_blank" hidden>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word" esdevVmlButton href=3D"https://newsletter.mak=
+e.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2=
+mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi55z6"=20
+style=3D"height:49px; v-text-anchor:middle; width:610px" arcsize=3D"6%" str=
+oke=3D"f"  fillcolor=3D"#000000">
+<w:anchorlock></w:anchorlock>
+<center style=3D'color:#ffffff; font-family:"open sans", "helvetica neue", =
+helvetica, arial, sans-serif; font-size:16px; font-weight:700; line-height:=
+16px;  mso-text-raise:1px'>Read More</center>
+</v:roundrect></a>
+<![endif]--><!--[if !mso]><!-- --><span class=3D"msohide es-button-border" =
+style=3D"border-style:solid;border-color:#004CFF;background:#000000;border-=
+width:0px;display:block;border-radius:3px;width:auto;mso-hide:all"><a href=
+=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxv=
+uo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi=
+55z6" class=3D"es-button msohide es-button-1782237893404" target=3D"_blank"=
+ style=3D"mso-style-priority:100 !important;text-decoration:none !important=
+;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;color:#FFFFFF;font-size:16px;padding:15px 5px;display:block;back=
+ground:#000000;border-radius:3px;font-family:'open sans', 'helvetica neue',=
+ helvetica, arial, sans-serif;font-weight:bold;font-style:normal;line-heigh=
+t:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px s=
+olid #000000;mso-hide:all">Read More</a> </span><!--<![endif]--></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:20px 0;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:1px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:0 20px;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0;font-size:0px"><a target=
+=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7z=
+N~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XIn=
+ju~vjekzYYHLMnSi55z8" style=3D"-webkit-text-size-adjust:none;-ms-text-size-=
+adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#0=
+000EE;font-size:14px"><img class=3D"adapt-img" src=3D"https://content.app-u=
+s1.com/cdn-cgi/image/fit=3Dscale-down,width=3D650,dpr=3D2,format=3Dauto,one=
+rror=3Dredirect/z3mvK/2026/07/24/f074ab1f-4781-4d3d-94b2-27b4ef8a11da.png" =
+alt=3D"A book cover and several small electronic components arranged on a w=
+hite background." style=3D"display:block;border:0;outline:none;text-decorat=
+ion:none;-ms-interpolation-mode:bicubic" data-cf-ir-is-resized=3D"true" wid=
+th=3D"610" title=3D"A book cover and several small electronic components ar=
+ranged on a white background."></a></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"padding:20px 20px 0;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:610px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"left" style=3D"padding:0 5px;Margin:0">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:36px;color:#333333;font-size:24px">=
+<strong>Make: Oxocard Connect 2 Starter Pack</strong></p></td>
+</tr>
+<tr>
+<td align=3D"left" style=3D"Margin:0;padding:10px 5px">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">=
+<b>From the Maker Shed:</b></p>
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvet=
+ica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">Plug =
+in a cartridge and start building. The Oxocard Connect 2 is a pocket-sized =
+ESP32 computer with a bright screen, a new and improved non-slip joystick, =
+and snap-in electronics cartridges that run a demo the moment you plug them=
+ in. There=E2=80=99s nothing to install. The pack includes Pixelmatrix, Syn=
+thesizer, and Expansion cartridges, plus the Make: Getting Started with Oxo=
+card Connect book. Code in NanoPy, a Python-style language with more than 1=
+00 examples to start from.&nbsp;<em></em></p>
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', h=
+elvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px;d=
+isplay:none"><br></p>
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvet=
+ica, arial, sans-serif;line-height:21px;color:#333333;font-size:14px;displa=
+y:none"><br></p></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0"><!--[if mso]><a href=3D"h=
+ttps://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5=
+o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi55z8"=
+ target=3D"_blank" hidden>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word" esdevVmlButton href=3D"https://newsletter.mak=
+e.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2=
+mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi55z8"=20
+style=3D"height:49px; v-text-anchor:middle; width:610px" arcsize=3D"6%" str=
+oke=3D"f"  fillcolor=3D"#000000">
+<w:anchorlock></w:anchorlock>
+<center style=3D'color:#ffffff; font-family:"open sans", "helvetica neue", =
+helvetica, arial, sans-serif; font-size:16px; font-weight:700; line-height:=
+16px;  mso-text-raise:1px'>Shop Now</center>
+</v:roundrect></a>
+<![endif]--><!--[if !mso]><!-- --><span class=3D"msohide es-button-border" =
+style=3D"border-style:solid;border-color:#004CFF;background:#000000;border-=
+width:0px;display:block;border-radius:3px;width:auto;mso-hide:all"><a href=
+=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJFmd5X_7zN~OwSQUxH-pjtXxv=
+uo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxIwRnt1XInju~vjekzYYHLMnSi=
+55z8" class=3D"es-button msohide es-button-1769811189484" target=3D"_blank"=
+ style=3D"mso-style-priority:100 !important;text-decoration:none !important=
+;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;color:#FFFFFF;font-size:16px;padding:15px 5px;display:block;back=
+ground:#000000;border-radius:3px;font-family:'open sans', 'helvetica neue',=
+ helvetica, arial, sans-serif;font-weight:bold;font-style:normal;line-heigh=
+t:19px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px s=
+olid #000000;mso-hide:all">Shop Now</a> </span><!--<![endif]--></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:20px;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:1px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table>
+<table cellpadding=3D"0" cellspacing=3D"0" class=3D"es-content" align=3D"ce=
+nter" role=3D"none" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;bord=
+er-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width=
+:100%">
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0">
+<table class=3D"es-content-body" align=3D"center" cellpadding=3D"0" cellspa=
+cing=3D"0" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collap=
+se:collapse;border-spacing:0px;background-color:#ffffff;width:650px" bgcolo=
+r=3D"#ffffff" role=3D"none">
+<tr>
+<td align=3D"left" style=3D"padding:0;Margin:0">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"none" sty=
+le=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;bo=
+rder-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0;width:650px=
+">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentat=
+ion" style=3D"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:col=
+lapse;border-spacing:0px">
+<tr>
+<td align=3D"center" style=3D"padding:10px;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:0px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:0;Margin:0;font-size:0">
+<table cellpadding=3D"0" cellspacing=3D"0" class=3D"es-table-not-adapt es-s=
+ocial" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-rspace=
+:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"padding:0 10px 0 0;Margin:0"><=
+a target=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJ=
+Fmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxI=
+wRnt1XInju~vjekzYYHLMnSi5pRA" style=3D"-webkit-text-size-adjust:none;-ms-te=
+xt-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;=
+color:#0000EE;font-size:14px"><img title=3D"Facebook" src=3D"https://stripo=
+.cluster.app-us1.com/static/assets/img/social-icons/circle-black/facebook-c=
+ircle-black.png" alt=3D"Facebook" width=3D"32" height=3D"32" style=3D"displ=
+ay:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:=
+bicubic"></a></td>
+<td align=3D"center" valign=3D"top" style=3D"padding:0 10px 0 0;Margin:0"><=
+a target=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJ=
+Fmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxI=
+wRnt1XInju~vjekzYYHLMnSi5pV5" style=3D"-webkit-text-size-adjust:none;-ms-te=
+xt-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;=
+color:#0000EE;font-size:14px"><img title=3D"Twitter" src=3D"https://stripo.=
+cluster.app-us1.com/static/assets/img/social-icons/circle-black/twitter-cir=
+cle-black.png" alt=3D"Twitter" height=3D"32" width=3D"32" style=3D"display:=
+block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bic=
+ubic"></a></td>
+<td align=3D"center" valign=3D"top" style=3D"padding:0 10px 0 0;Margin:0"><=
+a target=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJ=
+Fmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxI=
+wRnt1XInju~vjekzYYHLMnSi5pV6" style=3D"-webkit-text-size-adjust:none;-ms-te=
+xt-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;=
+color:#0000EE;font-size:14px"><img title=3D"Youtube" src=3D"https://stripo.=
+cluster.app-us1.com/static/assets/img/social-icons/circle-black/youtube-cir=
+cle-black.png" alt=3D"Youtube" width=3D"32" height=3D"32" style=3D"display:=
+block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bic=
+ubic"></a></td>
+<td align=3D"center" valign=3D"top" style=3D"padding:0 10px 0 0;Margin:0"><=
+a target=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJ=
+Fmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxI=
+wRnt1XInju~vjekzYYHLMnSi5pV7" style=3D"-webkit-text-size-adjust:none;-ms-te=
+xt-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;=
+color:#0000EE;font-size:14px"><img title=3D"Instagram" src=3D"https://strip=
+o.cluster.app-us1.com/static/assets/img/social-icons/circle-black/instagram=
+-circle-black.png" alt=3D"Instagram" width=3D"32" height=3D"32" style=3D"di=
+splay:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mo=
+de:bicubic"></a></td>
+<td align=3D"center" valign=3D"top" style=3D"padding:0 10px 0 0;Margin:0"><=
+a target=3D"_blank" href=3D"https://newsletter.make.co/lt.php?x=3D41dyo.rEJ=
+Fmd5X_7zN~OwSQUxH-pjtXxvuo1X5o5J6Og55N-zd24U.hr~n2mjwUiluU3zKV6IFaf6H5qBkxI=
+wRnt1XInju~vjekzYYHLMnSi5pV8" style=3D"-webkit-text-size-adjust:none;-ms-te=
+xt-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;=
+color:#0000EE;font-size:14px"><img title=3D"Website" src=3D"https://stripo.=
+app-us1.com/static/assets/img/other-icons/circle-black/link-circle-black.pn=
+g" alt=3D"Website" width=3D"32" height=3D"32" style=3D"display:block;border=
+:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"></a></=
+td>
+<td align=3D"center" valign=3D"top" style=3D"padding:0;Margin:0"><a target=
+=3D"_blank" href=3D"mailto:community@make.co" style=3D"-webkit-text-size-ad=
+just:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decor=
+ation:underline;color:#0000EE;font-size:14px"><img title=3D"Email" src=3D"h=
+ttps://stripo.app-us1.com/static/assets/img/other-icons/circle-black/mail-c=
+ircle-black.png" alt=3D"Email" width=3D"32" height=3D"32" style=3D"display:=
+block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bic=
+ubic"></a></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"center" style=3D"padding:10px;Margin:0;font-size:0">
+<table border=3D"0" width=3D"100%" height=3D"100%" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0pt;mso-table-r=
+space:0pt;border-collapse:collapse;border-spacing:0px">
+<tr>
+<td style=3D"padding:0;Margin:0;border-bottom:0px solid #cccccc;background:=
+unset;height:0px;width:100%;margin:0px"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table>
+<table class=3D"es-footer ac-footer" cellspacing=3D"0" cellpadding=3D"0" al=
+ign=3D"center" role=3D"none" style=3D"mso-table-lspace:0pt;mso-table-rspace=
+:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !import=
+ant;width:100%;background-color:transparent;background-repeat:repeat;backgr=
+ound-position:center top">
+<tr>
+<td align=3D"center" class=3D"es-footer-body" style=3D"padding:20px 0;Margi=
+n:0;background:inherit;font-family:inherit;font-size:12px;color:inherit">
+<p style=3D"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:non=
+e;mso-line-height-rule:exactly;font-family:inherit;line-height:150%;color:i=
+nherit;font-size:inherit">Sent to: mstowe@baddomain.com <br><br><a style=3D=
+"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-ru=
+le:exactly;text-decoration:underline;color:#000000;font-size:inherit;font-f=
+amily:inherit;font-weight:inherit" href=3D"https://newsletter.make.co/proc.=
+php?c=3D1677&m=3D10446&s=3D39773a5609d6c717562a080b167fd908&d=3D36661&v=3D3=
+&nl=3D8&act=3Dunsub" target=3D"_blank">Unsubscribe</a> <br><br><span class=
+=3D"perstag_address" style=3D"color:inherit;font-family:inherit;font-size:i=
+nherit">Make:, 150 Todd Road, Santa Rosa, CA 95407, United States</span></p=
+></td>
+</tr>
+</table>
+<br>
+<img src=3D"https://newsletter.make.co/lteo?x=3D5Tdyo.rEJFmd5X_7zN~OwRPf1XI=
+nj0AxLtUyZHfKIIGe6HzA__E6VuFy2XIiuN92jhcwYXg7VXmZ7w4tNN5LVeZsPaGkxRIyyQxkb8=
+M2VaTYG84y~ck6jx3cEu2j-QtiyQVkmeIAlnGZ6pB_Mwy.hFds1nMmidT2_~LrzHl4YInNUH79z=
+t5KUb" alt=3D"" border=3D"0" width=3D"1" height=3D"1" style=3D"display:bloc=
+k;width:1px!important;min-width:1px!important;max-width:1px!important;heigh=
+t:1px!important;border:0;overflow:hidden;"/>
+</body>
+</html>
+------=_Part_67804_2038780856.1794332572013--

@@ -9484,8 +9484,33 @@ impl FilterEngine {
             "car insurance",
         ];
 
+        // Retail/accessory copy routinely says "vehicle protection" or "auto
+        // coverage" (floor liners, car covers, warranties). Those weak phrases only
+        // indicate insurance spam when real insurance vocabulary is also present.
+        let weak_auto_patterns = [
+            "auto coverage",
+            "car coverage",
+            "auto protection",
+            "vehicle coverage",
+            "vehicle protection",
+        ];
+        let has_insurance_vocab = [
+            "insurance",
+            "insurer",
+            "premium",
+            "deductible",
+            "free quote",
+            "get a quote",
+            "your quote",
+        ]
+        .iter()
+        .any(|v| content_lower.contains(v));
+
         for pattern in auto_insurance_patterns {
             if content_lower.contains(pattern) {
+                if weak_auto_patterns.contains(&pattern) && !has_insurance_vocab {
+                    continue;
+                }
                 score += 60;
                 log::debug!("Auto insurance spam pattern detected: {}", pattern);
                 break;
