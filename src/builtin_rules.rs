@@ -4391,6 +4391,15 @@ pub fn builtin_modules() -> Vec<Module> {
                                 Criteria::SenderPattern { pattern: ".*gandiroofingsolutions@gmail\\.com$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*sendgrid\\.net$".to_string() },
                                 Criteria::HeaderPattern { header: "Authentication-Results".to_string(), pattern: "dkim=pass.{0,100}adapthealth\\.com".to_string() },
+                                // Long-lived domain that signs its own mail and links only to
+                                // itself (e.g. a hosting provider's real invoice).
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Authentication Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("Established self-contained sender".to_string()),
+                                    invert: None,
+                                },
                                 ],
                             }
                             ),

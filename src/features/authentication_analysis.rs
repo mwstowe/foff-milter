@@ -969,6 +969,16 @@ impl FeatureExtractor for AuthenticationFeature {
             evidence.push("DKIM-authenticated organizational identity via trusted ESP".to_string());
         }
 
+        // Blocker evidence for an established, self-contained sender (aged domain, DKIM
+        // aligned with From, no attachments, only own-domain links). Lets declarative
+        // invoice/billing rules skip real vendor mail that isn't on any allow-list.
+        if crate::features::is_established_self_contained_sender(context) {
+            evidence.push(
+                "Established self-contained sender: aged domain, aligned DKIM, own-domain links only"
+                    .to_string(),
+            );
+        }
+
         // Check for brand impersonation to reduce authentication bonuses
         let has_brand_impersonation = self.detect_brand_impersonation(context);
 

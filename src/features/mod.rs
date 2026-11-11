@@ -162,6 +162,132 @@ pub fn is_dkim_authenticated_org_identity(context: &MailContext) -> bool {
     esp_validation::is_from_trusted_esp(context)
 }
 
+/// Minimum registrable-domain age (days) for a sender to count as "established".
+/// ~3 years: long enough that a throwaway/lookalike domain cannot fake it, short enough
+/// to cover ordinary small businesses.
+pub const ESTABLISHED_DOMAIN_MIN_AGE_DAYS: u32 = 1095;
+
+/// Registrable domain of the From header address, lowercased.
+pub fn from_registrable_domain(context: &MailContext) -> Option<String> {
+    let from = context.from_header.as_deref()?;
+    let addr = from.rsplit('<').next().unwrap_or(from);
+    let host = addr
+        .rsplit('@')
+        .next()?
+        .trim_matches(|c: char| c == '>' || c == ' ' || c == '"' || c == ';' || c == ',');
+    if !host.contains('.') {
+        return None;
+    }
+    Some(crate::domain_utils::DomainUtils::registrable_domain(host))
+}
+
+/// True when every http(s) link target in the body stays on `registrable` (or a subdomain
+/// of it). A body with no links trivially qualifies; callers combine this with other signals.
+///
+/// HTML document identifiers are not link targets and are ignored: DOCTYPE/DTD URLs and
+/// XML namespace declarations (`xmlns="http://www.w3.org/..."`) appear in nearly every HTML
+/// email and would otherwise make every sender look like it links off-domain.
+pub fn links_stay_on_domain(body: &str, registrable: &str) -> bool {
+    use regex::Regex;
+    let url_re = Regex::new(r#"https?://([^/\s<>"')\]:?#]+)"#).unwrap();
+    // Strip DOCTYPE declarations and xmlns attributes before scanning.
+    let doctype_re = Regex::new(r"(?is)<!DOCTYPE[^>]*>").unwrap();
+    let xmlns_re = Regex::new(r#"(?i)\bxmlns(?::[a-z0-9_-]+)?\s*=\s*["'][^"']*["']"#).unwrap();
+    // The body may still be quoted-printable encoded (soft line breaks split hostnames,
+    // "=3D" hides attribute syntax). Decode it robustly first; fall back to the raw text.
+    let decoded = if body.contains("=\n") || body.contains("=\r\n") || body.contains("=3D") {
+        quoted_printable::decode(body.as_bytes(), quoted_printable::ParseMode::Robust)
+            .map(|b| String::from_utf8_lossy(&b).into_owned())
+            .unwrap_or_else(|_| body.to_string())
+    } else {
+        body.to_string()
+    };
+    let cleaned = doctype_re.replace_all(&decoded, " ");
+    let cleaned = xmlns_re.replace_all(&cleaned, " ");
+    let hosts: Vec<String> = url_re
+        .captures_iter(&cleaned)
+        .map(|c| c[1].to_lowercase())
+        .collect();
+    hosts
+        .iter()
+        .all(|h| crate::domain_utils::DomainUtils::same_registrable_domain(h, registrable))
+}
+
+/// Recognize an established, self-contained sender: a long-lived domain that signs its own
+/// mail (DKIM pass, aligned with From), carries at most plain PDF attachments, and only links
+/// back to itself. Used to stop generic invoice/billing heuristics from flagging real billing mail
+/// from a vendor that isn't on any hardcoded allow-list (e.g. a hosting provider's invoice).
+///
+/// Domain age is the load-bearing signal: aligned DKIM and own-domain links are trivially
+/// reproducible on a throwaway domain, but registration age is not. An unknown age (no
+/// WHOIS result) NEVER qualifies, so lookup failures fail closed.
+pub fn is_established_self_contained_sender(context: &MailContext) -> bool {
+    let age = match context.sender_domain_age_days {
+        Some(a) => a,
+        None => {
+            log::debug!("Established-sender check: sender domain age unknown");
+            return false;
+        }
+    };
+    if age < ESTABLISHED_DOMAIN_MIN_AGE_DAYS {
+        return false;
+    }
+    let from_domain = match from_registrable_domain(context) {
+        Some(d) => d,
+        None => return false,
+    };
+    // Attachments are only tolerated when they are plain PDFs (a real vendor invoice
+    // normally ships one). Anything else -- archives, office docs, executables -- is the
+    // classic fake-invoice vector and disqualifies the sender.
+    if context.attachments.iter().any(|a| {
+        a.contains_executables || !a.content_type.to_lowercase().starts_with("application/pdf")
+    }) {
+        log::debug!(
+            "Established-sender check: non-PDF or executable attachment present: {:?}",
+            context.attachments
+        );
+        return false;
+    }
+
+    // DKIM must pass with a signing domain in the same organization as From.
+    let dkim = match context.dkim_verification.as_ref() {
+        Some(d) => d.clone(),
+        None => {
+            crate::dkim_verification::DkimVerifier::verify(&context.headers, Some(&from_domain))
+        }
+    };
+    if !matches!(
+        dkim.auth_status,
+        crate::dkim_verification::DkimAuthStatus::Pass
+    ) {
+        log::debug!(
+            "Established-sender check: DKIM status {:?}",
+            dkim.auth_status
+        );
+        return false;
+    }
+    let dkim_in_org = dkim
+        .domains
+        .iter()
+        .any(|d| crate::domain_utils::DomainUtils::same_registrable_domain(d, &from_domain));
+    if !dkim_in_org {
+        log::debug!(
+            "Established-sender check: DKIM domains {:?} not in org {from_domain}",
+            dkim.domains
+        );
+        return false;
+    }
+
+    // Links in the body AND in any text extracted from the PDF must stay on the sender's
+    // domain (a PDF that sends you to a different site to "pay" is not self-contained).
+    let body_ok = links_stay_on_domain(context.body.as_deref().unwrap_or(""), &from_domain);
+    let media_ok = links_stay_on_domain(&context.extracted_media_text, &from_domain);
+    log::debug!(
+        "Established-sender check for {from_domain}: age={age}d body_links_ok={body_ok} media_links_ok={media_ok}"
+    );
+    body_ok && media_ok
+}
+
 /// Structured tags for inter-feature communication.
 /// Features emit tags alongside evidence strings. The trust system and other
 /// consumers read tags instead of parsing evidence text, giving compile-time safety.

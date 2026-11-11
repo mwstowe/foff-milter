@@ -737,6 +737,7 @@ async fn analyze_email_file(
         raw_body: Some(body_content.clone()),
         media_spam_score: 0,
         domain_registry: None,
+        sender_domain_age_days: None,
     };
 
     // Pre-compute DKIM verification (first hop behavior - must be done before any header modifications)
@@ -2441,6 +2442,7 @@ async fn test_email_file(
         raw_body: Some(body),
         media_spam_score: 0,
         domain_registry: None,
+        sender_domain_age_days: None,
     };
 
     // Populate DKIM verification for test mode

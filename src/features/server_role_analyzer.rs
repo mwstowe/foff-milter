@@ -196,6 +196,11 @@ impl ServerRoleAnalyzer {
         if has_dkim && crate::features::esp_validation::is_from_trusted_esp(context) {
             return (false, String::new());
         }
+        // A long-lived domain that signs its own mail and only links to itself is not a
+        // "suspicious domain" regardless of how its name pattern-matches.
+        if crate::features::is_established_self_contained_sender(context) {
+            return (false, String::new());
+        }
         if crate::features::context_analyzer::ContextAnalyzer::is_genuine_conversation(context) {
             return (false, String::new());
         }

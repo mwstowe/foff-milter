@@ -268,6 +268,9 @@ pub struct MailContext {
     pub raw_body: Option<String>,         // Raw MIME body for attachment analysis
     pub media_spam_score: i32,            // Spam score from OCR/media analysis
     pub domain_registry: Option<std::sync::Arc<crate::domain_registry::DomainRegistry>>,
+    /// Age in days of the From domain's registrable domain (WHOIS, cached). `None` when not
+    /// looked up or unknown -- unknown must never be treated as established.
+    pub sender_domain_age_days: Option<u32>,
 }
 
 impl Default for MailContext {
@@ -296,6 +299,7 @@ impl Default for MailContext {
             raw_body: None,
             media_spam_score: 0,
             domain_registry: None,
+            sender_domain_age_days: None,
         }
     }
 }
@@ -1040,6 +1044,7 @@ impl FilterEngine {
                 raw_body: context.raw_body.clone(),
                 media_spam_score: context.media_spam_score,
                 domain_registry: context.domain_registry.clone(),
+                sender_domain_age_days: context.sender_domain_age_days,
             }
         } else {
             // Fallback to simple normalization if proper normalization not available
@@ -1081,6 +1086,7 @@ impl FilterEngine {
             raw_body: context.raw_body.clone(),
             media_spam_score: context.media_spam_score,
             domain_registry: context.domain_registry.clone(),
+            sender_domain_age_days: context.sender_domain_age_days,
         }
     }
 
@@ -1291,6 +1297,40 @@ impl FilterEngine {
         }
     }
 
+    /// Whether the sender domain's age could change the verdict for this message.
+    fn sender_age_is_relevant(context: &MailContext) -> bool {
+        let has_list_headers = context.headers.keys().any(|k| {
+            let k = k.to_lowercase();
+            k == "list-unsubscribe" || k == "list-id"
+        });
+        let text = format!(
+            "{} {}",
+            context.subject.as_deref().unwrap_or(""),
+            context.body.as_deref().unwrap_or("")
+        )
+        .to_lowercase();
+        let invoice_like = ["invoice", "amount due", "payment", "receipt", "billing"]
+            .iter()
+            .any(|k| text.contains(k));
+        has_list_headers || invoice_like
+    }
+
+    /// Age in days of the From domain's registrable domain, or `None` when it cannot be
+    /// determined (timeout, no WHOIS data). `None` must never be read as "established";
+    /// callers either fail closed (invoice exemption) or fall back to prior behavior.
+    async fn lookup_sender_domain_age(&self, context: &MailContext) -> Option<u32> {
+        let domain = crate::features::from_registrable_domain(context)?;
+        let checker = DomainAgeChecker::new(5, false);
+        let root = checker.extract_root_domain(&domain);
+        match checker.get_domain_info(&root).await {
+            Ok(info) => info.age_days,
+            Err(e) => {
+                log::debug!("Sender domain age lookup failed for {root}: {e}");
+                None
+            }
+        }
+    }
+
     fn analyze_invoice_fraud(&self, context: &MailContext) -> InvoiceAnalysis {
         let subject = context.subject.as_deref().unwrap_or("");
         let body = context.body.as_deref().unwrap_or("");
@@ -1304,7 +1344,11 @@ impl FilterEngine {
         // generic invoice keyword patterns ("total amount", "invoice number",
         // "overdue") would otherwise push confidence past the fake-invoice
         // threshold purely because the CDN From domain is not on any allow-list.
-        if crate::features::is_dkim_authenticated_org_identity(context) {
+        // Likewise skip for an established, self-contained sender: a long-lived domain that
+        // signs its own mail and links only to itself (e.g. a hosting provider's invoice).
+        if crate::features::is_dkim_authenticated_org_identity(context)
+            || crate::features::is_established_self_contained_sender(context)
+        {
             return InvoiceAnalysis {
                 is_fake_invoice: false,
                 confidence_score: 0.0,
@@ -2408,6 +2452,15 @@ impl FilterEngine {
         let mut context_with_attachments = self.get_normalized_context_for_rules(&context);
         context_with_attachments.domain_registry = Some(self.domain_registry.clone());
 
+        // Look up the sender domain's age (WHOIS, cached) -- but only for mail where an
+        // established sender changes the verdict: invoice/billing-style mail, or mail that
+        // carries its own List-* headers (which can earn the mailing-list bonus).
+        if Self::sender_age_is_relevant(&context_with_attachments) {
+            context_with_attachments.sender_domain_age_days = self
+                .lookup_sender_domain_age(&context_with_attachments)
+                .await;
+        }
+
         // Analyze attachments (uses raw_body for MIME parsing)
         self.analyze_attachments(&mut context_with_attachments);
 
@@ -2724,6 +2777,36 @@ impl FilterEngine {
                 .and_then(|e| extract_domain_from_email(&e))
                 .unwrap_or_default()
                 .to_lowercase();
+            // A sender that merely signs its own mail (no DMARC, not a recognized ESP) only
+            // earns the full bonus if it is also credible: an established (aged) domain, or
+            // content links that stay on its own domain. A fresh throwaway domain that
+            // advertises List-Unsubscribe but sends you to a different site does not qualify.
+            // Mailing-list detection keys off more than List-* headers, so the age may not
+            // have been looked up yet; fetch it now (cached) when still unknown.
+            let sender_age_days = match context_with_attachments.sender_domain_age_days {
+                Some(a) => Some(a),
+                None => {
+                    self.lookup_sender_domain_age(&context_with_attachments)
+                        .await
+                }
+            };
+            // Credibility for a merely self-signed sender:
+            //  * established (aged) domain -> credible;
+            //  * known-young domain -> credible only if its links stay on its own domain;
+            //  * unknown age -> credible (fail open; see below).
+            let links_home = crate::features::links_stay_on_domain(
+                context_with_attachments.body.as_deref().unwrap_or(""),
+                &DomainUtils::registrable_domain(&from_domain_ml),
+            );
+            let self_signed_credible = match sender_age_days {
+                Some(a) if a >= crate::features::ESTABLISHED_DOMAIN_MIN_AGE_DAYS => true,
+                // Known-young domain: credible only if its links stay on its own domain.
+                Some(_) => links_home,
+                // Age unknown (WHOIS unavailable/timeout): fail open to the prior behavior.
+                // Large senders legitimately link across sister domains and click trackers,
+                // so off-domain links alone are too weak to withhold trust without age data.
+                None => true,
+            };
             let independently_trusted = has_dmarc_pass
                 || has_verified_group_platform
                 || self.is_legitimate_email_service_provider(&from_domain_ml)
@@ -2750,8 +2833,18 @@ impl FilterEngine {
                                 })
                         })
                         .unwrap_or(false)
+                        && self_signed_credible
                 };
-            let bonus = if independently_trusted { 200 } else { 75 };
+            // Not independently trusted: a small discount at most. When the sender is also not
+            // credible (fresh domain AND content links pointing elsewhere), the List-* headers
+            // are almost certainly self-added camouflage, so the discount is minimal.
+            let bonus = if independently_trusted {
+                200
+            } else if self_signed_credible {
+                75
+            } else {
+                25
+            };
             log::warn!(
                 "MAILING LIST DETECTED: Applying -{} score (independently_trusted={}) for email from: {}",
                 bonus,
@@ -4612,6 +4705,16 @@ impl FilterEngine {
 
         let mut link_hosts: Vec<String> = Vec::new();
         for m in RE_URL.find_iter(body) {
+            // Unsubscribe/opt-out links don't demonstrate that the call to action stays on
+            // the sender's domain: spammers add a self-hosted unsubscribe link precisely so
+            // the message looks "self-consistent" while the real CTA points elsewhere.
+            let url_lower = m.as_str().to_lowercase();
+            if url_lower.contains("unsubscribe")
+                || url_lower.contains("opt-out")
+                || url_lower.contains("optout")
+            {
+                continue;
+            }
             if let Some(host) = self.extract_host_from_url(m.as_str()) {
                 let host = host.trim_end_matches('.').to_lowercase();
                 if !host.is_empty() && !self.is_ipv4_address(&host) {
@@ -4694,7 +4797,23 @@ impl FilterEngine {
                 ".beauty", ".boats",
             ];
             let risky_tld = RISKY_TLDS.iter().any(|t| reg.ends_with(t));
-            all_hex || mostly_digits || risky_tld
+            // A random-hex subdomain label (e.g. `6fd5cfea.vn-bet8s.net`) on an unrelated,
+            // unrecognized domain is a per-campaign throwaway host. Recognized ESP tracking
+            // infrastructure (`u1187755.ct.sendgrid.net`) was already excluded above via
+            // KNOWN_LINK_INFRA, so this does not affect legitimate click tracking.
+            let hex_subdomain = h
+                .strip_suffix(reg.as_str())
+                .map(|sub| sub.trim_end_matches('.'))
+                .map(|sub| {
+                    sub.split('.').any(|label| {
+                        label.len() >= 8
+                            && label.chars().all(|c| c.is_ascii_hexdigit())
+                            && label.chars().any(|c| c.is_ascii_digit())
+                            && label.chars().any(|c| c.is_ascii_alphabetic())
+                    })
+                })
+                .unwrap_or(false);
+            all_hex || mostly_digits || risky_tld || hex_subdomain
         })
     }
 
