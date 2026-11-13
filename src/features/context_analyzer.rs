@@ -833,10 +833,16 @@ impl ContextAnalyzer {
                 "discover",
             ];
 
+            // A sender "claims" a bank brand when it names it in the From header or
+            // subject (as a whole word). Naming a card network in the body -- e.g. a
+            // payment receipt listing "Card type: Discover" -- is not a claim of identity,
+            // and short brand names must not match inside other words ("purchase" ->
+            // "chase", "city" -> "citi").
+            let from_lower_wf = from_header.to_lowercase();
+            let subject_lower_wf = subject.to_lowercase();
             let claims_financial_brand = financial_brands.iter().any(|brand| {
-                from_header.to_lowercase().contains(brand)
-                    || subject.to_lowercase().contains(brand)
-                    || body.to_lowercase().contains(brand)
+                let re = Regex::new(&format!(r"\b{}\b", regex::escape(brand))).unwrap();
+                re.is_match(&from_lower_wf) || re.is_match(&subject_lower_wf)
             });
 
             if claims_financial_brand {
@@ -902,7 +908,10 @@ impl ContextAnalyzer {
                 }
             });
 
-            if has_transaction_details {
+            // Amounts, confirmation and reference numbers appear in every legitimate
+            // receipt, so they only count as "suspicious" when something else already
+            // points at fraud (brand impersonation or urgency tactics).
+            if has_transaction_details && !issues.is_empty() {
                 issues.push(
                     "Wire transfer fraud: Suspicious transaction details provided".to_string(),
                 );

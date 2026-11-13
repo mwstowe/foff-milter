@@ -2854,7 +2854,15 @@ pub fn builtin_modules() -> Vec<Module> {
                         Criteria::Or {
                             criteria: vec![
                             Criteria::SubjectPattern { pattern: "(?i).{0,100}(mailer.{0,100}daemon|delivery.{0,100}failure|undelivered.{0,100}mail|returned.{0,100}mail|mail.{0,100}delivery.{0,100}subsystem).*".to_string() },
-                            Criteria::BodyPattern { pattern: "(?i).{0,100}(mailer.{0,100}daemon|delivery.{0,100}failure|undelivered.{0,100}mail|returned.{0,100}mail|mail.{0,100}delivery.{0,100}subsystem).*".to_string() },
+                            // Body-only matches must come from a sender that presents itself as a
+                            // mail system. A person writing "the mail delivery system returned your
+                            // mail" in conversation is not a fake bounce notice.
+                            Criteria::And {
+                                criteria: vec![
+                                Criteria::BodyPattern { pattern: "(?i).{0,100}(mailer.{0,100}daemon|delivery.{0,100}failure|undelivered.{0,100}mail|returned.{0,100}mail|mail.{0,100}delivery.{0,100}subsystem).*".to_string() },
+                                Criteria::HeaderPattern { header: "From".to_string(), pattern: "(?i).*(mailer|daemon|postmaster|mail.{0,20}(delivery|system|server|admin)|delivery|undeliver|bounce|no-?reply|notification|support|admin|system).*".to_string() },
+                                ],
+                            },
                             ],
                         },
                         Criteria::Not {
