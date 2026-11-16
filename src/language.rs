@@ -97,17 +97,38 @@ impl LanguageDetector {
         })
     }
 
+    /// True if `word` occurs in `text_lower` delimited by non-alphabetic characters
+    /// (or string edges). Both arguments must already be lowercase.
+    pub fn contains_word(text_lower: &str, word: &str) -> bool {
+        text_lower.match_indices(word).any(|(i, _)| {
+            let before_ok = text_lower[..i]
+                .chars()
+                .next_back()
+                .map(|c| !c.is_alphabetic())
+                .unwrap_or(true);
+            let after_ok = text_lower[i + word.len()..]
+                .chars()
+                .next()
+                .map(|c| !c.is_alphabetic())
+                .unwrap_or(true);
+            before_ok && after_ok
+        })
+    }
+
     pub fn contains_portuguese(text: &str) -> bool {
         // Highly Portuguese-specific characters (ã, õ are almost exclusively Portuguese)
         let has_highly_specific_chars = text.chars().any(|c| matches!(c, 'ã' | 'õ' | 'Ã' | 'Õ'));
 
-        // Portuguese-specific words
+        // Portuguese-specific words, matched as WHOLE words. Plain substring matching
+        // made English text match ("Processors" contains "processo").
         let text_lower = text.to_lowercase();
         let portuguese_specific_words = [
             "validação",
             "conferência",
             "processo",
+            "processos",
             "documento",
+            "documentos",
             "assinatura",
             "pendentes",
             "aguardando",
@@ -119,7 +140,7 @@ impl LanguageDetector {
         ];
         let has_portuguese_words = portuguese_specific_words
             .iter()
-            .any(|&word| text_lower.contains(word));
+            .any(|&word| Self::contains_word(&text_lower, word));
 
         // Detect Portuguese if:
         // 1. Has highly specific characters (ã, õ) - these are almost exclusively Portuguese

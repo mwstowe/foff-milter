@@ -1,0 +1,1086 @@
+Return-Path: <msprvs1=20780NPz1oD1E=bounces-266693-7@sparkpostmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 6AGDlEwe072642
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Mon, 16 Nov 2026 13:47:14 GMT
+	(envelope-from msprvs1=20780NPz1oD1E=bounces-266693-7@sparkpostmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=email.peacocktv.com header.i=@email.peacocktv.com header.b=sOqqVPJ8
+Received: from mta-87-164.sparkpostmail.com (mta-87-164.sparkpostmail.com [192.174.87.164])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 6AGDl8Ln145397
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <mstowe@baddomain.com>; Mon, 16 Nov 2026 07:47:09 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 6AGDl8Ln145397
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=email.peacocktv.com header.i=@email.peacocktv.com header.a=rsa-sha256 header.s=scph0120 header.b=sOqqVPJ8
+X-MSFBL: iwwfJCUndQ+dGftKHUi/mdC2f2HjsxW6pd9GGx3KCkM=|eyJ0ZW5hbnRfaWQiOiJ
+	zcGMiLCJtZXNzYWdlX2lkIjoiNmFmNzU3MDlmYjZhZDI1YjAyMjIiLCJzdWJhY2N
+	vdW50X2lkIjoiNyIsImN1c3RvbWVyX2lkIjoiMjY2NjkzIiwiciI6Im1zdG93ZUB
+	iYWRkb21haW4uY29tIn0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.peacocktv.com;
+	s=scph0120; t=1794836823; i=@email.peacocktv.com;
+	bh=u+ktiESob4Pb7WwnqDGh0+Fj9XpjYL5SH7XX9atqwGM=;
+	h=List-Unsubscribe:Message-ID:List-Unsubscribe-Post:From:To:Date:
+	 Content-Type:Subject:From:To:Cc:Subject:Feedback-Id;
+	b=sOqqVPJ8x6wwqsz6mX+cBpbSKueKr55FQfjTtk0O7qSmbJnEg+9RlrexAOUxdjMu7
+	 ix1CzHHR8eMm7aBHR57gzJ9nflnMckB48yB4iogg3cE25PrZqVdXDXmVQlEro87uGO
+	 Nmbi2xRhnQgXAWmOOQfrSOa7mQ/HxE3y6gSB6vZ0=
+Received: from [10.90.13.123] ([10.90.13.123])
+	by i-09f103f9dd90e6b7a.mta1vrest.sd.prd.sparkpost (ecelerity 5.3.0.76629 r(msys-ecelerity:tags/5.3.0.39)) with REST
+	id 22/20-64841-7590BFA6; Mon, 16 Nov 2026 13:47:03 +0000
+List-Unsubscribe: <https://03.emailinboundprocessing.com/enc_user/list_unsubscribe?d=%241%24wUCHjRbkiaY8LTRVLr1OGg%3D%3D%24t%2Fn1RZn%2B1R4ZgH6AQfE75qYXJfMO%2FKDX8bidvhG9NlgFoqcRgY3jmIu9MR4u%0A0P9cPM2gxvWFtQSNGw%2BsxXfrvSKOPlVykcQB5R%2F816elDFa%2BTMhvuflShnAX%0AF36sB0ATLCFXwQcGHccsVp37M%2Fk64ilx1Y41I0f7RGpbQZ1eQ%2FhFznscsj7B%0A1l39W%2BJ2rai5Y8MZVBsVUrLYdL3OQLhTEdy9NrupQrur4s794gMoEdwc0Ebm%0AAdXyJ0k8dy3tf3tOKvFco45A5f0p%2B49tIyAt3Jlrped9dAmB0U%2FtqzbPRAuu%0AxlgCydNYLeqdI7CJieJBeitJVk73Z4eUPj%2FFHpypSpgp1t4XeVg7LsDvhJy0%0AfZRzBlhDk5%2FzTd8yma4G7HW2&1=1>,<mailto:4_ntdx43os2c8m9lbew156r2chvjo4iuo2pz0lv5747htzf5opagulnh@unsubscribe-03.emailinboundprocessing.com?subject=Unsubscribe%20pnrcgsqcs9hhsfyg9rqvmc3i43to8tzbnqky25nwovcfd&body=DO_NOT_DELETE-b8uktybzpm42umhl3ae3pr78qrel4g5zy5smkw4ss41816smke8wfo1iopqodjj7j6jbcotqpsqyjlhndfqzx-DO_NOT_DELETE>
+Message-ID: <22.20.64841.7590BFA6@i-09f103f9dd90e6b7a.mta1vrest.sd.prd.sparkpost>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+From: "Peacock with Xfinity" <hello@email.peacocktv.com>
+To: mstowe@baddomain.com
+Date: Mon, 16 Nov 2026 13:47:03 +0000
+Content-Type: multipart/alternative; boundary="_----DW8xpiDJu8P5jusILpK8Tg===_10/20-64841-7590BFA6"
+MIME-Version: 1.0
+Subject: You haven't seen everything yet
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 16 Nov 2026 13:47:14 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 16 Nov 2026 07:47:09 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Brand Impersonation: Brand impersonation: Claims to be xfinity but sender domain is email.peacocktv.com (hotel.baddomain.com) [fc9e3dbf]
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (hotel.baddomain.com) [8c765852]
+X-FOFF-Rule-Matched: Authentication Validation: Perfect Authentication (hotel.baddomain.com) [builtin]
+X-FOFF-Score: 63 - trusted from upstream foff-milter v0.10.50 on juliett.baddomain.com
+X-FOFF-Score: 63 - foff-milter v0.10.50+18e2d2a8-dirty (hotel.baddomain.com)
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=-10, content=10, total=2, adj=0
+X-FOFF-Business-Analysis: comm=45, legit=20, industry=10, compliance=20, total=27, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=5, patterns=0, timing=0, total=2, adj=0
+
+--_----DW8xpiDJu8P5jusILpK8Tg===_10/20-64841-7590BFA6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+
+From The Hunger Games to Thanksgiving laughs, it's all on=0APeacock this we=
+ek. =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C  =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C=0A      Peacock | Xfinity =0A( https://clicks.email=
+.peacocktv.com/f/a/qUk5ncKcLPuzwKiegemWaw~~/AAQRxRA~/ERHHMZITX6B_Nipo79M73=
+D8VmjhZKunvbcoWVRA2GaoI8sZAUCLDGNOwWyFXjFVmx0quo6c60pIKlgupy0wP0CL7oUu1hLWT=
+Dth2Mqb8nURpt72dFuIbvVeLxZUTfvolVOL1VuFYzO0QH09Izf30_w~~ )=0A         The o=
+nly way forward=0Ais back | Rose Byrne and Meghann Fahy star in the suspens=
+eful=0Athriller based on Karin Slaughter's bestselling book. | The Good=0AD=
+aughter | STREAM NOW =0A( https://clicks.email.peacocktv.com/f/a/owsgjCEDRD=
+E_IXUEaPtoDw~~/AAQRxRA~/ua0iG5cnPZExX48FjUxoNVSltkW9qyIybNab-0DPfCFstfAPkAT=
+8Z6HigYjH8Tgi6PEWIpoP-apqSRSx8jOs7knqPP7h2RRKQl6icNEo0ZKnS1yM_5MpcEl1AWa4Kq=
+z8dRO6oT9XdKBxKtq4zsc2-6H39PQAl8NfFVc5QihA1XpFpEkzgnF1KcMSfIaFaPnPcNFp1Izdm=
+BhjBm33CC9cTQ~~ )=0A                 TURN ON THE CHARM      Welcome to Char=
+leston,=0Awhere everyone=E2=80=99s got history.=0AStream new episodes Frida=
+ys.      Southern Charm - New Episodes=0AFridays =0A( https://clicks.email.=
+peacocktv.com/f/a/xGZTSUCjZBXMErMzZUhXDA~~/AAQRxRA~/9mjyAjKoIWVNPZJdJti4Jzv=
+XAu82FGSRrDOY-Kt1GC1XV7kLTMlVsRKDfWd61KaqbKyndIlqhjyEOoZeOrknLa-jCt6xXxU6z9=
+kKGp9Kia-iJj45Ojcb6NPerQ8LaIb1tvJwoYhX7WGPKVhNMmpbRPiMXnKfY34KEz9aJi7AbPDLQ=
+asS8zHtEDN38htYZL2woymPoVYg6PgEFqSjjUq3dg~~ )=0A        STREAM NOW =0A( htt=
+ps://clicks.email.peacocktv.com/f/a/INBZQBDPBVxyF38y42bf8A~~/AAQRxRA~/9mjyA=
+jKoIWVNPZJdJti4JzvXAu82FGSRrDOY-Kt1GC1XV7kLTMlVsRKDfWd61KaqbKyndIlqhjyEOoZe=
+OrknLa-jCt6xXxU6z9kKGp9Kia8L5T1yZkpOoc4c-jM4Pt9ARIqKZKJdAFR4JDsUaWtkckoatr-=
+mEQdfmOjW5kv6OyL3Rs7_Q77nf1-ggB2t2vd-7p0IltlCkiKCia3nBtwEnQ~~ )=0A         =
+               THE COMPETITION IS HEATING UP      Be=0Athere as the live sh=
+ows raise the stakes and the top 10=0Afinalists are revealed.      The Voic=
+e =0A( https://clicks.email.peacocktv.com/f/a/DDWC2YanUvmYQcE9stRblQ~~/AAQR=
+xRA~/4OJK_w6l4Z5CCLYWWMJzTpQ6GtJCY0nioU2fcdGY_IQ4YYLINFGpZFWDbsNQ_-VSN4ZcyB=
+AWob_TePG7DhQ8a_7vIZancYAoaajLJHkvYGG16aYQm9eqizZOUE55e0TGP87VXBs31i75Cy7Vd=
+qejYeti1imI1m_S3woKLfrSyEdtFSUbgvaobFM2iDEb2KnS )=0A        STREAM TONIGHT =
+=0A( https://clicks.email.peacocktv.com/f/a/KDa88kPj_QXFupMqGCXXig~~/AAQRxR=
+A~/4OJK_w6l4Z5CCLYWWMJzTpQ6GtJCY0nioU2fcdGY_IQ4YYLINFGpZFWDbsNQ_-VSN4ZcyBAW=
+ob_TePG7DhQ8a_7vIZancYAoaajLJHkvYGGA7o8jV-WMF1rS5k9xkF9fGH-sLRp9VLJkfk7bXtq=
+9d8E_Y3B_rKDvs-4UJ_-4vuaHaTiTJmccYLtkmW3YDrbl )=0A                      MAY=
+ THE ODDS BE EVER IN YOUR FAVOR=0AStream the Hunger Games movie franchise o=
+n Peacock.         The=0AHunger Games =0A( https://clicks.email.peacocktv.c=
+om/f/a/FG70y6ytyvqbiCKbLwX8gQ~~/AAQRxRA~/c0XPxb2UeXH_6BQ-ZCOVr3ASD_Ond3VJ8c=
+wBc4scuigv3vnzPMJZYjPW7AMjokoIOCqpXa9HJ8e41hGm1EDgsYsAhvODPdcLmGbJDTT1CInqd=
+S38b-8MI09S1qJwacPbxZ3YqxoGnVIDI9AU5n9Vl7a5t-vRdlBrNvfaSeMyAegKJaAmf7LAiMnB=
+ggQgRio4bqo3HFCfjHkkcG442BUK3QpYD7FdzffyM7asZmHjs18~ )=0A The Hunger Games:=
+ Catching Fire =0A( https://clicks.email.peacocktv.com/f/a/zHERiGyyB-D6zPsR=
+L1LsGQ~~/AAQRxRA~/1SxDC4ykWi2_YHlKzX_ihwwkQEZJnpanqiJoN9AMGcwNa3T8y6fYcciyS=
+3HUkwM-970ObDvTz7QVQ4RcNBazXvfdllqul5dMvglHMG2tmzrnlOQaWpBLFbqrCyfWLCzqM8nZ=
+GnNGzSjl1AQIv6CLDf1D7btukFu-d3s5RRGCq43CIFPcoOvO_7VdKEa5yX9vhlpyF24KxYi8krI=
+-jQC7uY-iF8qXc6HU9cQKHjiM7W-5WbwGqNHVL5_Um4jZ7H3M )=0A           The Hunger=
+ Games: Mockingjay Part 1 =0A( https://clicks.email.peacocktv.com/f/a/Hjx9W=
+xiOzxRdFfC2JE-diw~~/AAQRxRA~/9g7GCczuDBED1Y4t85y8e6HoNI-ygH3-7w5LpVrPQEny-r=
+yAvJeUGm16H_CvpxBBnYkb6TwTx2UMg1TNpU-RHzyNOtJY8GCDNOFgZl_6YzHtvBKwQb5plRSbn=
+A6QMNeyvCrTG6iYfVBvGBa_ue_DZaE579Ax1NxignoqbF_qDEmHAgPYNn8VHw2mP9EPlXgRIWhh=
+It2GuX_arjzBXETmRNoZBxgXWkQL9foR3UWlB7pLjWwPVPVEJcYPqcd4xZxE )=0A The Hunge=
+r Games: Mockingjay Part 2 =0A( https://clicks.email.peacocktv.com/f/a/g5U6=
+178DahsOZknGIuFHjg~~/AAQRxRA~/9g7GCczuDBED1Y4t85y8e6HoNI-ygH3-7w5LpVrPQEny-=
+ryAvJeUGm16H_CvpxBBnYkb6TwTx2UMg1TNpU-RHzyNOtJY8GCDNOFgZl_6YzEonDdWFTsL5EtS=
+yDNzurYBzuVGIz4gym8uNvsdQ99uRWm2p90Q9tJoEJM-b_5KSfh8ARqx1Evb4J5oTa_lkinQb3a=
+8tm7Cvzkm2plGKX997PvLXw5ZoGq_Js3pNI5eshj8amPENju0-HNkgYy18D-k )=0A The Hung=
+er Games: The Ballad of Songbird and Snakes =0A( https://clicks.email.peaco=
+cktv.com/f/a/gkFQY461_eBMHUKHdbyLaQ~~/AAQRxRA~/5d-QI_IUtQqN1ZItyTvlv4NjHo4w=
+rPeVN9o4TR3mEX_fvD2PGQeKHmOyb0ssQXkjXF6Y88UFNkGm8WoEcxraY86mNDe4bKZbC8afHlb=
+g8FOSUmkeAIROTfIuM8MggRLmYlgBMqny9EQ8sEv3DEatEzZ79lu-KpZQ9qsAF9sJI7AyHPduTo=
+t2pE87OioLSNLaAvuG9htWYrHr1zVbed5dq06K-XE4PU2EizZ7Uzs5ZFZPb5z5i7KaUxbazIoz7=
+iOf_fVXauPPRhsZKLqfUWGnPw~~ )=0A           Stream Now ( FPO=3Flid=3D6e7asbs=
+fboki )=0ATHERE'S ALWAYS ROOM FOR MORE      Dig into Thanksgiving episodes=
+=0Aof your favorite sitcoms.         Modern Family =0A( https://clicks.emai=
+l.peacocktv.com/f/a/MezFSnHS1UmeBe_AHBGhFg~~/AAQRxRA~/nOCHEuBw697mjk39m8Vcv=
+SuFVZzo54rVrFJcUY4aB0qqTCE2-haa094RhhGLtlEfN1DAyN8fT3R99TPChMdqauV2Fbnb2g54=
+J5lOME--OF9N8ARh76mdBNru3pNZjR5T2OEtaeMLKPbfxs5ANoqFC4YbBXMn-jvfQY46tfIvCf_=
+lXwngfBNhRFwKRvZuH_Q0QROUh7HQOcb7OKn3Z_R_-Q~~ )=0A The Middle =0A( https://=
+clicks.email.peacocktv.com/f/a/xCY-gR-u-hAx7XusNsBw5w~~/AAQRxRA~/inwzPsgqS-=
+w0ZLmEbyL4H4LgcOYnA-SXSCCWBdHThXCNG85JN4tloYjRzlNMlreXyLzBwruwt8jyCkdkb_iyD=
+u_Ofcbxx0HzRwbFiKJ4MwZTE9-3qD1nmKFsdVBB_vtJnTj_s8ut4YbJ6FGirG_b3hOnHFbOyyYi=
+nyWOmKR6oH5VfLsQMKWLLkNvjrFAY4AM )=0A           New Girl =0A( https://click=
+s.email.peacocktv.com/f/a/_X3erVA1UJtAyijjqMGNOg~~/AAQRxRA~/KMVV6wY94Ma0DhS=
+VaXriqkFhYyggzCUVqWotMl3EL9ELL68WQA6ykQDQCYETNna6eEpI8deQtKqP5A1MIGSUFwiaTu=
+1cknfd9QtCwm9eBNnmCIqD6UpevgI0tViF8q29VEQcSQHnfIux6WZd4eMnS0WLmhl59NYUibQt6=
+Op3Wm0umcKgiELkJIBt-XPJjUFd )=0A Brooklyn Nine-Nine =0A( https://clicks.ema=
+il.peacocktv.com/f/a/oJl5nx8XkbPDn3nxMrbKxg~~/AAQRxRA~/B7_HJuDduYYiiNJI1KVW=
+4Qa5nFLAErmELF-Iiy64AY7k0tfSNasOMBo3xNSMLDol_dwXDX3Yr3gnL9KeGAc_-VfIEuQZV17=
+whJ9zcuEQvkhXqWZM1gsFdweRSo-UnuiarJzFzPI-mgOz9QQRqLxd2i6WHHUFTXqpcbH6wPhJvE=
+j7sGQhuGWT3PrL0gu_Erj_TkRkDww7xOuSxE2aHC0qNQ~~ )=0A           Stream NOW =
+=0A( https://clicks.email.peacocktv.com/f/a/F8x8DN4t9raRukKL8aZaBA~~/AAQRxR=
+A~/xBcd8xQ0RB_9BX-jcSb5CPjHyvEVqqGBU3RmT7Z_4jyNoSOrTnH4OeYC9z729xnJGvbVQCHo=
+6vYqMylaqCnbaaKaD7T-r0xQCWGFqGxFNXhRu3bpi4O-Zg7qUTdJaumhAmhak3jFyW_dnEKnDeu=
+2Z6MrwW5fUw8V8OeqkvFFfrs~ )=0AGET VANDERPUMPED UP         The Real Housewiv=
+es of Beverly Hills=0A=0A( https://clicks.email.peacocktv.com/f/a/ZNSb61spy=
+Ch0NDfcvQYoYQ~~/AAQRxRA~/4ZHEmROdXyh8XdYDEewxZFsmjk5Hx-kNJ5-ynU9kUs1CUbMmX2=
+lqJWqrbz90tqb3OSif00HeYhIVsXwyq2FxTaY0CR53Xk9QMLwlvpt8brCn192Ul6YUMs33Bwqtu=
+JnghKaAk2SDO68sYJBQfXxUytd_FDYd-tr2gya5NycozxRDfwkLrG4FCqeuKHekpmOxezYj4wPD=
+nZCO_idjJTXKifuGcmNKBOsQmnH7LmLZE-k~ )=0A Vanderpump Rules =0A( https://cli=
+cks.email.peacocktv.com/f/a/P8FNpqRFEfoNarEt1Pn4hw~~/AAQRxRA~/6zQC0jLM_6dhB=
+-fThUG1H4EZQhdbx16v-C53MntBKF7ul92Rffus0Ah6qzDQYrKKCx-P8CNQhwtd0D6DHlmf3StL=
+fMlb34IU2PUuUCPohg3dRqIKJ2xpIh7BbB9uuS4tlm6hRyxuB9BHW07AlJyR7TdnATsNRj4F7_V=
+fBnFOBhY64iGVv1onsdwGBbenNi2p_7vbKehd6TpKyt899Y-42w~~ )=0A Vanderpump Rules=
+: Lisa Las Vegas =0A( https://clicks.email.peacocktv.com/f/a/ggdP8nH0HELOON=
+WNyP8hpQ~~/AAQRxRA~/_lujnXQqQfDb9bTa3oCLO_bDsM7HSmegeGQjLGAPvEm_HkU4-OhLTTN=
+twJ5agy6RZVvhGSqEddm7L3s8XjCuF58OVLElNnIg9fsdQk6rW2ZZCkkQ5gOwlpFqceH_hcim_3=
+ZMCmn1L8HX5AP0g9N_1-G7gZMrcKtigyJ8tfuzwBN2Suodfx6Mjp9EUEklgcG5TMznsCM3icKaQ=
+JSMwLfGRJaZAiphG1BYlXCHvgMbeh0~ )=0A           STREAM NOW =0A( https://clic=
+ks.email.peacocktv.com/f/a/OuvQ8RS9gCXIbx1hh1mgbw~~/AAQRxRA~/xBcd8xQ0RB_9BX=
+-jcSb5CPjHyvEVqqGBU3RmT7Z_4jyNoSOrTnH4OeYC9z729xnJxV51Fobq-w8OKeDrdyxAqflnl=
+y-didayjdVse69djvMNHYIsM9kRxElPZ6Ub6I2FvQrezJakNvBsOxJt_jWih1USCCPHX0ijcngQ=
+ilHXMhg~ )=0ATheir job is in ruins | From the creator of The Good Place and=
+=0Aco-creator of Parks and Recreation comes a new comedy starring=0AAmy Poe=
+hler and Hugh Laurie. Streaming Nov 23. =0A( https://clicks.email.peacocktv=
+.com/f/a/KMDWaqVdea_hpcupBqzxRg~~/AAQRxRA~/vKEjMtZF0fCz8COaCHFf1dEYcGbZpbS=
+EeaKN9bwkZxWPpy315iHGtTMkarR-1tTrrAuaLOcNT6WzMnGcnJRY9aAYtkH_BF5LL9PuoY1Uai=
+pU4BTX6uB2XIBlW5ubPtzQdD7fswwDo3nZa2rSUGVwnuCcsbqeOK-HEqZiveOxSy-QUTY9jjkAE=
+B6biG9XjXCq )=0A                        Download on the=0AApp Store =0A( ht=
+tps://clicks.email.peacocktv.com/f/a/fwQt6wJPy_a26GI9hyv-FA~~/AAQRxRA~/uVip=
+1pI10s9E1nGT38jgaIbot8oQBxCMLWElthAzRppocmviUc253DQFm0RBUgzGLf3zavSQ6Sg3Ssl=
+A7ntldUNMvhw8UZASNifwgk95IPbeB9elMF7JU2fZzE5nMMvLg3WxtmZRbG8WXwH-DfvQGajNrp=
+iu7RfN2xh8MiSmwXs~ )=0A Get it on Google Play =0A( https://clicks.email.pea=
+cocktv.com/f/a/miqgKw3WLO0c7QeyWfQjMw~~/AAQRxRA~/mKSmYyRVRO9b7BZ1BzK2aIdgQb=
+9pSZ6SIDg9jtnRnBUKEWtgn7aFM0SHxXO-hih2Dw_rO0j9zYlw_uyZGxxGIKd7PA9g5bwWJgMm9=
+tCXLIpuA_tyKbcU56XVv40upssRqj3fItbkzdTtMn7mW1PnUqp9ql7DUyfYgmNQtI2KJv2F5C7W=
+XN7QuJmDSzcv-ZL1 )=0A           Facebook =0A( https://clicks.email.peacockt=
+v.com/f/a/RvyFjkNjUhL2cCzkT1UhHg~~/AAQRxRA~/B7_HJuDduYYiiNJI1KVW4YoHTyAtH07=
+aVbXdIK-FoV5ys_kVqXK9u-oUYXjsw6ahHfCMOzcYN9H8b-cdXg0NkV9sY_lBmPovaiIzH-IIOT=
+3zjks7a1BtnhT4ycDnRbks-1GbZCUS5upyd8momDu9TQ9ioZMABty2LmmRVsha1YzVuqpVeyNiL=
+1CVtHRob7-mJVLCMa0ATthFCGa7XEYvBQ~~ )=0A Instagram =0A( https://clicks.emai=
+l.peacocktv.com/f/a/9zzsGOVs6ghGFFxORtbHLg~~/AAQRxRA~/sQjChToUKO8EH5mliE2Od=
+nDVxNSrHXk-a6MW0_7GYIFHNG-VF1smfEgP8ifIRGONvi50g9YTVKWq1dqwtPE1ejj2a6efMhCH=
+jGpw0eikdvRYwfB-fSxBzTRaC33vjz5DjQJfax1Q9FKgdeKSNbMw-w~~ ) Twitter =0A( htt=
+ps://clicks.email.peacocktv.com/f/a/P0tF9jQy7s2d3ab2WGyT_g~~/AAQRxRA~/vGUvl=
+apOinGtHUi7mwCwnvgm9gEZsb63TLq20owvX4hy_n12ZxJOxi3jO3kO-fBkZhv5bAuxi3bzNvaT=
+sOrUvF6LYEaeU8rwbMCaKr-XRBphzZN1ykjZS7fLX7p-DN3n ) YouTube =0A( https://cli=
+cks.email.peacocktv.com/f/a/OTrnkEzieynyEgWCxXADtA~~/AAQRxRA~/V8V_w2X5RDZe1=
+qZoZIcs2VERd8traPZlfKXD5byAVwySL-lp8VjcY-FkCXnPSEByVqD-oECTRUOFMkykNWWFG39a=
+ClwFigTPFNdu94gFcz6SUom5aL3wz7BbMKcwcoxgfYQwxznWksjnQv6PeIPjvA~~ ) TikTok =
+=0A( https://clicks.email.peacocktv.com/f/a/nLko68ol13xquI191uYkag~~/AAQRxR=
+A~/NXcoRyS9v4K8u_tvKKxMthnyEpxSsY7EFdWJllssz6HNPKWeIkhVwbCI4u9Do_1GC6Lk3v-U=
+nQk0jalvoxS5X7Ukxl_FANRdAvcLYbd-Y8v3QEPjDcPJY7up8LyL83qcFQyl3p5R_tGKC0xKxEr=
+uvA~~ )=0A=0A Click here (=0Ahttps://clicks.email.peacocktv.com/f/a/BoOLWYm=
+kHATrsNrqZ0Mk7g~~/AAQRxRA~/QXbsJWH9Q8bb7I6ACFyQOrXAfWTsze7hyLF4Ehz_S3eSYwQZ=
+7oefIuAxAMQBtTnr9g5zUyQlUdbYLjLRpoW1GMdOJeJlSJTR-lHPjh931uohM04X9S2q41fHcSk=
+WXsS9sgImTrP9IjNoFEdsA_vsEVYJdSrpNMW4NSJGSRqFWj83ixGGddN3wxjJ1TE9pfZovY31JG=
+X6MHYAitMPRzgWpA~~=0A) to update your sports preferences.=0APeacockTV.com =
+=0A( https://clicks.email.peacocktv.com/f/a/gP8dbusDs4f_zyRQH80oNw~~/AAQRxR=
+A~/59BE2AoW5uKd3b_PMRVFjRaVOMX4ll8wNVqVS0wCmQi0WMRHnDZpq4ihcJs0hBnxML3hStfM=
+mdhTaJc5X8EbPXL3xCdPNx4z0UvYHRuZ8cgEkiDphHnGwkpZ3wDZ6_6BlcJ9tOv-kEyNL3n8DlT=
+Pk8p_1t5aG-nmNb4mEi181aCQ8U3TZIILkK-orcBUsYgLCwUMlbqoQr9hEZ9Zvf70QmpzU-5pg3=
+SHU7efaEyzMfRjzT0TZyPgk6YgSd2ZTEFgEdpU9kypqUUsT4xykGB8El2JnlqpVU9vuJ53EL1d6=
+f7bgbafinwvKE7cnju21qeNNCUMhkjtImkB3QfQ42RGjIBpUm7j1smt3zefM2ZsCC4~ )=0A Su=
+pport =0A( https://clicks.email.peacocktv.com/f/a/mG6sI-TGx38WzGasLVie2w~~/=
+AAQRxRA~/aXKBKa20aiewPLC1HbrosnfDvwifWQDxkIz62aWQ7TABLIZO_27dstT_wZB0l1KzLm=
+Ww9MDAUyKYvg4w-2ymPiC_unu-yXSke5sGESa_SX0VY-9yNmeLIBNCA5-IfHYphBpCJEvdHaa71=
+bVWh1e1WR2vqCxx5KoeuspUoKASXg3FZcLempgnsJS_ZaVMihxqsZoswlLNTedD8Y7nFcInUO63=
+FyXU9gVWgWj07ubzecscQmwL3ZT1zkpmXBcvh8wxdTd__VZPt43wuX7-299Y_q-x5he_-VCymd_=
+NoCpjVOWEKXlswf_RzcdwOcvhhPSp3t66RCnZWbnGR3RLMxQfp887Ki90kPLihBIdC4IIeV0~ )=
+=0A PRIVACY POLICY =0A( https://clicks.email.peacocktv.com/f/a/aa_bl0ClzOad=
+n1d8fj9JwQ~~/AAQRxRA~/s1hLCkBRz4kENq2lpMwpkTAJkZ9GDDRHW-GmGk6ZovyhxbD6lTAmq=
+U8pw6BBOM4w2SS5ks8argIuE_n8fhouOgN2qW3Uo2c99LPlWmqvIuAxwbl72HNvWecIU_z7b8GQ=
+QhRB1HLrsh8bMRx-SJNhHuzpSYQr6EKtA9hKx2XXGAcXyk4xcaIs6SrywxAdiS98 )=0A=0AThi=
+s email contains an advertisement from: Peacock TV LLC,=0A30 Rockefeller Pl=
+aza, New York, NY 10112=0A=0AThis message was sent to mstowe@baddomain.com=
+=0Abecause you agreed to receive communication from Peacock TV LLC.=0APleas=
+e do not reply to this email as this address is not=0Amonitored. If you no =
+longer wish to receive emails from Peacock=0ATV LLC, click here ( https://c=
+licks.email.peacocktv.com/f/a/KYiqLRahNgM0ESYXPisHcg~~/AAQRxRA~/2ILjY5102fu=
+tUamfv_YUOu87n6E0-G4JbxU2J8cvJIdE2fWYHAv0Cgvx2YMZ-aZ5uEImFK5Q5Jzqw88ZyooWbN=
+oSBWsNXvXzKbdwlqTYuKgZO3sIYwKq8KUgm-CvUUlEd3GWSHMFqcQOKHDyMKQUEaLUe_vB6l-kR=
+hB9g_FBj-F_wErMPuP13MA13Vfb60xaDbMvJzjTU0cJu1D_Ac4ccGfskRnU3J8A5-HDJ0elzftZ=
+5T_Yhnl3wck6uQadhkPDGc0Z6KnblK_6Ro1l1yq64bNJIH0rV4xeuO8RTnq4bYhyAI_BskYKR0P=
+H4Kgz4NGlyCBWOMpXNfu2SYAe5sAtGbTPgUENiezX_m-pflaml0M2SH77m_ZnDZcZ5LYkUwy-NZ=
+9nLjzLgvGFdy7p2NSA3yt4EAJMZKOSKgG7ALOouNW3kSGIIeexkbrXhnn068JJW2cMUQEbJaalE=
+4FUqbczAMKQA7cx9OrKQJfNZMa8mWOP2an99zyJYuGaX8sDTz-Hzn2hGLLVmFwJTdjFRMFp_6lx=
+DZecOSjHbOzWVDNDSD-UDorD5W75ijPyOG0wcprDFmxkYjoKuN0pfBPTcRs5qyxw6BOceCr056b=
+1tQYJRcoY0YX3ykx7KoHwi4PBJ9YKMxLIqayLmou5ZKPJclyGSzNbwuO3doKuVmePce0B3p-jHj=
+uIEi8v427rT5y0NUyfOa6I7RyiFLkq_f6P3N5qtz5lczQVEMZNBzgPfOfe8kcYPTC72B9cHy769=
+w2CcAZc )=0Ato unsubscribe.=0A=0APeacock =C2=A9 2026 Peacock TV LLC. All ot=
+her programs and/or marks=0Aare property of their respective owner. All rig=
+hts reserved.=0A
+--_----DW8xpiDJu8P5jusILpK8Tg===_10/20-64841-7590BFA6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0A<html xmlns=3D"http://www.=
+w3.org/1999/xhtml"=0Axmlns:v=3D"urn:schemas-microsoft-com:vml"=0Axmlns:o=3D=
+"urn:schemas-microsoft-com:office:office">=0A<head>=0A<!--[if gte mso 9]><x=
+ml>=0A<o:OfficeDocumentSettings>=0A<o:AllowPNG/>=0A<o:PixelsPerInch>96</o:P=
+ixelsPerInch>=0A</o:OfficeDocumentSettings>=0A</xml><![endif]-->=0A<meta ht=
+tp-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" />=0A<meta=
+ http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge" />=0A<meta name=3D"vi=
+ewport" content=3D"width=3Ddevice-width, initial-scale=3D1.0 " />=0A<meta n=
+ame=3D"format-detection" content=3D"telephone=3Dno"/>=0A<meta name=3D"color=
+-scheme" content=3D"only">=0A<meta name=3D"supported-color-schemes" content=
+=3D"only">=0A<style type=3D"text/css">=0Abody {=0A=09margin: 0 auto;=0A=09p=
+adding: 0;=0A=09-webkit-text-size-adjust: 100%!important;=0A=09-ms-text-siz=
+e-adjust: 100%!important;=0A=09-webkit-font-smoothing: antialiased!importan=
+t;=0A}=0Aimg {=0A=09border: 0!important;=0A=09outline: none!important;=0A}=
+=0Ap {=0A=09Margin: 0px!important;=0A=09Padding: 0px!important;=0A}=0A.Exte=
+rnalClass * {=0A=09line-height: 100%;=0A}=0A.em_defaultlink a {=0A=09color:=
+ inherit;=0A=09text-decoration: none;=0A}=0Aa[x-apple-data-detectors], u+.e=
+m_body a {=0A=09color: inherit;=0A=09text-decoration: none;=0A=09font-size:=
+ inherit;=0A=09font-family: inherit;=0A=09font-weight: inherit;=0A=09line-h=
+eight: inherit;=0A}=0A=0A@font-face {=0A            font-family: 'PeacockSa=
+ns-Book';=0A            src: url('https://www.peacocktv.com/dam/growth/asse=
+ts/CRM/PeacockSans-Book.ttf') format('truetype');=0A            font-weight=
+: normal;=0A            font-style: normal;=0A            font-display: swa=
+p;=0A        }=0A=0A        @font-face {=0A            font-family: 'Peacoc=
+kSans-Bold';=0A            src: url('https://www.peacocktv.com/dam/growth/a=
+ssets/CRM/PeacockSans-Bold.ttf') format('truetype');=0A            font-wei=
+ght: normal;=0A            font-style: normal;=0A            font-display: =
+swap;=0A        }=0A=0A        @font-face {=0A            font-family: 'Pea=
+cockSans-Light';=0A            src: url('https://www.peacocktv.com/dam/grow=
+th/assets/CRM/PeacockSans-Light.ttf') format('truetype');=0A            fon=
+t-weight: normal;=0A            font-style: normal;=0A            font-disp=
+lay: swap;=0A        }=0A=0A        @font-face {=0A            font-family:=
+ 'PeacockSans-Medium';=0A            src: url('https://www.peacocktv.com/da=
+m/growth/assets/CRM/PeacockSans-Medium.ttf') format('truetype');=0A        =
+    font-weight: normal;=0A            font-style: normal;=0A            fo=
+nt-display: swap;=0A        }=0A=0A        @font-face {=0A            font-=
+family: 'PeacockSans-Black';=0A            src: url('https://www.peacocktv.=
+com/dam/growth/assets/CRM/PeacockSans-Black.ttf.ttf') format('truetype');=
+=0A            font-weight: normal;=0A            font-style: normal;=0A   =
+         font-display: swap;=0A        }=0A=09=0A@media only screen and (ma=
+x-width:599px) {=0A=09=0A.em_main_table {=0A=09width: 100%!important;=0A}=
+=0A.em_wrapper {=0A=09width: 100%!important;=0A}=0A.em_txtgrid {=0A=09paddi=
+ng: 0px 5px 0px 5px!important;=0A}=0A.em_hide {=0A=09display: none!importan=
+t;=0A}=0A.em_full_img img {=0A=09width: 100%!important;=0A=09height: auto!i=
+mportant;=0A}=0A=09=0A.em_textgrid{ padding: 10px 0px 0px 0px  !important=
+=0A}=0A=09=0A.em_app_download img {=0A=0A=09width: 100%!important;=0A=09min=
+-width: 100px!important;=0A=09max-width: 120px=0A}=0A.em_app_top {=0A=09pad=
+ding-top: 5px!important;=09=0A}=0A=09=0A.em_aside15 {=0A=09padding: 0px 15p=
+x!important;=0A}=0A.em_ptop {=0A=09padding-top: 20px!important;=0A}=0A.em_p=
+topHEADER {=0A=09padding-top: 50px!important=09=0A=09}=0A.em_h20 {=0A=09hei=
+ght: 20px!important;=0A=09font-size: 1px!important;=0A=09line-height: 1px!i=
+mportant;=0A}=0A.em_side10 {=0A=09width: 10px!important;=0A}=0A.em_ctapad {=
+=0A=09padding: 0px 10px!important;=0A=09font-size: 16px!important;=0A}=0A.e=
+m_ctapadOUTLINE {=0A=09padding: 9px 10px!important;=0A=09font-size: 16px!im=
+portant;=0A}=0A.em_ctapadSOLID {=0A=09padding: 12px 10px!important;=0A=09fo=
+nt-size: 16px!important;=0A}=0A.em_center {=0A=09text-align: center!importa=
+nt;=0A}=0Au+.em_body .em_full_wrap {=0A=09width: 100%!important;=0A=09width=
+: 100vw!important;=0A}=0A.nowrap {=0A  white-space: nowrap ;=0A}=09=0A.em_h=
+uto {=0A=09height: auto!important;=0A}=0A.em_side15 {=0A=09width: 15px!impo=
+rtant;=0A}=0A=0A.em_DisclaimerImage {=0A=09padding: 10px 2px 20px 2px!impor=
+tant;=0A}=0A=0A.em_DisclaimerCTA {=0A=09padding: 0px 2px 20px 2px!important=
+;=0A}=0A=0A.em_w50per {=0A=09width: 50%!important;=0A}=0A.em_f25 {=0A=09fon=
+t-size: 18px!important;=0A=09line-height: 22px!important;=0A}=0A.em_side599=
+ {=0A=0A=09width: 60px!important;=0A=0A}=0A.em_w50perPADDINGr {=0A=09width:=
+ 50%!important;=0A=09padding: 10px 5px 0px 11px !important=0A}=0A.em_w50per=
+PADDINGl {=0A=09width: 50%!important;=0A=09padding: 10px 11px 0px 5px !impo=
+rtant=0A}=0A=0A.em_w50perPADDINGlh {=0A=09width: 50%!important;=0A=09paddin=
+g: 20px 11px 0px 5px !important=0A}=0A=0A.em_w50perPADDINGrh {=0A=09width: =
+50%!important;=0A=09padding: 20px 5px 0px 11px !important=0A}=0A=0A.em_left=
+padding {=0A=0A=09padding-left: 10px!important;=0A=09padding-right: 30px!im=
+portant=0A}=0A.em_leftpaddingHEADER {=0A=0A=09padding-left: 10px!important;=
+=0A=09padding-right: 35px!important=0A}=0A}=0A@media screen and (max-width:=
+480px) {=0A.em_f25 {=0A=09font-size: 18px!important;=0A=09line-height: 22px=
+!important;=0A}=0A.em_side480 {=0A=0A=09width: 30px!important;=0A}=0A.foote=
+r_discl {=0A=09padding: 5px!important=0A}=0A=0A.em_DisclaimerImage {=0A=09p=
+adding: 10px 2px 20px 2px!important;=0A}=0A=0A.em_DisclaimerCTA {=0A=09padd=
+ing: 0px 2px 20px 2px!important;=0A}=0A=0A=0A}=0A=0A@media screen and (max-=
+width:374px) {=0A.em_f25 {=0A=09font-size: 16px!important;=0A=09line-height=
+: 22px!important;=0A}=0A.em_aside15 {=0A=09padding: 0px 10px!important;=0A}=
+=0A=0A.em_DisclaimerImage {=0A=09padding: 10px 1px 20px 1px!important;=0A}=
+=0A=0A.em_DisclaimerCTA {=0A=09padding: 0px 1px 20px 1px!important;=0A}=0A=
+=0A}=09=09=0A=0A</style>=0A</head>=0A<body class=3D"em_body" style=3D"margi=
+n:0px auto; padding:0px;" bgcolor=3D"#151515">=0A=0A<!-- =3D=3D PRE HEADER =
+=3D=3D -->=0A<module name=3D"preHEADER" label=3D"PreHEADER">=0A<div style=
+=3D"display: none; max-height: 0px; overflow: hidden;">=0A<editable name=3D=
+"preHEADER">From The Hunger Games to Thanksgiving laughs, it's all on Peaco=
+ck this week.=0A</editable>=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zw=
+nj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zw=
+nj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;=
+&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zw=
+nj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;=
+&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zw=
+nj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zw=
+nj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zw=
+nj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;=
+&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zw=
+nj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;=
+&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zw=
+nj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=0A&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;=0A</div>=0A</module>=0A<!-- =3D=3D //PRE HEADER=
+ =3D=3D -->=0A=0A=09=0A<!-- =3D=3D FULL WIDTH HERO MODULE =3D=3D --> =09=09=
+=0A=0A        <tr>=0A=0A          <td align=3D"center" valign=3D"top" bgcol=
+or=3D"#191919" style=3D"background-image: linear-gradient(to right,  #19191=
+9, #262626); background-color: #191919;"><table align=3D"center" class=3D"e=
+m_wrapper" width=3D"600" style=3D"width: 600px;" border=3D"0" cellspacing=
+=3D"0" cellpadding=3D"0">=0A=0A              <tbody>=0A=0A                <=
+tr>=0A=0A                  <td align=3D"center" valign=3D"top" class=3D"em_=
+full_img"><a href=3D"https://clicks.email.peacocktv.com/f/a/AeMDFvZNH87x2pw=
+yv1U1bA~~/AAQRxRA~/x1qtM-2ZEhGPKvSXofqoXZ_kNgSm3lYXlzxOdgLZm7LSuRjIeM-n15Mn=
+99GcqYrfzj6uVAsJrB9EdN0k-LmXj9hW75gY8LwJqVY9qtw2LPs3n_trS24gsJzEt6PS6UjHsPN=
+ZJ4uwFxi-YDwFPGqaihkVqJnAI5iTwRLdCH3jZqeOchu3k_mIiLsssootzRU1HE5F6CIE_LKdNC=
+6rCY62cBCmvZVXdbaEh9bw6gYDEYRBckZ3KmHbATlZPeui2b_N-lXPI9WV6kH0mDKCkqyL1g~~"=
+ target=3D"_blank" style=3D"text-decoration: none; color: #FFFFFF;"><img sr=
+c=3D"https://braze-images.com/appboy/communication/assets/image_assets/imag=
+es/6a01e819864ee900816b2665/original.jpg=3F1778509848" border=3D"0" alt=3D"=
+Peacock | Xfinity" width=3D"600" style=3D"display: block; max-width: 600px;=
+ font-family: Arial, sans-serif; font-size: 16px; line-height: 22px; color:=
+ #FFFFFF;" /></a></td>=0A=0A                </tr>=0A=0A              </tbod=
+y>=0A=0A            </table></td>=0A=0A        </tr>=0A=0A<!-- =3D=3D // FU=
+LL WIDTH HERO MODULE =3D=3D --> =09=0A=0A<table width=3D"100%" border=3D"0"=
+ cellspacing=3D"0" cellpadding=3D"0" class=3D"em_full_wrap" bgcolor=3D"#151=
+515" style=3D"table-layout:fixed;">=0A  <tr>=0A    <td align=3D"center" val=
+ign=3D"top"><table align=3D"center" width=3D"600" border=3D"0" cellspacing=
+=3D"0" cellpadding=3D"0" class=3D"em_main_table" style=3D"width:600px; tabl=
+e-layout:fixed;">=0A=09=09=0A<!-- =3D=3D FULL WIDTH HERO MODULE =3D=3D --> =
+=09=09=0A=0A        <tr>=0A=0A          <td align=3D"center" valign=3D"top"=
+ bgcolor=3D"#191919" style=3D"background-color: #191919;"><table align=3D"c=
+enter" class=3D"em_wrapper" width=3D"600" style=3D"width: 600px;" border=3D=
+"0" cellspacing=3D"0" cellpadding=3D"0">=0A=0A              <tbody>=0A=0A  =
+              <tr>=0A=0A                  <td align=3D"center" valign=3D"to=
+p" class=3D"em_full_img"><a href=3D"https://clicks.email.peacocktv.com/f/a/=
+v7KhD8wL0SWGKpXFqUDifA~~/AAQRxRA~/pnb3b--VHMM03_qqUjG0DijxpxLtqd-MGgxgoxeeV=
+ZJpnqFjjrETmd2IZ3YMZAqAU_Qi1jMhW5GXZ8J3dwvbGYk6s_4Pjgw9gwPIEWksmFF5beZmO_XA=
+2JRqIEL5jbCdtwTZXdlTE40L1dG1lZVOmA-Ab6lXXLWXnl2ARhynB7_1N2ZFn-s0GAF3ztAFyYM=
+dyV0GbQyMoKOwCy3q_-2NNBK_P46zA0mvnoQxjXby3eli4prm71QCTWSw-zfnuYqGNGxy4xxfGb=
+r01_jAyvz_wos1R_8QzBtIBSY32hkK3rP_E6w3J6xFA5ABXWO5cmmw2VgZk6rnJBvcqG16MR6G7=
+g~~" target=3D"_blank" style=3D"text-decoration: none; color: #FFFFFF;"><im=
+g src=3D"https://www.peacocktv.com/dam/growth/assets/CRM/Takeover_TheGoodDa=
+ughter_STREAM.gif" border=3D"0" alt=3D"The only way forward is back | Rose =
+Byrne and Meghann Fahy star in the suspenseful thriller based on Karin Slau=
+ghter's bestselling book. | The Good Daughter | STREAM NOW" width=3D"600" s=
+tyle=3D"display: block; max-width: 600px; font-family: Arial, sans-serif; f=
+ont-size: 16px; line-height: 22px; color: #FFFFFF;" /></a></td>=0A=0A      =
+          </tr>=0A=0A              </tbody>=0A=0A            </table></td>=
+=0A=0A        </tr>=0A=0A<!-- =3D=3D // FULL WIDTH HERO MODULE =3D=3D --> =
+=0A=09=09=0A=0A<!-- =3D=3D GRAY GRADIENT MODULE =3D=3D -->=0A     <tr>=0A  =
+    <td align=3D"center" valign=3D"top" bgcolor=3D"#333333" style=3D"backgr=
+ound-color: #333333; padding-top: 50px;">=0A       <table align=3D"center" =
+class=3D"em_wrapper" width=3D"600" style=3D"width: 600px;" border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0">=0A        <tbody>=0A         <tr>=0A     =
+     <td align=3D"center" valign=3D"top" style=3D"padding: 0px 0px;" class=
+=3D"em_aside15">=0A           <table width=3D"100%" border=3D"0" cellspacin=
+g=3D"0" cellpadding=3D"0">=0A            <tbody>=0A            =09  <!-- =
+=3D=3D CENTERED HEADER =3D=3D -->=0A             <tr>=0A              <td a=
+lign=3D"center" valign=3D"top" style=3D"font-family: 'Peacock Sans', Arial,=
+ Helvetica, sans-serif; font-size: 22px; line-height: 25px; color: #FFFFFF;=
+ font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding:=
+ 0px 30px 20px 30px;">TURN ON THE&nbsp;CHARM=0A=0A=0A=0A=0A</td>=0A        =
+     </tr>=0A             <!-- =3D=3D // CENTERED HEADER =3D=3D -->=0A=09=
+=09=09=09=09=09  =0A=09=09=09<!-- =3D=3D CENTERED SUBHEAD =3D=3D --> =0A=0A=
+=09=09=09=09=09=09  <tr>=0A=0A=09=09=09=09=09=09=09  <td align=3D"center" v=
+align=3D"top" style=3D"font-family: 'Peacock Sans', Arial, Helvetica, sans-=
+serif; font-size: 16px; line-height: 22px; color: #828282; font-weight: 500=
+; padding: 0px 30px 30px 30px;" class=3D"em_f25">Welcome to Charleston, whe=
+re everyone=E2=80=99s got history. <br>Stream new&nbsp;episodes&nbsp;Friday=
+s.=0A=0A</td>=0A=0A                          </tr>=09=0A=0A=09=09=09=09<!--=
+ =3D=3D // CENTERED SUBHEAD =3D=3D -->=0A=09=09=09=0A=09=09=0A <!-- =3D=3D =
+HERO =3D=3D --> =09=09  =0A=0A=09=09=09=09=09=09 <tr>=0A=0A                =
+          <td align=3D"center" valign=3D"top" class=3D"em_full_img" style=
+=3D"padding-top: 0px;"><a href=3D"https://clicks.email.peacocktv.com/f/a/2-=
+PGKOymyD2G16uRp6bL-Q~~/AAQRxRA~/E0fwh7PgORxbH0g7e6sSzbqUTVWIQ6uQ3YZrhCsCkx4=
+DK3ZzGbznooJuLiX70vD0Hph9inwqa5RFgAlIgkRvp4W-_qw-aOsIlXU4uQ0BVsY9WmyrTKbcIH=
+FHXyR-zDWSzCsrWbrCVqp5l_7M8MM76tyuNHOSyPD5putFdbJv9GDQT6XMzYPED3wgwPp6_7vDo=
+qjNmmeCW9HH020v0YnIJ7kbqSV0V7DtTlwQjbX3kR04Z4ClO06O1zTvt5YenUHEglWb2Cs3y1px=
+9IWDrho3tozpPIYxc97cpnKcrM3Skls8SFI25TusIIXf6TCRN7vUJdTOjidOrXY-1kJ5DIGDmA~=
+~" target=3D"_blank" style=3D"text-decoration: none; color: #FFFFFF;"><img =
+src=3D"https://braze-images.com/appboy/communication/assets/image_assets/im=
+ages/6adac21aef78f700869b3b0f/original.jpg=3F1792721434" border=3D"0" alt=
+=3D"Southern Charm - New Episodes Fridays" width=3D"550" style=3D"display: =
+block; max-width: 550px; font-family: Arial, sans-serif; font-size: 16px; l=
+ine-height: 22px; color: #FFFFFF; border-radius: 15px" /></a></td>=0A=0A   =
+                     </tr>=0A=0A=09=09=09=09<!-- =3D=3D //HERO =3D=3D --> =
+=09=0A=0A=09=09=09=09=09=09 =0A=0A=09=09=09=09=09=09  =0A<!-- =3D=3D SOLID =
+CTA =3D=3D -->=0A<tr>=0A<td valign=3D"top" align=3D"center" style=3D"paddin=
+g: 50px 0px 50px 0px;"><table cellspacing=3D"0" cellpadding=3D"0" border=3D=
+"0" align=3D"center">=0A<tbody>=0A<tr>=0A<td class=3D"em_defaultlink" style=
+=3D"font-size: 18px; font-family: 'Peacock Sans', Arial, Helvetica, sans-se=
+rif; color: #000000; border-radius: 25px; font-weight: 600; padding: 0px 40=
+px; height: 50px; background-color: #FFFFFF; background-color: #FFFFFF; tex=
+t-transform: uppercase;" valign=3D"middle" height=3D"50" bgcolor=3D"#FFFFFF=
+" align=3D"center"><a target=3D"_blank" style=3D"text-decoration: none; col=
+or: #000000; display: block; line-height: 25px;" href=3D"https://clicks.ema=
+il.peacocktv.com/f/a/o7dW5HLFixfkmBgxj7JnFA~~/AAQRxRA~/E0fwh7PgORxbH0g7e6sS=
+zbqUTVWIQ6uQ3YZrhCsCkx4DK3ZzGbznooJuLiX70vD0Hph9inwqa5RFgAlIgkRvp4W-_qw-aOs=
+IlXU4uQ0BVsZDJRSiIw13JVY69uVfmBBHd4gvVDeXDJv827JRV3EccQPgtH3ZqwUdnyoQGpmKDk=
+qwd366OJiWtVVLOpI5hdsNHFwgxVNj5186S_mva1AhDZUKr65oxcu7iGXTr6vLUYf9TdP2qsb9c=
+Pygcqq2M7ANCo5hQ-T_UvEkm1ickOmo3PEM-kYBuiZk0O2hj--545ZQowIdXgSI2cd2prG9N0qr=
+hIaIQq-ijEcSU-ry2lzv_g~~">STREAM NOW</a></td>=0A</tr>=0A</tbody>=0A</table>=
+</td>=0A</tr>=0A<!-- =3D=3D //SOLID CTA =3D=3D -->=0A=0A=09=09=0A=0A       =
+     </tbody>=0A           </table>=0A          </td>=0A         </tr>=0A  =
+      </tbody>=0A       </table>=0A      </td>=0A     </tr>=0A     <!-- =3D=
+=3D // GRAY GRADIENT MODULE =3D=3D -->=09=0A=09=09=0A<!-- =3D=3D BLACK GRAD=
+IENT MODULE =3D=3D --> =09=09=09=09=0A=0A        <tr>=0A=0A          <td al=
+ign=3D"center" valign=3D"top" bgcolor=3D"#626262" style=3D"background-color=
+: #626262; padding-top: 50px;"><table align=3D"center" class=3D"em_wrapper"=
+ width=3D"600" style=3D"width: 600px;" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0">=0A=0A              <tbody>=0A=0A                <tr>=0A=0A   =
+               <td align=3D"center" valign=3D"top" style=3D"padding: 0px 0p=
+x;" class=3D"em_aside15"><table width=3D"100%" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0">=0A=0A                      <tbody>=09  =0A=0A=0A=09=
+=09=09  <!-- =3D=3D CENTERED HEADER =3D=3D -->=0A             <tr>=0A      =
+        <td align=3D"center" valign=3D"top" style=3D"font-family: 'Peacock =
+Sans', Arial, Helvetica, sans-serif; font-size: 20px; line-height: 22px; co=
+lor: #FFFFFF; font-weight: 600; letter-spacing: 1px; text-transform: upperc=
+ase; padding: 0px 30px 20px 30px;">THE COMPETITION IS HEATING&nbsp;UP=0A=0A=
+=0A=0A=0A=0A</td>=0A             </tr>=0A             <!-- =3D=3D // CENTER=
+ED HEADER =3D=3D -->=0A=09=09=09=09=09=09  =0A=09=09=09=09=09=09  =0A=09=09=
+=09=09=09=09<!-- =3D=3D CENTERED SUBHEAD =3D=3D --> =0A=0A=09=09=09=09=09=
+=09  <tr>=0A=0A=09=09=09=09=09=09=09  <td align=3D"center" valign=3D"top" s=
+tyle=3D"font-family: 'Peacock Sans', Arial, Helvetica, sans-serif; font-siz=
+e: 16px; line-height: 22px; color: #A3A3A3; font-weight: 500; padding: 0px =
+30px 30px 30px;" class=3D"em_f25">Be there as the live shows raise the stak=
+es and the top 10 finalists&nbsp;are&nbsp;revealed. =0A=0A</td>=0A=0A      =
+                    </tr>=09=0A=0A=09=09=09=09<!-- =3D=3D // CENTERED SUBHE=
+AD =3D=3D -->=0A=09=09=09=09=09=09  =0A=09=09=09=0A=09=09=0A=09=09 <!-- =3D=
+=3D HERO =3D=3D --> =09=09  =0A=0A=09=09=09=09=09=09 <tr>=0A=0A            =
+              <td align=3D"center" valign=3D"top" class=3D"em_full_img" sty=
+le=3D"padding-top: 0px;"><a href=3D"https://clicks.email.peacocktv.com/f/a/=
+MxssnUaih9Cvl8ckJ7CQAQ~~/AAQRxRA~/uMiZMZ_yPSp8Cehe9D7vdF-HIfLEFG9BaWhLIUkAG=
+JZ9Meq6RKuB9av6c0Gwxd-9_XFy06qaphHKHsmW7hHDpgs8UXIcYaDGDI0RsMXSOTGL2wTBT4Sh=
+OXCS0Ez_PraQJKIlvgRdMTqxURq0_JjOosONGmzhAjYIr2vtnIHoIOTgWYpqdAt2IJpgRfV7vAX=
+vZ7BYwTfROaaBG997pRdoXqQgbK45psUcyEw7iLqTGPj_xliAAJMdNMKKUTU9mjSChymo9rypnr=
+DAONdkW8DTJ_Q538Dmh7OMCfTtHAxwrFmzrhDqWE3OScmbSo3Mjqrf" target=3D"_blank" s=
+tyle=3D"text-decoration: none; color: #FFFFFF;"><img src=3D"https://braze-i=
+mages.com/appboy/communication/assets/image_assets/images/6a7fa2a5001ec7008=
+6061e17/original.jpg=3F1786749605" border=3D"0" alt=3D"The Voice" width=3D"=
+550" style=3D"display: block; max-width: 550px; font-family: Arial, sans-se=
+rif; font-size: 16px; line-height: 22px; color: #FFFFFF; border-radius: 15p=
+x" /></a></td>=0A=0A                        </tr>=0A=0A=09=09=09=09<!-- =3D=
+=3D //HERO =3D=3D --> =0A=0A=0A=09=09=09=09=09=09  =0A<!-- =3D=3D SOLID CTA=
+ =3D=3D -->=0A<tr>=0A<td valign=3D"top" align=3D"center" style=3D"padding: =
+50px 0px 50px 0px;"><table cellspacing=3D"0" cellpadding=3D"0" border=3D"0"=
+ align=3D"center">=0A<tbody>=0A<tr>=0A<td class=3D"em_defaultlink" style=3D=
+"font-size: 18px; font-family: 'Peacock Sans', Arial, Helvetica, sans-serif=
+; color: #000000; border-radius: 25px; font-weight: 600; padding: 0px 40px;=
+ height: 50px; background-color: #FFFFFF; background-color: #FFFFFF; text-t=
+ransform: uppercase;" valign=3D"middle" height=3D"50" bgcolor=3D"#FFFFFF" a=
+lign=3D"center"><a target=3D"_blank" style=3D"text-decoration: none; color:=
+ #000000; display: block; line-height: 25px;" href=3D"https://clicks.email.=
+peacocktv.com/f/a/RxL-64IdUnFU4npkIBOHMQ~~/AAQRxRA~/uMiZMZ_yPSp8Cehe9D7vdF-=
+HIfLEFG9BaWhLIUkAGJZ9Meq6RKuB9av6c0Gwxd-9_XFy06qaphHKHsmW7hHDpgs8UXIcYaDGDI=
+0RsMXSOTGNkKQvoXBaXhdEGnptIqS4KlVL-_5dnslSCicKhOosjJG-FwNWQSHulqtvWlOs8kVxQ=
+WErkpBwcyPPHYCGzOrM1dcE1iO5dI5u5pJXABoGylOjqgZwoapTJs7ss3i2CiSXMdu4yCUZVcZo=
+tFbR0mrsFLf6iHBFhya3ybEG7omAG8gqHmR9GkswFDXno-ogtrOZRiUAuVAmTRDsIoiHUMLI">S=
+TREAM TONIGHT</a></td>=0A</tr>=0A</tbody>=0A</table></td>=0A</tr>=0A<!-- =
+=3D=3D //SOLID CTA =3D=3D -->=0A=0A=0A=09=09=09=09=09    </tbody>=0A=0A    =
+                </table></td>=0A=0A                </tr>=0A=0A             =
+ </tbody>=0A=0A            </table></td>=0A=0A        </tr>=0A=0A<!-- =3D=
+=3D // BLACK GRADIENT MODULE =3D=3D -->=09=0A=09=09=0A=09=0A<!-- =3D=3D WHI=
+TE GRADIENT MODULE =3D=3D --> =09=09=09=09=0A=0A        <tr>=0A=0A         =
+ <td align=3D"center" valign=3D"top" bgcolor=3D"#333333" style=3D"backgroun=
+d-color: #333333; padding-top: 50px;"><table align=3D"center" class=3D"em_w=
+rapper" width=3D"600" style=3D"width: 600px;" border=3D"0" cellspacing=3D"0=
+" cellpadding=3D"0">=0A=0A              <tbody>=0A=0A                <tr>=
+=0A=0A                  <td align=3D"center" valign=3D"top" style=3D"paddin=
+g: 0px 0px;" class=3D"em_aside15"><table width=3D"100%" border=3D"0" cellsp=
+acing=3D"0" cellpadding=3D"0">=0A=0A                      <tbody>=0A=0A=0A=
+=09=09  <!-- =3D=3D CENTERED HEADER =3D=3D -->=0A             <tr>=0A      =
+        <td align=3D"center" valign=3D"top" style=3D"font-family: 'Peacock =
+Sans', Arial, Helvetica, sans-serif; font-size: 20px; line-height: 25px; co=
+lor: #FFFFFF; font-weight: 600; letter-spacing: 1px; text-transform: upperc=
+ase; padding: 0px 30px 20px 30px;">MAY THE ODDS BE EVER IN&nbsp;YOUR&nbsp;F=
+AVOR=0A=0A=0A=0A=0A=0A=0A=0A</td>=0A             </tr>=0A             <!-- =
+=3D=3D // CENTERED HEADER =3D=3D -->=0A=09=09=09<!-- =3D=3D CENTERED SUBHEA=
+D =3D=3D --> =0A=0A=09=09=09=09=09=09  <tr>=0A=0A=09=09=09=09=09=09=09  <td=
+ align=3D"center" valign=3D"top" style=3D"font-family: 'Peacock Sans', Aria=
+l, Helvetica, sans-serif; font-size: 16px; line-height: 22px; color: #82828=
+2; font-weight: 500; padding: 0px 30px 30px 30px;" class=3D"em_f25">Stream =
+the Hunger&nbsp;Games movie franchise on&nbsp;Peacock.=0A=0A</td>=0A=0A    =
+                      </tr>=09=0A=0A=09=09=09=09<!-- =3D=3D // CENTERED SUB=
+HEAD =3D=3D -->=0A=09=09=0A <!-- =3D=3D 2x1 IMAGES =3D=3D --> =0A=0A       =
+                 <tr>=0A=0A                          <td align=3D"center" v=
+align=3D"top" style=3D"padding: 0px 0px 0px 0px;"><table align=3D"center" b=
+order=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0A=0A                     =
+         <tbody>=0A=0A                                <tr>=0A=0A           =
+                       <td align=3D"center" valign=3D"top" class=3D"em_full=
+_img"><a href=3D"https://clicks.email.peacocktv.com/f/a/MPEaY5zAk2a0u-1tqoZ=
+8NA~~/AAQRxRA~/rtwnhsrV6dwdkxYvecmlsjfFucG7k3oamosfd0hWSERCPNtFfwvQLBtspM0g=
+dyOVIzllnGj03qrKJBld8uN5DLob3iI3irvcw1IXqZt5uuTIkEZOEdEjCHuWs_pmQEdaU4MGrUY=
+7d6Zh5vVHWV0kOAt_V2DJ_IWQPAlf_lhqvxkMhdc4mrIo-tggrBqWn3oT78QLUwG6BcCndEGbEz=
+pi9ubugd7DbUc5c_Ap9wqSTrSFK5ck-R2cTaZA_XZEBuGGemQMvFSLfiHbhoHDRdx-j08Mmm0Cp=
+HMbuO445PW0bHUReTb8kPKJ-DLsTcrwxvumr6aAfHq1M3UjLTNm0gTK7q1DaQSJAEEkvtqUrsIM=
+sWE~" target=3D"_blank" style=3D"text-decoration: none; color: #010101;"><i=
+mg src=3D"https://braze-images.com/appboy/communication/assets/image_assets=
+/images/695fefab43016900633aff64/original.jpg=3F1767894955" border=3D"0" al=
+t=3D"The Hunger Games" width=3D"270" style=3D"display: block; max-width: 27=
+0px; font-family: Arial, sans-serif; font-size: 16px; line-height: 22px; co=
+lor: #010101; border-radius: 15px;" /></a></td>=0A=0A                      =
+            <td align=3D"center" valign=3D"top" width=3D"10" style=3D"width=
+: 10px; font-size: 0px; line-height: 0px;">&nbsp;</td>=0A=0A               =
+                   <td align=3D"center" valign=3D"top" class=3D"em_full_img=
+"><a href=3D"https://clicks.email.peacocktv.com/f/a/Ougkqcdo-bWwBiMnIygWuA~=
+~/AAQRxRA~/CC5__MjOqcd0K_3yqB67H81MiXD1X52SQVI3SDmldCpVKsLe5JupwdXF2PfxhDXK=
+BZRsNXfMpJAaYi-Em96raR-h5zOQ0f-H95RZsBVU7ytiI9UYRXeET0fVKv6XgVNOXnRm8GfKX0f=
+b3IkT7dVdoW-WQwSIwT_kd6TcyHEZsjUhpqsaGiLWU6g8Wwzk-2JuNoX_DIZNbem-h-OxBpF2Km=
+GwEDP0aVH1oe72CVv0VmdW9nNDL2_pTBo6UmwsWbdXOUbQA6auH_nkBvhClVYNXiVXd7z7f1TKv=
+Xz2LNCX8pYSjgA9lv-XPp3jYyNYtrjPX2_MhFZpFUPWp2Va6IVbttmnUnOyV5giAMeYvGeT1IAR=
+fBsF51P04Jc1GBw7IcIK" target=3D"_blank" style=3D"text-decoration: none; col=
+or: #010101;"><img src=3D"https://braze-images.com/appboy/communication/ass=
+ets/image_assets/images/695ff108d2768e00633ad8af/original.jpg=3F1767895304"=
+ border=3D"0" alt=3D"The Hunger Games: Catching Fire" width=3D"270" style=
+=3D"display: block; max-width: 270px; font-family: Arial, sans-serif; font-=
+size: 16px; line-height: 22px; color: #010101; border-radius: 15px;" /></a>=
+</td>=0A=0A                                </tr>=0A=0A                     =
+         </tbody>=0A=0A                            </table></td>=0A=0A     =
+                   </tr>=0A=0A=09=09=09=09<!-- =3D=3D //2x1 IMAGES =3D=3D -=
+-> =0A=0A=09=09=09=09=0A=0A=09=09=09=09=09<!-- =3D=3D 3x1 IMAGES =3D=3D -->=
+=0A=0A=09=09=09=09=09    <tr>=0A=0A                          <td align=3D"c=
+enter" valign=3D"top" style=3D"padding-top: 10px;"><table align=3D"center" =
+border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0A=0A                    =
+          <tbody>=0A=0A                                <tr>=0A=0A          =
+                        <td align=3D"center" valign=3D"top" class=3D"em_ful=
+l_img"><a href=3D"https://clicks.email.peacocktv.com/f/a/ILy8DL_P4szh69DQuW=
+Z1Bg~~/AAQRxRA~/EQO1U8pIUBuLl2T_p94ZbvEuM4QqbrwvwIslINM81Bhc6RxjlUJsykPUxK1=
+oajOKES_F-iSCeC-BHUe3aNA3bsxOoK5dIEySgeuJ_kX-jMCeJW_AHG2trps6n8IY1H3qLNbJht=
+vSNA6s6tBJyBGK2FOSa29sewCR-AbmLwm58KNef5kcBFeAlDh6OlOwZ9Zfvr3ltv7Kh-u7UMDkE=
+FY3zFKNp-i-pLIeInDjjFpRim29ggx0Eq43JNRUaNyotKnHLveOOz0puyLoKArNobjKznYUff56=
+wWbtZwlqCHAMQkmXYIUd0zcjyVhn1omtSSsYXiAsUH-liN16KgRb30-Up46Wydr5BEDdXvu4ei7=
+L3RprJCJuwK2KUr0PHAk2NQkR" target=3D"_blank" style=3D"text-decoration: none=
+; color: #010101;"><img src=3D"https://braze-images.com/appboy/communicatio=
+n/assets/image_assets/images/695ff0511622b50063f55850/original.jpg=3F176789=
+5121" border=3D"0" alt=3D"The Hunger Games: Mockingjay Part 1" width=3D"176=
+" style=3D"display: block; max-width: 176px; font-family: Arial, sans-serif=
+; font-size: 16px; line-height: 22px; color: #010101; border-radius: 15px;"=
+ /></a></td>=0A=0A                                  <td align=3D"center" va=
+lign=3D"top" width=3D"10" style=3D"width: 10px; font-size: 0px; line-height=
+: 0px;">&nbsp;</td>=0A=0A                                  <td align=3D"cen=
+ter" valign=3D"top" class=3D"em_full_img"><a href=3D"https://clicks.email.p=
+eacocktv.com/f/a/NlPEpKEBiHssaj4W62p90w~~/AAQRxRA~/EQO1U8pIUBuLl2T_p94ZbvEu=
+M4QqbrwvwIslINM81Bhc6RxjlUJsykPUxK1oajOKES_F-iSCeC-BHUe3aNA3bsxOoK5dIEySgeu=
+J_kX-jMC6HVHjLEjix80pe4u5y9B-Y3vRn5TxnMkE2ZEnvEAYVkfzU6HXR5CmFNbBnkB_CbE114=
+ojNi14-rnhrqhJYU-YnKXPuetnk0ZoO5ewqgwRNi68Ux6EcszIaKlTT-8aRM6FZjPQ6Ggu3VHdg=
+xdAeUxgJ1oDmKoUcvFilR3ktjzgl6fdNRDDdbErOmOmFWPeLIg426fQjxYjMvGdmSmp8J3Sug90=
+kmIocCnFzWx7KPCnjCPxdumDN4GfluctmHt7y5QjOArANBQmmO74TtqkWCdA" target=3D"_bl=
+ank" style=3D"text-decoration: none; color: #010101;"><img src=3D"https://b=
+raze-images.com/appboy/communication/assets/image_assets/images/695fef6f206=
+52c00636a150c/original.jpg=3F1767894894" border=3D"0" alt=3D"The Hunger Gam=
+es: Mockingjay Part 2" width=3D"176" style=3D"display: block; max-width: 17=
+6px; font-family: Arial, sans-serif; font-size: 16px; line-height: 22px; co=
+lor: #010101; border-radius: 15px;" /></a></td>=0A=0A                      =
+            <td align=3D"center" valign=3D"top" width=3D"10" style=3D"width=
+: 10px; font-size: 0px; line-height: 0px;">&nbsp;</td>=0A=0A               =
+                   <td align=3D"center" valign=3D"top" class=3D"em_full_img=
+"><a href=3D"https://clicks.email.peacocktv.com/f/a/MScUCcHXEdgijA_gHpjBCg~=
+~/AAQRxRA~/eL4t9WyA_y6TBm4zXwIDp_2QDj_j5ryb0yyYum2Ouc6I2lUaLaBB_aiaWlAwa7-8=
+4WtDP6mtHgBZjquxH073RM86sRwcHhBwWlGsHN6PeeepFLzCXTYLshuHBEvBp_os1-8-yXpZgVx=
+Ggc0MPlHhBQQhmiVSlzVkBEWln3p4lGMRjIX2UCnNbVNxC965TBnhchT2mcXdBq2lS1ToyAi6Ac=
+Cqp7oT06iYImzWv_JuAWTz-wwtE_ZEKgUVs-RTw5lIDBBfqkbuoDTiN_eQVWE1CZgsMpd9SWLL6=
+YyEvwiQTy4YSPXkbyxrRz4KGXRx1WjBXe3ls1vNPz2AnurbsjjZk0COlV7e7q6av3lkfmv3QWvJ=
+uZY22bxZhw8WIvNzNvHs9q2ABxqMsDNg9sjubCb4Sg~~" target=3D"_blank" style=3D"te=
+xt-decoration: none; color: #010101;"><img src=3D"https://braze-images.com/=
+appboy/communication/assets/image_assets/images/6952e6271114376b59906716/or=
+iginal.jpg=3F1767040551" border=3D"0" alt=3D"The Hunger Games: The Ballad o=
+f Songbird and Snakes" width=3D"176" style=3D"display: block; max-width: 17=
+6px; font-family: Arial, sans-serif; font-size: 16px; line-height: 22px; co=
+lor: #010101; border-radius: 15px;" /></a></td>=0A=0A                      =
+          </tr>=0A=0A                              </tbody>=0A=0A          =
+                  </table></td>=0A=0A                        </tr>=0A=0A=09=
+=09=09=09<!-- =3D=3D //3x1 IMAGES =3D=3D -->=0A=09=09=09=09=0A=0A=09=09=09=
+=09 <!-- =3D=3D SOLID CTA =3D=3D -->=0A=0A=09=09=09=09=09=09  <tr>=0A=0A   =
+                       <td valign=3D"top" align=3D"center" style=3D"padding=
+: 50px 0px 50px 0px;"><table cellspacing=3D"0" cellpadding=3D"0" border=3D"=
+0" align=3D"center">=0A=0A                              <tbody>=0A=0A      =
+                          <tr>=0A=0A                                  <td c=
+lass=3D"em_defaultlink" style=3D"font-size: 18px; font-family: 'Peacock San=
+s', Arial, Helvetica, sans-serif; color: #000000; border-radius: 25px; font=
+-weight: 600; padding: 13px 40px; background-color: #FFFFFF; background-col=
+or: #FFFFFF; text-transform: uppercase;" valign=3D"middle"  bgcolor=3D"#FFF=
+FFF" align=3D"center"><a target=3D"_blank" style=3D"text-decoration: none; =
+color: #000000; display: block; line-height: 25px;" href=3D"FPO=3Flid=3D6e7=
+asbsfboki&cid=3Dpkowneml200000&utm_campaign=3D2601libgen&utm_source=3Dpk_pk=
+_brz&utm_medium=3Down_eml_custeng_eml">Stream Now</a></td>=0A=0A           =
+                     </tr>=0A=0A                              </tbody>=0A=
+=0A                            </table></td>=0A=0A                        <=
+/tr>=0A=0A=09=09=09=09  <!-- =3D=3D //SOLID CTA =3D=3D -->=0A=09=09=09  =0A=
+                      </tbody>=0A=0A                    </table></td>=0A=0A=
+                </tr>=0A=0A              </tbody>=0A=0A            </table>=
+</td>=0A=0A        </tr>=0A=0A<!-- =3D=3D // WHITE GRADIENT MODULE =3D=3D -=
+->=09=0A<!-- =3D=3D BLACK GRADIENT MODULE =3D=3D --> =09=09=09=09=0A=0A    =
+    <tr>=0A=0A          <td align=3D"center" valign=3D"top" bgcolor=3D"#222=
+222" style=3D"background-color: #222222; background-image: linear-gradient(=
+to right, #111111, #222222); padding-top: 50px;"><table align=3D"center" cl=
+ass=3D"em_wrapper" width=3D"600" style=3D"width: 600px;" border=3D"0" cells=
+pacing=3D"0" cellpadding=3D"0">=0A=0A              <tbody>=0A=0A           =
+     <tr>=0A=0A                  <td align=3D"center" valign=3D"top" style=
+=3D"padding: 0px 0px;" class=3D"em_aside15"><table width=3D"100%" border=3D=
+"0" cellspacing=3D"0" cellpadding=3D"0">=0A=0A                      <tbody>=
+=09  =0A=0A=0A=09=09=09  <!-- =3D=3D CENTERED HEADER =3D=3D -->=0A         =
+    <tr>=0A              <td align=3D"center" valign=3D"top" style=3D"font-=
+family: 'Peacock Sans', Arial, Helvetica, sans-serif; font-size: 20px; line=
+-height: 22px; color: #FFFFFF; font-weight: 600; letter-spacing: 1px; text-=
+transform: uppercase; padding: 0px 30px 20px 30px;">THERE'S ALWAYS ROOM FOR=
+&nbsp;MORE=0A=0A=0A=0A=0A</td>=0A             </tr>=0A             <!-- =3D=
+=3D // CENTERED HEADER =3D=3D -->=0A=09=09=09=09=09=09  =0A=09=09=09=09=09<=
+!-- =3D=3D CENTERED SUBHEAD =3D=3D --> =0A=0A=09=09=09=09=09=09  <tr>=0A=0A=
+=09=09=09=09=09=09=09  <td align=3D"center" valign=3D"top" style=3D"font-fa=
+mily: 'Peacock Sans', Arial, Helvetica, sans-serif; font-size: 16px; line-h=
+eight: 22px; color: #828282; font-weight: 500; padding: 0px 30px 30px 30px;=
+" class=3D"em_f25">Dig into Thanksgiving episodes of your favorite&nbsp;sit=
+coms.=0A=0A</td>=0A=0A                          </tr>=09=0A=0A=09=09=09=09<=
+!-- =3D=3D // CENTERED SUBHEAD =3D=3D -->=0A=09=09=09=09=09=09  =0A=09=09=
+=09=0A<!-- =3D=3D 2x1 IMAGES =3D=3D --> =0A=0A                        <tr>=
+=0A=0A                          <td align=3D"center" valign=3D"top" style=
+=3D"padding: 0px 0px 0px 0px;"><table align=3D"center" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">=0A=0A                              <tbody>=0A=
+=0A                                <tr>=0A=0A                              =
+   <td align=3D"center" valign=3D"top" class=3D"em_full_img"><a href=3D"htt=
+ps://clicks.email.peacocktv.com/f/a/7KN9bYaJSnz7vR2j84PpMw~~/AAQRxRA~/Z7e3k=
+YfYhKhdZbnYAf4Oetc6RBNcaPy7kVvcY9S80ZpdXC3A6CZKPdwTKQtG_utCm1aGibcIuhks5DpA=
+-Ah59ElveSf52Udw0B1LNDzx-L7JlpLBFs1bSzsjSDOMap3XqDXMGMLBi9uJdfnqx798jQIwJEF=
+-2Qn84zlF1zaodJmNAf8KA6-QsX9STF8suP0KccM0INmXUPEOgcb8ctjTKeJG4RQWfSfTtniwG5=
+xImSSq-INrsWXKWAC2zoHoUeZduDCFQqBOjRWKPvgmdMuKU46Je7Fa6O_iPMblA9oA_AE4ZHuqV=
+HJchrSXUr3nuosV9S5PUhZtEToukQd8susFvg~~" target=3D"_blank" style=3D"text-de=
+coration: none; color: #010101;"><img src=3D"https://braze-images.com/appbo=
+y/communication/assets/image_assets/images/68a4f9c9fcc895006406f24d/origina=
+l.jpeg=3F1755642312" border=3D"0" alt=3D"Modern Family" width=3D"270" style=
+=3D"display: block; max-width: 270px; font-family: Arial, sans-serif; font-=
+size: 16px; line-height: 22px; color: #010101; border-radius: 15px;" /></a>=
+</td>=0A=0A                                  <td align=3D"center" valign=3D=
+"top" width=3D"10" style=3D"width: 10px; font-size: 0px; line-height: 0px;"=
+>&nbsp;</td>=0A=0A                                  <td align=3D"center" va=
+lign=3D"top" class=3D"em_full_img"><a href=3D"https://clicks.email.peacockt=
+v.com/f/a/eLr5a2d_ovPJtLMO5Z2PIg~~/AAQRxRA~/_-N_7mM5_9Hdqj-5vzZWAyasMZfAlJb=
+CQuBTWJMpiDd_1MVKLl2ihOljR-JLfFC5wRJJ9GK57otTAv6V-k-AYCNwQOnsO-i9r6CNAQzAc9=
+qI7JWBON8lxLb7ByrDJpVSK4OuRn5hLDBEycxcPiGObcTeaoAPqjNEqerpCC2Di-8rKSsxRpRcs=
+AMpWbYBy5tYnn_L55pL4vARBn5JAwb11mnUduQGN1l3psuU5JDTaivnoosYyJphMiuA7ZDdMlX_=
+VTS60yiaNhRfw3Meciq1qgiFUBASsWOPbhXZG9-p_VvoEmw2RkfFCDaiUVW4UmLc" target=3D=
+"_blank" style=3D"text-decoration: none; color: #010101;"><img src=3D"https=
+://braze-images.com/appboy/communication/assets/image_assets/images/68094ff=
+718f02200621036fd/original.jpeg=3F1745440758" border=3D"0" alt=3D"The Middl=
+e" width=3D"270" style=3D"display: block; max-width: 270px; font-family: Ar=
+ial, sans-serif; font-size: 16px; line-height: 22px; color: #010101; border=
+-radius: 15px;" /></a></td>=0A=0A                                </tr>=0A=
+=0A                              </tbody>=0A=0A                            =
+</table></td>=0A=0A                        </tr>=0A=0A=09=09=09=09<!-- =3D=
+=3D //2x1 IMAGES =3D=3D -->=09=0A=09=09=09=09=09=09  =0A=09=09=09<!-- =3D=
+=3D 2x1 IMAGES =3D=3D --> =0A=0A                        <tr>=0A=0A         =
+                 <td align=3D"center" valign=3D"top" style=3D"padding: 10px=
+ 0px 0px 0px;"><table align=3D"center" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0">=0A=0A                              <tbody>=0A=0A             =
+                   <tr>=0A=0A                                  <td align=3D=
+"center" valign=3D"top" class=3D"em_full_img"><a href=3D"https://clicks.ema=
+il.peacocktv.com/f/a/r0LN_nq8TlcUoXx8jSYMtA~~/AAQRxRA~/kaHYxEkUwxDuAn3JGJB4=
+_tuOKZU_PHEbaHhMxbzCr3IUh5oNGQzA4brjjolaouAtaNR5aoXOH2-RsVGAsx9WtdUJgG1Bz_m=
+rwYRZAIACrQJ-mjoxnj_vADF3ZTiyBPZCC7mJmi8oN_luVKLRIiJLlpJMtab9Z4EFhI3hD6aB7s=
+C69B6cRvWHvVXH2at8vtatiXuI6EFrxgmjD_os4AQOJfIIc_86pPMBNB2_MhBV9sQ2dP7ICJPAb=
+KMPXhHCPlLmnIHe5v6EBFm7h3MlTgHqfRml3SFTZh3tGUVWXJU5HerUw5of6y1B44_l12PQG11G=
+" target=3D"_blank" style=3D"text-decoration: none; color: #010101;"><img s=
+rc=3D"https://braze-images.com/appboy/communication/assets/image_assets/ima=
+ges/681bea2c4d0c5f0064b4316b/original.jpeg=3F1746659884" border=3D"0" alt=
+=3D"New Girl" width=3D"270" style=3D"display: block; max-width: 270px; font=
+-family: Arial, sans-serif; font-size: 16px; line-height: 22px; color: #010=
+101; border-radius: 15px;" /></a></td>=0A=0A                               =
+   <td align=3D"center" valign=3D"top" width=3D"10" style=3D"width: 10px; f=
+ont-size: 0px; line-height: 0px;">&nbsp;</td>=0A=0A                        =
+          <td align=3D"center" valign=3D"top" class=3D"em_full_img"><a href=
+=3D"https://clicks.email.peacocktv.com/f/a/d3nhCbU65TWvlDO_6gxxMg~~/AAQRxRA=
+~/jfz5AU_SFt3CDQF7vxEKCeowZGkfbFJUhFR0wZDfyUfeq4dIvT2bUOUruw3lhiQtSihAUYYev=
+MykWcWT38opRA2wIEsxsL1OJwJYZLXGt0OgDBYrEQIZRvQsl6MnRWzWVCiyGkcBtsFgVPXW9iYm=
+MpuEYli6TNSoauUE5eWJr8co2yQPbnZHlV7pOb6xzZ4ysnJS97reNY31FBoGnth5I_-Tb1-3xVn=
+AYQMdetdBJG8EPOuiDDTzpxvzyjuhLtGxTemcy-M4wJxEUtxyN8YMTobURhD4ucEqIXd_mXmmfi=
+n8Xca8fFIEzm1JBJ90r6N60z_iMQT-AtMy2X3PAqDPfQ~~" target=3D"_blank" style=3D"=
+text-decoration: none; color: #010101;"><img src=3D"https://braze-images.co=
+m/appboy/communication/assets/image_assets/images/697d471336d4450063fe3dc2/=
+original.jpeg=3F1769817875" border=3D"0" alt=3D"Brooklyn Nine-Nine" width=
+=3D"270" style=3D"display: block; max-width: 270px; font-family: Arial, san=
+s-serif; font-size: 16px; line-height: 22px; color: #010101; border-radius:=
+ 15px;" /></a></td>=0A=0A                                </tr>=0A=0A       =
+                       </tbody>=0A=0A                            </table></=
+td>=0A=0A                        </tr>=0A=0A=09=09=09=09<!-- =3D=3D //2x1 I=
+MAGES =3D=3D -->=09=09=0A=0A              <!-- =3D=3D SOLID CTA =3D=3D -->=
+=0A=0A=09=09=09=09=09=09  <tr>=0A=0A                          <td valign=3D=
+"top" align=3D"center" style=3D"padding: 50px 0px 50px 0px;"><table cellspa=
+cing=3D"0" cellpadding=3D"0" border=3D"0" align=3D"center">=0A=0A          =
+                    <tbody>=0A=0A                                <tr>=0A=0A=
+                                  <td class=3D"em_defaultlink" style=3D"fon=
+t-size: 18px; font-family: 'Peacock Sans', Arial, Helvetica, sans-serif; co=
+lor: #000000; border-radius: 25px; font-weight: 600; padding: 13px 40px; ba=
+ckground-color: #FFFFFF; background-color: #FFFFFF; text-transform: upperca=
+se;" valign=3D"middle"  bgcolor=3D"#FFFFFF" align=3D"center"><a target=3D"_=
+blank" style=3D"text-decoration: none; color: #000000; display: block; line=
+-height: 25px;" href=3D"https://clicks.email.peacocktv.com/f/a/9dTbLmseYoKz=
+lcSLSpaD1g~~/AAQRxRA~/1mNKhZAIWHoOwJhqCya7xceONZKBiwJzCMSd1PaAalHMlz1umCOUy=
+XgjDrnt05LTsL8wlIUzQrGUYG3GPgz4C8WKHXfXeGkp6AU6JUgB2AGKV-uG8ZCGoS4NL8IO8-qz=
+GtuJRT80Vxb6VHwCgbKUrAOCOWFlPlYTbi2NVPJCtvDccPrOCqF44bos5EhagClAs8DUwcvuILf=
+n299DrgD37n0FjgG3CWr74QoBD8B6kp_5rlUyvzBidwFRhSmEPyHami0FkA-xj3xlmsz6VO3Ajp=
+o1DsWU7qP0LBH43j544uE~">Stream NOW</a></td>=0A=0A                          =
+      </tr>=0A=0A                              </tbody>=0A=0A              =
+              </table></td>=0A=0A                        </tr>=0A=0A=09=09=
+=09=09  <!-- =3D=3D //SOLID CTA =3D=3D -->=0A  =0A=0A=0A=09=09=09=09=09    =
+</tbody>=0A=0A                    </table></td>=0A=0A                </tr>=
+=0A=0A              </tbody>=0A=0A            </table></td>=0A=0A        </=
+tr>=0A=0A<!-- =3D=3D // BLACK GRADIENT MODULE =3D=3D -->=09=0A=09=09=0A=09=
+=09=0A<!-- =3D=3D BLACK GRADIENT MODULE =3D=3D --> =09=09=09=09=0A=0A      =
+  <tr>=0A=0A          <td align=3D"center" valign=3D"top" bgcolor=3D"#33333=
+3" style=3D"background-color: #333333; padding-top: 50px;"><table align=3D"=
+center" class=3D"em_wrapper" width=3D"600" style=3D"width: 600px;" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0A=0A              <tbody>=0A=
+=0A                <tr>=0A=0A                  <td align=3D"center" valign=
+=3D"top" style=3D"padding: 0px 0px;" class=3D"em_aside15"><table width=3D"1=
+00%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0A=0A               =
+       <tbody>=09  =0A=0A=0A=09=09=09  <!-- =3D=3D CENTERED HEADER =3D=3D -=
+->=0A             <tr>=0A              <td align=3D"center" valign=3D"top" =
+style=3D"font-family: 'Peacock Sans', Arial, Helvetica, sans-serif; font-si=
+ze: 20px; line-height: 22px; color: #FFFFFF; font-weight: 600; letter-spaci=
+ng: 1px; text-transform: uppercase; padding: 0px 30px 30px 30px;">GET VANDE=
+RPUMPED UP=0A=0A=0A=0A=0A=0A</td>=0A             </tr>=0A             <!-- =
+=3D=3D // CENTERED HEADER =3D=3D -->=0A=09=09=09=09=09=09  =0A=09=09=09=09=
+=09=09 =0A=09<!-- =3D=3D 3x1 IMAGES =3D=3D -->=0A=0A=09=09=09=09=09    <tr>=
+=0A=0A                          <td align=3D"center" valign=3D"top" style=
+=3D"padding-top: 0px;"><table align=3D"center" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0">=0A=0A                              <tbody>=0A=0A     =
+                           <tr>=0A=0A                                  <td =
+align=3D"center" valign=3D"top" class=3D"em_full_img"><a href=3D"https://cl=
+icks.email.peacocktv.com/f/a/FzI4N-ZG6vvTEpHPXWyb0Q~~/AAQRxRA~/aXKBKa20aiew=
+PLC1HbrosnfDvwifWQDxkIz62aWQ7TA_ibNRsNRzPU1vqKPJlmzpY60rYBqkU-R26iEveF7MFt6=
+UslN0Ci2wq47Wv2KC1hckiuJhtaZLY8gsOHpDSKioDrQHBwfj7yWoXOBFawfqx2cbErPg0B1k9D=
+jXfdJzPU1zq2g35Gh7LF4ftuAL3YOR2sgmsEAGueW123quFD0myUb-2vmg9roajJBBj7wU42ZnX=
+T1o9fvIUPV41FR96puouYKJNVMv-Ei6iQXoMqDzMlUVia-f0YNjo85wvgQPwl4Rma76XOWrPhTv=
+489VFrFskl75sof8wEw5njNapSiYoL7Xtoqw8k4DHXa6Vl3OW4I~" target=3D"_blank" sty=
+le=3D"text-decoration: none; color: #010101;"><img src=3D"https://braze-ima=
+ges.com/appboy/communication/assets/image_assets/images/690a510b2be5af0063c=
+54d23/original.jpg=3F1762283787" border=3D"0" alt=3D"The Real Housewives of=
+ Beverly Hills" width=3D"176" style=3D"display: block; max-width: 176px; fo=
+nt-family: Arial, sans-serif; font-size: 16px; line-height: 22px; color: #0=
+10101; border-radius: 15px;" /></a></td>=0A=0A                             =
+     <td align=3D"center" valign=3D"top" width=3D"10" style=3D"width: 10px;=
+ font-size: 0px; line-height: 0px;">&nbsp;</td>=0A=0A                      =
+            <td align=3D"center" valign=3D"top" class=3D"em_full_img"><a hr=
+ef=3D"https://clicks.email.peacocktv.com/f/a/b6q-vC5S8WX9v4SfJV_gFg~~/AAQRx=
+RA~/Uwt8BKUEN0uiNlDVRCRgSNvAG32ojlT7N_UDjK-BsnANBoqxgjvkMlt0zFJ1lLjAATAUaTo=
+cjmRVSxAEFbGtn7sbf0JvLbEfX_Bx-JEE9tzrXQU2Ug5tJXxcE-XsUER72zHs3kzB7zCYavLEeF=
+7egWJVkk-nsCkWgGvz4W8jNr0qw7mN4n00Ikf0LMhwOwW6XTt_sX2-diNY0v7A6BUh_WkV3zVS6=
+r4naVcE-LdbHen8hIYiCnUT-VpHpHQKXcRQuw7W-SR85akkvrv-IGXV45EpdYfbASfktHSrAa9U=
+bN23rT5FXbwKk-cJPQJ7m6bQ6XEc9Y08ZNvVnwq7Y8YMCw~~" target=3D"_blank" style=
+=3D"text-decoration: none; color: #010101;"><img src=3D"https://braze-image=
+s.com/appboy/communication/assets/image_assets/images/690a68b72dab5900632d4=
+fed/original.jpg=3F1762289846" border=3D"0" alt=3D"Vanderpump Rules" width=
+=3D"176" style=3D"display: block; max-width: 176px; font-family: Arial, san=
+s-serif; font-size: 16px; line-height: 22px; color: #010101; border-radius:=
+ 15px;" /></a></td>=0A=0A                                  <td align=3D"cen=
+ter" valign=3D"top" width=3D"10" style=3D"width: 10px; font-size: 0px; line=
+-height: 0px;">&nbsp;</td>=0A=0A                                  <td align=
+=3D"center" valign=3D"top" class=3D"em_full_img"><a href=3D"https://clicks.=
+email.peacocktv.com/f/a/M07W1V3bGH27FtYGPtZBBw~~/AAQRxRA~/RG0_rw3mkV-dmX7qj=
+g9dqWbo6GvHxQv7bQkOTj7M6_ZO9iR58JaXmvI1EIeT0-V5RsrwkZtyC8tHQu_VHoMaLqYl_S8l=
+vhuB8iql6pbKx00stiVtK_ln1BO653lMvMl_gxHgIBf_OUrjQ7wlGVfpjbG4gLgBua8ONoIkUvs=
+XfcgH8fom7Qwc1SUpa8MSirjBW2v1xOgVXN8lQH2TYJ58lLj65dEQ8NJC8RDmYaZh_TvOD-tNZh=
+e4zKP4-nzmBNKDxvjWLxPmAe8bJq-g6KxojK18HtFbtZa6MLqVqDl5chUCcrTbjA1MjLKgwqu6h=
+6XuQb5KolImihsyMitmSbi5NZkRTh2REhqrCL5A2fkB_Mo~" target=3D"_blank" style=3D=
+"text-decoration: none; color: #010101;"><img src=3D"https://braze-images.c=
+om/appboy/communication/assets/image_assets/images/6ab6be40d88ad20088d57f3b=
+/original.jpg=3F1790361152" border=3D"0" alt=3D"Vanderpump Rules: Lisa Las =
+Vegas" width=3D"176" style=3D"display: block; max-width: 176px; font-family=
+: Arial, sans-serif; font-size: 16px; line-height: 22px; color: #010101; bo=
+rder-radius: 15px;" /></a></td>=0A=0A                                </tr>=
+=0A=0A                              </tbody>=0A=0A                         =
+   </table></td>=0A=0A                        </tr>=0A=0A=09=09=09=09<!-- =
+=3D=3D //3x1 IMAGES =3D=3D -->=0A=0A              <!-- =3D=3D SOLID CTA =3D=
+=3D -->=0A=0A=09=09=09=09=09=09  <tr>=0A=0A                          <td va=
+lign=3D"top" align=3D"center" style=3D"padding: 50px 0px 50px 0px;"><table =
+cellspacing=3D"0" cellpadding=3D"0" border=3D"0" align=3D"center">=0A=0A   =
+                           <tbody>=0A=0A                                <tr=
+>=0A=0A                                  <td class=3D"em_defaultlink" style=
+=3D"font-size: 18px; font-family: 'Peacock Sans', Arial, Helvetica, sans-se=
+rif; color: #000000; border-radius: 25px; font-weight: 600; padding: 13px 4=
+0px; background-color: #FFFFFF; background-color: #FFFFFF; text-transform: =
+uppercase;" valign=3D"middle"  bgcolor=3D"#FFFFFF" align=3D"center"><a targ=
+et=3D"_blank" style=3D"text-decoration: none; color: #000000; display: bloc=
+k; line-height: 25px;" href=3D"https://clicks.email.peacocktv.com/f/a/LLeZ4=
+Tm5iOIGlE-86WDqgQ~~/AAQRxRA~/1mNKhZAIWHoOwJhqCya7xceONZKBiwJzCMSd1PaAalHMlz=
+1umCOUyXgjDrnt05LTqC6QzWboNq8WX45N0I8iy-frGHcTNldGAjTD-uIlQqvApl0Y9qHgeA9Eo=
+jdcztymLlBKl-XVv5z6RVoyreXj0N_i8m5AFOnXPIzg7tLh5cLzgeX3Sjs5mYLUrrGLZSFo8iWp=
+Q2oT2k-svvSBeio2Fbs2vo1sQmUGLBF5L3G0lYhqq_Kamap_-yP2huGS4zzeswNWk3rpghk857b=
+eOq4JkDnQF2_dPva5gSdYcyjmIyY~">STREAM NOW</a></td>=0A=0A                   =
+             </tr>=0A=0A                              </tbody>=0A=0A       =
+                     </table></td>=0A=0A                        </tr>=0A=0A=
+=09=09=09=09  <!-- =3D=3D //SOLID CTA =3D=3D -->=0A  =0A=0A=0A=09=09=09=09=
+=09    </tbody>=0A=0A                    </table></td>=0A=0A               =
+ </tr>=0A=0A              </tbody>=0A=0A            </table></td>=0A=0A    =
+    </tr>=0A=0A<!-- =3D=3D // BLACK GRADIENT MODULE =3D=3D -->=09=0A=09=09=
+=0A<!-- =3D=3D FULL WIDTH HERO MODULE =3D=3D --> =09=09=0A=0A        <tr>=
+=0A=0A          <td align=3D"center" valign=3D"top" bgcolor=3D"#191919" sty=
+le=3D"background-color: #191919;"><table align=3D"center" class=3D"em_wrapp=
+er" width=3D"600" style=3D"width: 600px;" border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0">=0A=0A              <tbody>=0A=0A                <tr>=0A=0A=
+                  <td align=3D"center" valign=3D"top" class=3D"em_full_img"=
+><a href=3D"https://clicks.email.peacocktv.com/f/a/uqkLmHSh6bSldEwbJgev3g~~=
+/AAQRxRA~/bLJsQVI1v7MxEc5lanBDSDaZ3U7K7n8OGoh6NcJ8x3_iQ7s_CC-olCtmGY9UucQs-=
+f_pc-0Tz4ryQwE2Op-aWZEf0hH9kg7Vc6DnSJpP5Mcd1hjPfqd62QLZMFnEB2lgqvqD4CzmztFI=
+ZZyqXV6nxm2om8CsFAvjwc0fRMKqx2BTA9KvZc3PH-zvgyWfX-VVYS3hMZFP1v-BWZZI9t5gExH=
+Cwc-TnTA1O_Rf5QO1qllW2znJvjI259wltOHXuOGJ1CuTyb2Nr7FYPg_Q0-u--Ihh5H3160eLKO=
+gXVqscxZI7_ebLk1J_r46eLCBuSPS5" target=3D"_blank" style=3D"text-decoration:=
+ none; color: #FFFFFF;"><img src=3D"https://www.peacocktv.com/dam/growth/as=
+sets/CRM/Takeover_DIG_PreLaunch.gif" border=3D"0" alt=3D"Their job is in ru=
+ins | From the creator of The Good Place and co-creator of Parks and Recrea=
+tion comes a new comedy starring Amy Poehler and Hugh Laurie. Streaming Nov=
+ 23." width=3D"600" style=3D"display: block; max-width: 600px; font-family:=
+ Arial, sans-serif; font-size: 16px; line-height: 22px; color: #FFFFFF;" />=
+</a></td>=0A=0A                </tr>=0A=0A              </tbody>=0A=0A     =
+       </table></td>=0A=0A        </tr>=0A=0A<!-- =3D=3D // FULL WIDTH HERO=
+ MODULE =3D=3D --> =0A=0A=0A=0A      </table></td>=0A  </tr>=0A</table>=0A=
+=09=0A=09=0A<!-- =3D=3D Footer Section =3D=3D -->=0A<table width=3D"100%" b=
+order=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=3D"em_full_wrap" bgco=
+lor=3D"#151515" style=3D"table-layout:fixed;">=0D=0A=0D=0A  <tr>=0D=0A=0D=
+=0A    <td align=3D"center" valign=3D"top"><table align=3D"center" width=3D=
+"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=3D"em_main_tab=
+le" style=3D"width:600px; table-layout:fixed;">=0D=0A=0D=0A        <tr>=0D=
+=0A=0D=0A          <td align=3D"center" valign=3D"top" bgcolor=3D"#0e0e0e" =
+style=3D"background-color: #0e0e0e; "><table align=3D"center" class=3D"em_w=
+rapper em_app_top" width=3D"600" style=3D"width: 600px;" border=3D"0" cells=
+pacing=3D"0" cellpadding=3D"0">=0D=0A=0D=0A              <tbody>=0D=0A=0D=
+=0A                <tr>=0D=0A=0D=0A                  <td align=3D"center" v=
+align=3D"top" style=3D"padding: 0px 0px;" class=3D"em_aside15"><table width=
+=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D=0A=0D=0A    =
+                  <tbody>=09=0D=0A=0D=0A=09=09=09=09=09<!-- =3D=3D APP DOWN=
+LOADS =3D=3D --> =0D=0A=0D=0A                        <tr>=0D=0A=0D=0A      =
+                    <td align=3D"center" valign=3D"top" style=3D"padding: 3=
+0px 0px 40px 0px;"><table align=3D"center" border=3D"0" cellspacing=3D"0" c=
+ellpadding=3D"0">=0D=0A=0D=0A                              <tbody>=0D=0A=0D=
+=0A                                <tr>=0D=0A=0D=0A                        =
+          <td align=3D"center" valign=3D"top" class=3D"em_app_download"><a =
+href=3D"https://clicks.email.peacocktv.com/f/a/fwQt6wJPy_a26GI9hyv-FA~~/AAQ=
+RxRA~/uVip1pI10s9E1nGT38jgaIbot8oQBxCMLWElthAzRppocmviUc253DQFm0RBUgzGLf3za=
+vSQ6Sg3SslA7ntldUNMvhw8UZASNifwgk95IPbeB9elMF7JU2fZzE5nMMvLg3WxtmZRbG8WXwH-=
+DfvQGajNrpiu7RfN2xh8MiSmwXs~" target=3D"_blank" style=3D"text-decoration: n=
+one; color: #010101;"><img src=3D"https://braze-images.com/appboy/communica=
+tion/assets/image_assets/images/6a8f18081aa9fb008828f9d2/original.png=3F178=
+7762696" border=3D"0" alt=3D"Download on the App Store" width=3D"155" style=
+=3D"display: block; max-width: 155px; font-family: Arial, sans-serif; font-=
+size: 16px; line-height: 20px; color: #010101; border-radius: 0px;" /></a><=
+/td>=0D=0A=0D=0A                                  <td align=3D"center" vali=
+gn=3D"top" width=3D"10" style=3D"width: 10px; font-size: 0px; line-height: =
+0px;">&nbsp;</td>=0D=0A=0D=0A                                  <td align=3D=
+"center" valign=3D"top" class=3D"em_app_download"><a href=3D"https://clicks=
+.email.peacocktv.com/f/a/miqgKw3WLO0c7QeyWfQjMw~~/AAQRxRA~/mKSmYyRVRO9b7BZ=
+1BzK2aIdgQb9pSZ6SIDg9jtnRnBUKEWtgn7aFM0SHxXO-hih2Dw_rO0j9zYlw_uyZGxxGIKd7PA=
+9g5bwWJgMm9tCXLIpuA_tyKbcU56XVv40upssRqj3fItbkzdTtMn7mW1PnUqp9ql7DUyfYgmNQt=
+I2KJv2F5C7WXN7QuJmDSzcv-ZL1" target=3D"_blank" style=3D"text-decoration: no=
+ne; color: #010101;"><img src=3D"https://braze-images.com/appboy/communicat=
+ion/assets/image_assets/images/6a8f1808ae08ce0086dd21b1/original.png=3F1787=
+762696" border=3D"0" alt=3D"Get it on Google Play" width=3D"173" style=3D"d=
+isplay: block; max-width: 173px; font-family: Arial, sans-serif; font-size:=
+ 16px; line-height: 20px; color: #010101; border-radius: 0px;" /></a></td>=
+=0D=0A=0D=0A                                </tr>=0D=0A=0D=0A              =
+                </tbody>=0D=0A=0D=0A                            </table></t=
+d>=0D=0A=0D=0A                        </tr>=0D=0A=0D=0A=09=09=09=09<!-- =3D=
+=3D //APP DOWNLOADS =3D=3D -->=0D=0A=0D=0A=09=09=09=09<!-- =3D=3D SOCIALS =
+=3D=3D -->=0D=0A=0D=0A=09=09=09=09       <tr>=0D=0A=0D=0A                  =
+        <td align=3D"center" valign=3D"top"><table align=3D"center" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D=0A=0D=0A                    =
+          <tbody>=0D=0A=0D=0A                                <tr>=0D=0A=0D=
+=0A                                  <td align=3D"center" valign=3D"top"><a=
+ href=3D"https://clicks.email.peacocktv.com/f/a/RvyFjkNjUhL2cCzkT1UhHg~~/AA=
+QRxRA~/B7_HJuDduYYiiNJI1KVW4YoHTyAtH07aVbXdIK-FoV5ys_kVqXK9u-oUYXjsw6ahHfCM=
+OzcYN9H8b-cdXg0NkV9sY_lBmPovaiIzH-IIOT3zjks7a1BtnhT4ycDnRbks-1GbZCUS5upyd8m=
+omDu9TQ9ioZMABty2LmmRVsha1YzVuqpVeyNiL1CVtHRob7-mJVLCMa0ATthFCGa7XEYvBQ~~" =
+target=3D"_blank" style=3D"text-decoration: none; color: #FFFFFF;"><img src=
+=3D"https://appboy-images.com/appboy/communication/assets/image_assets/imag=
+es/5ef930e781f9cb6b500b0a60/original.png=3F1593389287" border=3D"0" alt=3D"=
+Facebook" width=3D"40" style=3D"display: block; max-width: 40px; font-famil=
+y: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #FFFFFF;" =
+/></a></td>=0D=0A=0D=0A=0D=0A=0D=0A                                  <td al=
+ign=3D"center" valign=3D"top" width=3D"20" style=3D"width: 20px; font-size:=
+ 0px; line-height: 0px;">&nbsp;</td>=0D=0A=0D=0A=0D=0A=0D=0A               =
+                   <td align=3D"center" valign=3D"top"><a href=3D"https://c=
+licks.email.peacocktv.com/f/a/9zzsGOVs6ghGFFxORtbHLg~~/AAQRxRA~/sQjChToUKO8=
+EH5mliE2OdnDVxNSrHXk-a6MW0_7GYIFHNG-VF1smfEgP8ifIRGONvi50g9YTVKWq1dqwtPE1ej=
+j2a6efMhCHjGpw0eikdvRYwfB-fSxBzTRaC33vjz5DjQJfax1Q9FKgdeKSNbMw-w~~" target=
+=3D"_blank" style=3D"text-decoration: none; color: #FFFFFF;"><img src=3D"ht=
+tps://appboy-images.com/appboy/communication/assets/image_assets/images/5ef=
+930e7afcaf208e828f71e/original.png=3F1593389287" border=3D"0" alt=3D"Instag=
+ram" width=3D"40" style=3D"display: block; max-width: 40px; font-family: Ar=
+ial, sans-serif; font-size: 16px; line-height: 20px; color: #FFFFFF;" /></a=
+></td>=0D=0A=0D=0A=0D=0A=0D=0A                                  <td align=
+=3D"center" valign=3D"top" width=3D"20" style=3D"width: 20px; font-size: 0p=
+x; line-height: 0px;">&nbsp;</td>=0D=0A=0D=0A=0D=0A=0D=0A                  =
+                <td align=3D"center" valign=3D"top"><a href=3D"https://clic=
+ks.email.peacocktv.com/f/a/P0tF9jQy7s2d3ab2WGyT_g~~/AAQRxRA~/vGUvlapOinGtHU=
+i7mwCwnvgm9gEZsb63TLq20owvX4hy_n12ZxJOxi3jO3kO-fBkZhv5bAuxi3bzNvaTsOrUvF6LY=
+EaeU8rwbMCaKr-XRBphzZN1ykjZS7fLX7p-DN3n" target=3D"_blank" style=3D"text-de=
+coration: none; color: #FFFFFF;"><img src=3D"https://braze-images.com/appbo=
+y/communication/assets/image_assets/images/651c3fc6410059004d481d25/origina=
+l.png=3F1696350149" border=3D"0" alt=3D"Twitter" width=3D"40" style=3D"disp=
+lay: block; max-width: 40px; font-family: Arial, sans-serif; font-size: 16p=
+x; line-height: 20px; color: #FFFFFF;" /></a></td>=0D=0A=0D=0A=0D=0A=0D=0A =
+                                 <td align=3D"center" valign=3D"top" width=
+=3D"20" style=3D"width: 20px; font-size: 0px; line-height: 0px;">&nbsp;</td=
+>=0D=0A=0D=0A=0D=0A=0D=0A                                  <td align=3D"cen=
+ter" valign=3D"top"><a href=3D"https://clicks.email.peacocktv.com/f/a/OTrnk=
+EzieynyEgWCxXADtA~~/AAQRxRA~/V8V_w2X5RDZe1qZoZIcs2VERd8traPZlfKXD5byAVwySL-=
+lp8VjcY-FkCXnPSEByVqD-oECTRUOFMkykNWWFG39aClwFigTPFNdu94gFcz6SUom5aL3wz7BbM=
+KcwcoxgfYQwxznWksjnQv6PeIPjvA~~" target=3D"_blank" style=3D"text-decoration=
+: none; color: #FFFFFF;"><img src=3D"https://appboy-images.com/appboy/commu=
+nication/assets/image_assets/images/5ef930ed6a11c33caffa2f2f/original.png=
+=3F1593389293" border=3D"0" alt=3D"YouTube" width=3D"40" style=3D"display: =
+block; max-width: 40px; font-family: Arial, sans-serif; font-size: 16px; li=
+ne-height: 20px; color: #FFFFFF;" /></a></td>=0D=0A=0D=0A=0D=0A=0D=0A      =
+                            <td align=3D"center" valign=3D"top" width=3D"20=
+" style=3D"width: 20px; font-size: 0px; line-height: 0px;">&nbsp;</td>=0D=
+=0A=0D=0A=0D=0A=0D=0A                                  <td align=3D"center"=
+ valign=3D"top"><a href=3D"https://clicks.email.peacocktv.com/f/a/nLko68ol1=
+3xquI191uYkag~~/AAQRxRA~/NXcoRyS9v4K8u_tvKKxMthnyEpxSsY7EFdWJllssz6HNPKWeIk=
+hVwbCI4u9Do_1GC6Lk3v-UnQk0jalvoxS5X7Ukxl_FANRdAvcLYbd-Y8v3QEPjDcPJY7up8LyL8=
+3qcFQyl3p5R_tGKC0xKxEruvA~~" target=3D"_blank" style=3D"text-decoration: no=
+ne; color: #FFFFFF;"><img src=3D"https://braze-images.com/appboy/communicat=
+ion/assets/image_assets/images/63c70714cb80e15584b34749/original.png=3F1673=
+987860" border=3D"0" alt=3D"TikTok" width=3D"40" style=3D"display: block; m=
+ax-width: 40px; font-family: Arial, sans-serif; font-size: 16px; line-heigh=
+t: 20px; color: #FFFFFF;" /></a></td>=0D=0A=0D=0A=0D=0A=0D=0A              =
+                  </tr>=0D=0A=0D=0A=0D=0A=0D=0A                            =
+  </tbody>=0D=0A=0D=0A=0D=0A=0D=0A                            </table></td>=
+=0D=0A=0D=0A=0D=0A=0D=0A                        </tr>=0D=0A=0D=0A=0D=0A=0D=
+=0A=09=09=09=09<!-- =3D=3D //SOCIALS =3D=3D -->=0D=0A=0D=0A=09=09=09=09<!--=
+ =3D=3D SPORTS PREF =3D=3D -->=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09        <=
+tr>=0D=0A=0D=0A=0D=0A=0D=0A                         =0D=0A=0D=0A=0D=0A=0D=
+=0A                         =0D=0A=0D=0A=0D=0A=0D=0A                       =
+   <td align=3D"center" valign=3D"top" style=3D"font-family: 'Peacock Sans'=
+, Arial, Helvetica, sans-serif; font-size: 11px; line-height: 14px; color: =
+#818181; padding-top: 20px;" class=3D"em_ptop">Click <a href=3D"https://cli=
+cks.email.peacocktv.com/f/a/BoOLWYmkHATrsNrqZ0Mk7g~~/AAQRxRA~/QXbsJWH9Q8bb7=
+I6ACFyQOrXAfWTsze7hyLF4Ehz_S3eSYwQZ7oefIuAxAMQBtTnr9g5zUyQlUdbYLjLRpoW1GMdO=
+JeJlSJTR-lHPjh931uohM04X9S2q41fHcSkWXsS9sgImTrP9IjNoFEdsA_vsEVYJdSrpNMW4NSJ=
+GSRqFWj83ixGGddN3wxjJ1TE9pfZovY31JGX6MHYAitMPRzgWpA~~" style=3D"color: #818=
+181; text-decoration: underline;"><span style=3D"color: #818181; text-decor=
+ation: underline;">here</span></a> to update your sports preferences.      =
+           </td>=0D=0A=0D=0A=0D=0A=0D=0A                        </tr>=0D=0A=
+=0D=0A=0D=0A=0D=0A=09=09=09=09<!-- =3D=3D //SPORTS PREF =3D=3D -->=0D=0A=0D=
+=0A=09=09=09=09<!-- =3D=3D YELLOW LINKS =3D=3D -->=0D=0A=0D=0A             =
+           <tr>=0D=0A=0D=0A                          <td align=3D"center" v=
+align=3D"top" style=3D"font-family: 'Peacock Sans', Arial, Helvetica, sans-=
+serif; font-size: 15px; line-height: 18px; color: #ffffff; font-weight: bol=
+d; text-transform: uppercase; padding-top: 26px;" class=3D"em_ptop"><a href=
+=3D"https://clicks.email.peacocktv.com/f/a/gP8dbusDs4f_zyRQH80oNw~~/AAQRxRA=
+~/59BE2AoW5uKd3b_PMRVFjRaVOMX4ll8wNVqVS0wCmQi0WMRHnDZpq4ihcJs0hBnxML3hStfMm=
+dhTaJc5X8EbPXL3xCdPNx4z0UvYHRuZ8cgEkiDphHnGwkpZ3wDZ6_6BlcJ9tOv-kEyNL3n8DlTP=
+k8p_1t5aG-nmNb4mEi181aCQ8U3TZIILkK-orcBUsYgLCwUMlbqoQr9hEZ9Zvf70QmpzU-5pg3S=
+HU7efaEyzMfRjzT0TZyPgk6YgSd2ZTEFgEdpU9kypqUUsT4xykGB8El2JnlqpVU9vuJ53EL1d6f=
+7bgbafinwvKE7cnju21qeNNCUMhkjtImkB3QfQ42RGjIBpUm7j1smt3zefM2ZsCC4~" target=
+=3D"_blank" style=3D"text-decoration: none; color: #ffffff;">PeacockTV.com<=
+/a>&nbsp;&nbsp;&nbsp;<span class=3D"em_hide">&nbsp;&nbsp;&nbsp;</span><a hr=
+ef=3D"https://clicks.email.peacocktv.com/f/a/mG6sI-TGx38WzGasLVie2w~~/AAQRx=
+RA~/aXKBKa20aiewPLC1HbrosnfDvwifWQDxkIz62aWQ7TABLIZO_27dstT_wZB0l1KzLmWw9MD=
+AUyKYvg4w-2ymPiC_unu-yXSke5sGESa_SX0VY-9yNmeLIBNCA5-IfHYphBpCJEvdHaa71bVWh1=
+e1WR2vqCxx5KoeuspUoKASXg3FZcLempgnsJS_ZaVMihxqsZoswlLNTedD8Y7nFcInUO63FyXU9=
+gVWgWj07ubzecscQmwL3ZT1zkpmXBcvh8wxdTd__VZPt43wuX7-299Y_q-x5he_-VCymd_NoCpj=
+VOWEKXlswf_RzcdwOcvhhPSp3t66RCnZWbnGR3RLMxQfp887Ki90kPLihBIdC4IIeV0~" targe=
+t=3D"_blank" style=3D"text-decoration: none; color: #ffffff;">Support</a>&n=
+bsp;&nbsp;&nbsp;<span class=3D"em_hide">&nbsp;&nbsp;&nbsp;</span><a href=3D=
+"https://clicks.email.peacocktv.com/f/a/aa_bl0ClzOadn1d8fj9JwQ~~/AAQRxRA~/s=
+1hLCkBRz4kENq2lpMwpkTAJkZ9GDDRHW-GmGk6ZovyhxbD6lTAmqU8pw6BBOM4w2SS5ks8argIu=
+E_n8fhouOgN2qW3Uo2c99LPlWmqvIuAxwbl72HNvWecIU_z7b8GQQhRB1HLrsh8bMRx-SJNhHuz=
+pSYQr6EKtA9hKx2XXGAcXyk4xcaIs6SrywxAdiS98" target=3D"_blank" style=3D"text-=
+decoration: none; color: #ffffff;">PRIVACY POLICY</a></td>=0D=0A=0D=0A     =
+                   </tr>=0D=0A=0D=0A=09=09=09<!-- =3D=3D //YELLOW LINKS =3D=
+=3D -->=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09<!-- =3D=3D DISCLAIMER =3D=3D -->=
+=0D=0A=0D=0A                        <tr>=0D=0A=0D=0A                       =
+   <td align=3D"center" valign=3D"top" style=3D"font-family: 'Peacock Sans'=
+, Arial, Helvetica, sans-serif; font-size: 11px; line-height: 14px; color: =
+#818181; padding-top: 20px; padding-left: 30px; padding-right: 30px; paddin=
+g-bottom: 30px" class=3D"footer_discl">This email contains an advertisement=
+ from: Peacock TV LLC, 30 Rockefeller Plaza, New York, NY&nbsp;10112=0D=0A=
+=0D=0A=09=09=09=09=09=09=09<br />=0D=0A=0D=0A                            <b=
+r />  =0D=0A=0D=0A                          This message was sent to <span =
+style=3D"text-decoration: none; color: #818181;">mstowe@baddomain.com</span=
+> because you agreed to receive communication from Peacock TV LLC. Please d=
+o not reply to this email as this address is not monitored. If you no longe=
+r wish to receive emails from Peacock TV LLC, click <a href=3D"https://clic=
+ks.email.peacocktv.com/f/a/KYiqLRahNgM0ESYXPisHcg~~/AAQRxRA~/2ILjY5102futUa=
+mfv_YUOu87n6E0-G4JbxU2J8cvJIdE2fWYHAv0Cgvx2YMZ-aZ5uEImFK5Q5Jzqw88ZyooWbNoSB=
+WsNXvXzKbdwlqTYuKgZO3sIYwKq8KUgm-CvUUlEd3GWSHMFqcQOKHDyMKQUEaLUe_vB6l-kRhB9=
+g_FBj-F_wErMPuP13MA13Vfb60xaDbMvJzjTU0cJu1D_Ac4ccGfskRnU3J8A5-HDJ0elzftZ5T_=
+Yhnl3wck6uQadhkPDGc0Z6KnblK_6Ro1l1yq64bNJIH0rV4xeuO8RTnq4bYhyAI_BskYKR0PH4K=
+gz4NGlyCBWOMpXNfu2SYAe5sAtGbTPgUENiezX_m-pflaml0M2SH77m_ZnDZcZ5LYkUwy-NZ9nL=
+jzLgvGFdy7p2NSA3yt4EAJMZKOSKgG7ALOouNW3kSGIIeexkbrXhnn068JJW2cMUQEbJaalE4FU=
+qbczAMKQA7cx9OrKQJfNZMa8mWOP2an99zyJYuGaX8sDTz-Hzn2hGLLVmFwJTdjFRMFp_6lxDZe=
+cOSjHbOzWVDNDSD-UDorD5W75ijPyOG0wcprDFmxkYjoKuN0pfBPTcRs5qyxw6BOceCr056b1tQ=
+YJRcoY0YX3ykx7KoHwi4PBJ9YKMxLIqayLmou5ZKPJclyGSzNbwuO3doKuVmePce0B3p-jHjuIE=
+i8v427rT5y0NUyfOa6I7RyiFLkq_f6P3N5qtz5lczQVEMZNBzgPfOfe8kcYPTC72B9cHy769w2C=
+cAZc" style=3D"color: #818181; text-decoration: underline;"><span style=3D"=
+color: #818181; text-decoration: underline;">here</span></a> to&nbsp;unsubs=
+cribe.=0D=0A=0D=0A=09=09=09=09=09=09=09<br />=0D=0A=0D=0A                  =
+          <br />=0D=0A=0D=0A                          Peacock =C2=A9 2026 P=
+eacock TV LLC. All other programs and/or marks are property of their respec=
+tive owner. All rights&nbsp;reserved.</td>=0D=0A=0D=0A                     =
+   </tr>=0D=0A=0D=0A         =09<!-- =3D=3D //DISCLAIMER =3D=3D -->=0D=0A=
+=0D=0A                      </tbody>=0D=0A=0D=0A                    </table=
+></td>=0D=0A=0D=0A                </tr>=0D=0A=0D=0A              </tbody>=
+=0D=0A=0D=0A            </table></td>=0D=0A=0D=0A        </tr>=0D=0A=0D=0A =
+       </table></td>=0D=0A=0D=0A      </tr>=0D=0A=0D=0A</table>=0A=0A<!-- =
+=3D=3D //Footer Section =3D=3D -->=0A=0A=0D=0A<img border=3D"0" width=3D"1"=
+ height=3D"1" alt=3D"" src=3D"https://clicks.email.peacocktv.com/q/6fbzct8M=
+UHfn3uKqZezPiQ~~/AAQRxRA~/RJYwaSfND7-GgdCO49_DwFk952Ymyh29BFJhE2EpdeyqySE87=
+t8u2e_UWxHotQqifKM5H6Y9hx16uNSJuwtMXQ~~">=0D=0A</body>=0A</html>
+--_----DW8xpiDJu8P5jusILpK8Tg===_10/20-64841-7590BFA6--
+

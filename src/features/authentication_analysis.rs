@@ -580,11 +580,12 @@ impl AuthenticationFeature {
                 "amazonses.com".to_string(),
                 "cjm.adobe.com".to_string(),           // Adobe Campaign
                 "cname.cjm.adobe.com".to_string(),     // Adobe Campaign CNAME
-                "klaviyomail.com".to_string(),         // Klaviyo ESP
-                "klaviyodns.com".to_string(),          // Klaviyo DNS/tracking
-                "netsuite.com".to_string(),            // NetSuite business software
+                "campaign.adobe.com".to_string(), // Adobe Campaign Classic CNAME (brand.com.cname.campaign.adobe.com)
+                "klaviyomail.com".to_string(),    // Klaviyo ESP
+                "klaviyodns.com".to_string(),     // Klaviyo DNS/tracking
+                "netsuite.com".to_string(),       // NetSuite business software
                 "oracleemaildelivery.com".to_string(), // Oracle ESP for NetSuite
-                "docusign.net".to_string(),            // DocuSign document service
+                "docusign.net".to_string(),       // DocuSign document service
             ],
             suspicious_patterns: vec![
                 "verify account".to_string(),

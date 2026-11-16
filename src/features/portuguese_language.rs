@@ -103,8 +103,11 @@ impl FeatureExtractor for PortugueseLanguageAnalyzer {
                     ("processo", "process completion scam"),
                 ];
 
+                let combined_lower = combined_text.to_lowercase();
                 for (pattern, description) in &scam_patterns {
-                    if combined_text.to_lowercase().contains(pattern) {
+                    if LanguageDetector::contains_word(&combined_lower, pattern)
+                        || (pattern.contains(' ') && combined_lower.contains(pattern))
+                    {
                         score += 20;
                         evidence.push(format!("Portuguese scam pattern detected: {}", description));
                     }

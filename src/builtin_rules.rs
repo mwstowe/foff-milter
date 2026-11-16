@@ -557,6 +557,21 @@ pub fn builtin_modules() -> Vec<Module> {
                             evidence_pattern: Some("DKIM authentication passed".to_string()),
                             invert: None,
                         },
+                        Criteria::Not {
+                            criteria: Box::new(
+                            // A passing DKIM signature from an unrelated domain (e.g. a
+                            // *.gappssmtp.com Workspace tenant relayed through Gmail) says
+                            // nothing about the claimed From identity. Do not grant
+                            // sender-domain trust when DKIM is genuinely misaligned.
+                            Criteria::FeatureAnalysis {
+                                feature_name: "Authentication Analysis".to_string(),
+                                min_score: None,
+                                max_score: None,
+                                evidence_pattern: Some("DKIM domain misaligned: ".to_string()),
+                                invert: None,
+                            }
+                            ),
+                        },
                         Criteria::Or {
                             criteria: vec![
                             Criteria::SenderPattern { pattern: ".*@.*(amazon|microsoft|google|apple|paypal|ebay|walmart|target|bestbuy|homedepot|lowes|macys|nordstrom|costco)\\.(com|org|net)$".to_string() },
@@ -2480,7 +2495,9 @@ pub fn builtin_modules() -> Vec<Module> {
                         Criteria::Or {
                             criteria: vec![
                             Criteria::SubjectPattern { pattern: "(?i).{0,100}(important.{0,100}message.{0,100}for.{0,100}you|urgent.{0,100}message.{0,100}for.{0,100}you|private.{0,100}message.{0,100}for.{0,100}you|confidential.{0,100}message.{0,100}for.{0,100}you|fam.{0,100}inquiry|urgent.{0,100}inquiry|personal.{0,100}message).*".to_string() },
-                            Criteria::BodyPattern { pattern: "(?i).{0,100}(important.{0,100}message.{0,100}for.{0,100}you|urgent.{0,100}message.{0,100}for.{0,100}you|private.{0,100}message.{0,100}for.{0,100}you|confidential.{0,100}message.{0,100}for.{0,100}you|fam.{0,100}inquiry|urgent.{0,100}inquiry|personal.{0,100}message).*".to_string() },
+                            // "personal message" is intentionally NOT matched in the body: it is routine
+                            // copy in legitimate gift/card/greeting mail ("add a personal message").
+                            Criteria::BodyPattern { pattern: "(?i).{0,100}(important.{0,100}message.{0,100}for.{0,100}you|urgent.{0,100}message.{0,100}for.{0,100}you|private.{0,100}message.{0,100}for.{0,100}you|confidential.{0,100}message.{0,100}for.{0,100}you|fam.{0,100}inquiry|urgent.{0,100}inquiry).*".to_string() },
                             ],
                         },
                         Criteria::Not {
@@ -3886,6 +3903,21 @@ pub fn builtin_modules() -> Vec<Module> {
                     Criteria::And {
                         criteria: vec![
                         Criteria::SenderPattern { pattern: ".*@.*(amazon|google|apple|netflix|mcdonalds|walmart|target)\\.(com|org)$".to_string() },
+                        Criteria::Not {
+                            criteria: Box::new(
+                            // A passing DKIM signature from an unrelated domain (e.g. a
+                            // *.gappssmtp.com Workspace tenant relayed through Gmail) says
+                            // nothing about the claimed From identity. Do not grant
+                            // sender-domain trust when DKIM is genuinely misaligned.
+                            Criteria::FeatureAnalysis {
+                                feature_name: "Authentication Analysis".to_string(),
+                                min_score: None,
+                                max_score: None,
+                                evidence_pattern: Some("DKIM domain misaligned: ".to_string()),
+                                invert: None,
+                            }
+                            ),
+                        },
                         Criteria::Not {
                             criteria: Box::new(
                             Criteria::SenderPattern { pattern: ".*@.*onmicrosoft\\.com$".to_string() }

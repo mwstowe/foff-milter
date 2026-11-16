@@ -337,6 +337,16 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         }
     }
 
+    // Cheetah Digital stamps "Feedback-ID: <campaign>:ChtahDgtl..." on every send.
+    if context
+        .headers
+        .get("feedback-id")
+        .map(|v| v.to_lowercase().contains("chtahdgtl"))
+        .unwrap_or(false)
+    {
+        return true;
+    }
+
     // Check Received headers for ESP infrastructure indicators
     for (_, v) in context
         .headers
@@ -569,6 +579,18 @@ impl EspValidationFeature {
         );
 
         providers.insert(
+            "cheetah".to_string(),
+            EspProvider {
+                domains: vec![
+                    "cheetahmail.com".to_string(),
+                    "cheetahdigital.com".to_string(),
+                ],
+                reputation: EspReputation::Trusted,
+                aliases: vec![],
+            },
+        );
+
+        providers.insert(
             "shopify".to_string(),
             EspProvider {
                 domains: vec![
@@ -703,7 +725,10 @@ impl FeatureExtractor for EspValidationFeature {
                 let v_lower = v.to_lowercase();
                 if v_lower.contains("(sg)") || v_lower.contains("sendgrid.net") {
                     Some("sendgrid.net".to_string())
-                } else if v_lower.contains("sparkpostmail.com") {
+                } else if v_lower.contains("sparkpost") {
+                    // Matches both "...sparkpostmail.com" relays and the sender-side
+                    // "...prd.sparkpost (ecelerity ...)" hop that is always present in
+                    // the original message (parity-safe: not added by our own MTA).
                     Some("sparkpostmail.com".to_string())
                 } else if v_lower.contains("amazonses.com") {
                     Some("amazonses.com".to_string())
@@ -723,6 +748,14 @@ impl FeatureExtractor for EspValidationFeature {
                 } else {
                     None
                 }
+            })
+            // Cheetah Digital stamps "Feedback-ID: <campaign>:ChtahDgtl..." on every send.
+            .or_else(|| {
+                context
+                    .headers
+                    .get("feedback-id")
+                    .filter(|v| v.to_lowercase().contains("chtahdgtl"))
+                    .map(|_| "cheetahmail.com".to_string())
             });
 
         // Use whichever domain is an ESP (priority: envelope > return-path > DKIM > From > Received)

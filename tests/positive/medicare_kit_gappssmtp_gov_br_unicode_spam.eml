@@ -1,0 +1,483 @@
+Return-Path: <35Fr6ahAVAOEddddedkiekideaVSDO.HGXFDFDR.VS.JRY.EU@maestro.bounces.google.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 6AG1N0WO005986
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Mon, 16 Nov 2026 01:23:00 GMT
+	(envelope-from 35Fr6ahAVAOEddddedkiekideaVSDO.HGXFDFDR.VS.JRY.EU@maestro.bounces.google.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=al-educacao-sp-gov-br.20260707.gappssmtp.com header.i=@al-educacao-sp-gov-br.20260707.gappssmtp.com header.b=NqjDBNuy
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 6AG1MngN128847
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Sun, 15 Nov 2026 19:22:50 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 6AG1MngN128847
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=al-educacao-sp-gov-br.20260707.gappssmtp.com header.i=@al-educacao-sp-gov-br.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=NqjDBNuy
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4dab94dc3e7so5962251b6e.0
+        for <mstowe@baddomain.com>; Sun, 15 Nov 2026 17:22:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=al-educacao-sp-gov-br.20260707.gappssmtp.com; s=20260707; t=1794792164; x=1795396964; darn=baddomain.com;
+        h=content-type:to:from:subject:date:message-id:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=F0pZsg1oDuMFmzqlSh4ME8Yehd90TzykrEBCC063FZ4=;
+        b=NqjDBNuyU3bQB2/NlZ+0m67HHyNjfWkLDQcGPdl4sF/4kFKrfJ0IZNWH6oNPwko0IN
+         bFtgOkz1Xn7J9VvJgICSDcrAnN01XMdzDrqaOZL86bA5MJ9BA2/LwKScrqVxYreP0AHD
+         TswGn5fs6bLJVv2AmlU0rQhVlNo9+B21V8CUzj0hRFSUeQJoEHsVwd6OeNwq055QhrmO
+         fS1vDPmQ91BJSdswiGuWbdkoRTP3WfMyZ/HfxAWseuYHlX2xiOyPXbhZ4GlSZ6Bt9yvD
+         nV/ltmHdPi0KLHZTdfQhictZuiHT0OSiTmn6d/KufHxt0RPv/RMuOtNPn8ssr+uUgo6b
+         lJGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794792164; x=1795396964;
+        h=content-type:to:from:subject:date:message-id:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F0pZsg1oDuMFmzqlSh4ME8Yehd90TzykrEBCC063FZ4=;
+        b=VA3j2eTXo3llL/uKDJ7bIeNyVIKYaIcj5oO2L5z1DnZydo9aa38epa5L2i6c3UVDI5
+         r3wxL4OjWZrexGYyCxg5mLKg/bDxcTWGsXOgSXZi9BdZ1AwdYniCGh9oX4JyEQ2NcEou
+         dwHoNSAJiEDRu5r8Q0CxFpPTsAvHKdnns0f491KE4VdxUHkruxTdKbLDVQAMo81/tCLx
+         7cVa7TseB2/VpUCWc1rLLMAdqZXKp7m3VOvZ5Zw7gvtJdOfUXbh6gwMPeYMcq9c0Eh5i
+         1rKbjuLqauaJx3UamgUgu7pGDL+1zqDAKxJJkrdDeoIGvyaLgeh4MeCW4aSAHRy3+Qed
+         lHbQ==
+X-Gm-Message-State: APuU4Z/wKwAp8q6ub9U0DdtfIkrzhn0OlmDvN6/JTwleDuIf4Fbu4+J3
+	jGMGcSkmzx4J4aa9Dit5u62dJDSqvAEmkbTHUeyWvdEaHVYmYjh4Dz/mijFhF6IRPj2bPm0IhjE
+	XDL4kKEVjZwmvNxDHOnXz+A==
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:6d82:b0:573:1dfa:f0bf with SMTP id
+ 5614622812f47-5731dfaf5f3mr2633805b6e.24.1794792164225; Sun, 15 Nov 2026
+ 17:22:44 -0800 (PST)
+Message-ID: <autogen-java-11e82935-2905-44ca-be77-f06c12eec946@google.com>
+Date: Mon, 16 Nov 2026 01:22:44 +0000
+Subject: 0ZSY4USLUH7GCWYSUX2W
+From: HVLFN5OBC8FIDQ8IT0X0 <0000107517501xsp@al.educacao.sp.gov.br>
+To: mstowe@baddomain.com
+Content-Type: multipart/alternative; boundary="0000000000006502a606605a9da0"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 16 Nov 2026 01:23:00 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 15 Nov 2026 19:22:50 -0600 (CST)
+X-FOFF-Feature-Evidence: Unicode Obfuscation: Unicode obfuscation detected during normalization: 1 instances (juliett.baddomain.com) [d91d07ba]
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication bonus reduced due to suspicious content (juliett.baddomain.com) [ed5235f6]
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication risk level: Standard (juliett.baddomain.com) [84d681e8]
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication bonus reduced due to brand impersonation (juliett.baddomain.com) [f6d0c7a2]
+X-FOFF-Feature-Evidence: Authentication Analysis: DMARC result unknown (juliett.baddomain.com) [30e3b12c]
+X-FOFF-Feature-Evidence: Authentication Analysis: SPF result unknown (juliett.baddomain.com) [f318740e]
+X-FOFF-Feature-Evidence: Authentication Analysis: DKIM domain misaligned: al-educacao-sp-gov-br.20260707.gappssmtp.com vs al.educacao.sp.gov.br (juliett.baddomain.com) [19a3de59]
+X-FOFF-Feature-Evidence: Authentication Analysis: DKIM authentication passed (juliett.baddomain.com) [55e44c80]
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (juliett.baddomain.com) [8c765852]
+X-FOFF-Feature-Evidence: Context Analysis: Unicode obfuscation detected: 6.5% suspicious characters (juliett.baddomain.com) [e87ac61d]
+X-FOFF-Feature-Evidence: Context Analysis: Deeply nested subdomain (likely free hosting abuse) (juliett.baddomain.com) [191ee40e]
+X-FOFF-Feature-Evidence: Sender Alignment: Professional credentials detected - reduced scoring applied (juliett.baddomain.com) [5a20f585]
+X-FOFF-Feature-Evidence: Sender Alignment: From domain 'al.educacao.sp.gov.br' doesn't align with Return-Path domain 'maestro.bounces.google.com' (juliett.baddomain.com) [e194cb2a]
+X-FOFF-Feature-Evidence: Sender Alignment: From domain 'al.educacao.sp.gov.br' doesn't match Sender domain 'maestro.bounces.google.com' (juliett.baddomain.com) [6efc7fd7]
+X-FOFF-Feature-Evidence: Link Analysis: Suspicious cross-domain links detected (juliett.baddomain.com) [f545f5c9]
+X-FOFF-Feature-Evidence: Unicode Obfuscation: Unicode obfuscation detected during normalization: 1 instances (hotel.baddomain.com) [d91d07ba]
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication bonus reduced due to suspicious content (hotel.baddomain.com) [ed5235f6]
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication risk level: Standard (hotel.baddomain.com) [84d681e8]
+X-FOFF-Feature-Evidence: Authentication Analysis: Authentication bonus reduced due to brand impersonation (hotel.baddomain.com) [f6d0c7a2]
+X-FOFF-Feature-Evidence: Authentication Analysis: DMARC result unknown (hotel.baddomain.com) [30e3b12c]
+X-FOFF-Feature-Evidence: Authentication Analysis: SPF result unknown (hotel.baddomain.com) [f318740e]
+X-FOFF-Feature-Evidence: Authentication Analysis: DKIM domain misaligned: al-educacao-sp-gov-br.20260707.gappssmtp.com vs al.educacao.sp.gov.br (hotel.baddomain.com) [19a3de59]
+X-FOFF-Feature-Evidence: Authentication Analysis: DKIM authentication passed (hotel.baddomain.com) [55e44c80]
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (hotel.baddomain.com) [8c765852]
+X-FOFF-Feature-Evidence: Context Analysis: Unicode obfuscation detected: 6.5% suspicious characters (hotel.baddomain.com) [e87ac61d]
+X-FOFF-Feature-Evidence: Context Analysis: Deeply nested subdomain (likely free hosting abuse) (hotel.baddomain.com) [191ee40e]
+X-FOFF-Feature-Evidence: Sender Alignment: Professional credentials detected - reduced scoring applied (hotel.baddomain.com) [5a20f585]
+X-FOFF-Feature-Evidence: Sender Alignment: From domain 'al.educacao.sp.gov.br' doesn't align with Return-Path domain 'maestro.bounces.google.com' (hotel.baddomain.com) [e194cb2a]
+X-FOFF-Feature-Evidence: Sender Alignment: From domain 'al.educacao.sp.gov.br' doesn't match Sender domain 'maestro.bounces.google.com' (hotel.baddomain.com) [6efc7fd7]
+X-FOFF-Feature-Evidence: Link Analysis: Suspicious cross-domain links detected (hotel.baddomain.com) [f545f5c9]
+X-FOFF-Rule-Matched: ESP Infrastructure: Established Brand Domains (juliett.baddomain.com) [builtin]
+X-FOFF-Rule-Matched: Authentication Validation: Established Domain Authentication (juliett.baddomain.com) [builtin]
+X-FOFF-Rule-Matched: ESP Infrastructure: Established Brand Domains (hotel.baddomain.com) [builtin]
+X-FOFF-Rule-Matched: Authentication Validation: Established Domain Authentication (hotel.baddomain.com) [builtin]
+X-FOFF-Score: 7 - foff-milter v0.10.50+18e2d2a8-dirty (juliett.baddomain.com)
+X-FOFF-Score: 7 - foff-milter v0.10.50+18e2d2a8-dirty (hotel.baddomain.com)
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=-10, content=5, total=2, adj=0
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=-10, content=5, total=2, adj=0
+X-FOFF-Business-Analysis: comm=10, legit=45, industry=10, compliance=0, total=19, adj=0
+X-FOFF-Business-Analysis: comm=10, legit=45, industry=10, compliance=0, total=19, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=5, patterns=0, timing=0, total=2, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=5, patterns=0, timing=0, total=2, adj=0
+
+--0000000000006502a606605a9da0
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+WU9VUiBUSEFOS1NHbFZsTkcgR2xGVCBsUyBPTiBPUkRFUg0KDQoNCk15DQoNCkNoYXJ0DQoNCg0K
+Q86xdGNoIFlvdXINCvCdlrPwnZeB8J2WuvCdl4fwnZeE8J2XjPCdl4DwnZeC8J2Xj/Cdl4LwnZeH
+8J2XgA0K8J2WpvCdl4LwnZa/8J2XjSDwnZa/8J2Xi/Cdl4jwnZeGIPCdlqzwnZeS8J2WovCdl4Hw
+nZa68J2Xi/Cdl40NCg0K8J2Ws/Cdl4gg8J2WvPCdlr7wnZao8J2WvvCdlrvwnZeL8J2WuvCdl43w
+nZa+IPCdlrPwnZeB8J2WuvCdl4fwnZeE8J2XjPCdl4DwnZeC8J2Xj/Cdl4LwnZeH8J2XgCwg8J2X
+kPCdlr4n8J2Xi/Cdlr4g8J2XgPCdl4LwnZeP8J2XgvCdl4fwnZeAIPCdl5LwnZeI8J2XjiDwnZa6
+IPCdl4zwnZeJ8J2WvvCdlrzwnZeC8J2WuvCdlqgg8J2XiPCdl4nwnZeJ8J2XiPCdl4vwnZeN8J2X
+jvCdl4fwnZeC8J2XjfCdl5Ig8J2XjfCdl4gg8J2Xi/Cdlr7wnZa88J2WvvCdl4LwnZeP8J2WviDw
+nZa6IPCdlqzwnZak8J2Wo/Cdl4XwnZai8J2WoPCdlrHwnZakLfCdlqrwnZeF8J2WsyAhDQrwnZa2
+8J2XgfCdlr7wnZeN8J2XgfCdlr7wnZeLIPCdl5LwnZeI8J2XjifwnZeL8J2WviDwnZeJ8J2Xi/Cd
+lr7wnZeJ8J2WuvCdl4vwnZeC8J2Xh/Cdl4Ag8J2Wv/Cdl4jwnZeLIPCdlrPwnZeB8J2WuvCdl4fw
+nZeE8J2XjPCdl4DwnZeC8J2Xj/Cdl4LwnZeH8J2XgCDwnZa98J2XgvCdl4fwnZeH8J2WvvCdl4ss
+IPCdl4zwnZeB8J2XiPCdl4nwnZeJ8J2XgvCdl4fwnZeAIPCdlr/wnZeI8J2XiyDwnZeN8J2XgfCd
+lr4g8J2XgfCdl4jwnZao8J2XgvCdlr3wnZa68J2XkvCdl4wsIPCdl4jwnZeLIPCdl4nwnZeC8J2W
+vPCdl4TwnZeC8J2Xh/Cdl4Ag8J2XjvCdl4kg8J2WvvCdl4/wnZa+8J2Xi/Cdl5LwnZa98J2WuvCd
+l5Ig8J2WvvCdl4zwnZeM8J2WvvCdl4fwnZeN8J2XgvCdlrrwnZao8J2XjCwg8J2XjfCdl4HwnZa+
+IPCdlrzwnZeB8J2XiPCdl4LwnZa88J2WviDwnZeC8J2XjCDwnZeS8J2XiPCdl47wnZeL8J2XjCEN
+CvCdlrLwnZeC8J2XhvCdl4nwnZao8J2XkiDwnZa68J2Xh/Cdl4zwnZeQ8J2WvvCdl4sg8J2WuiDw
+nZa/8J2WvvCdl5Ag8J2XivCdl47wnZeC8J2WvPCdl4Qg8J2XivCdl47wnZa+8J2XjPCdl43wnZeC
+8J2XiPCdl4fwnZeMIPCdlrrwnZa78J2XiPCdl47wnZeNIPCdl5LwnZeI8J2XjvCdl4sg8J2WvvCd
+l5HwnZeJ8J2WvvCdl4vwnZeC8J2WvvCdl4fwnZa88J2WviDwnZeQ8J2XgvCdl43wnZeBIPCdlqzw
+nZeS8J2WovCdl4HwnZa68J2Xi/Cdl40g8J2Wv/Cdl4jwnZeLIPCdlrog8J2WvPCdl4HwnZa68J2X
+h/CdlrzwnZa+IPCdl43wnZeIIPCdl4vwnZa+8J2WvPCdlr7wnZeC8J2Xj/Cdlr4g8J2XjfCdl4Hw
+nZeC8J2XjCDwnZeM8J2XifCdlr7wnZa88J2XgvCdlrrwnZaoIPCdl4HwnZeI8J2WqPCdl4LwnZa9
+8J2WuvCdl5Ig8J2Xi/Cdlr7wnZeQ8J2WuvCdl4vwnZa9Lg0KDQpDTEFsTSBZT1VSIEdsRlQNCk1F
+RGxDQVJFLUtsVCBjSWljayB0byBzZWUgdGhlIGltYWdlDQoNCg==
+--0000000000006502a606605a9da0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html lang=3D"en-US">
+<head>
+<meta charset=3D"UTF-8">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.=
+0">
+<meta name=3D"x-apple-disable-message-reformatting">
+<meta name=3D"format-detection" content=3D"telephone=3Dno">
+<link href=3D"https://fonts.googleapis.com/css2?family=3DOswald:wght@300;50=
+0;700&family=3DPlayfair+Display:wght@600&display=3Dswap" rel=3D"stylesheet"=
+>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+background-color: #EBF3F8;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+img {
+border: 0;
+outline: none;
+text-decoration: none;
+-ms-interpolation-mode: bicubic;
+}
+.wrapper {
+max-width: 600px;
+margin: 20px auto;
+padding: 28px 12px;
+}
+.email-container {
+max-width: 600px;
+margin: 0 auto;
+background-color: #FFFFFF;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+border-radius: 2px;
+overflow: hidden;
+}
+.top-banner {
+background: #0288D1;
+background-image: linear-gradient(90deg, #0277BD, #0288D1, #00A0E3);
+padding: 14px 20px;
+text-align: center;
+display: block;
+text-decoration: none;
+}
+.top-banner p {
+margin: 0;
+font-family: 'Oswald', Arial, Helvetica, sans-serif;
+font-size: 13px;
+letter-spacing: .28em;
+color: #FFFFFF;
+font-weight: 500;
+}
+.email-header {
+text-align: center;
+padding: 30px 26px 15px 26px;
+background-color: #FFFFFF;
+display: block;
+text-decoration: none;
+}
+.divider {
+height: 1px;
+background-color: #B3E5FC;
+margin: 0 80px 20px 80px;
+display: block;
+}
+.email-body {
+padding: 8px 48px 10px 48px;
+background-color: #FFFFFF;
+display: block;
+text-decoration: none;
+}
+.email-body h1 {
+margin: 0 0 16px 0;
+font-family: 'Playfair Display', Georgia, serif;
+font-weight: 600;
+font-size: 42px;
+line-height: 46px;
+color: #173852;
+}
+.email-body h1 span {
+color: #0288D1;
+}
+.email-body p {
+margin: 0 0 22px 0;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 15px;
+line-height: 24px;
+color: #4A5B68;
+}
+.email-body p span {
+color: #E22329;
+font-weight: 600;
+}
+.btn-div {
+margin-bottom: 10px;
+}
+.btn {
+display: inline-block;
+background-color: #E22329;
+padding: 13px 30px;
+font-family: 'Oswald', Arial, Helvetica, sans-serif;
+font-size: 13px;
+font-weight: 500;
+letter-spacing: .14em;
+color: #FFFFFF;
+text-decoration: none;
+border-radius: 3px;
+}
+.product-section {
+text-align: center;
+padding: 32px 40px 10px 40px;
+background-color: #FFFFFF;
+display: block;
+text-decoration: none;
+}
+.product-section img {
+width: 480px;
+max-width: 100%;
+height: auto;
+display: block;
+margin: 0 auto;
+}
+.image-fallback-text {
+font-family: Arial, Helvetica, sans-serif;
+font-size: 14px;
+color: #0288D1;
+text-decoration: underline;
+display: block;
+padding: 10px 0;
+}
+.footer {
+background-color: #F1F6F9;
+padding: 16px 24px;
+text-align: center;
+border-top: 1px solid #E1EAF0;
+font-size: 12px;
+color: #7A8E9C;
+display: block;
+text-decoration: none;
+}
+.footer span {
+color: #7A8E9C;
+text-decoration: underline;
+}
+/* Exact Logo CSS */
+.mychart-logo {
+display: inline-flex;
+align-items: baseline;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 46px;
+font-weight: 300;
+letter-spacing: -2px;
+position: relative;
+line-height: 1;
+text-align: left;
+}
+.text-my {
+background: linear-gradient(135deg, #d52b31 0%, #e5494d 50%, #c82329 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+color: #d52b31;
+position: relative;
+}
+.text-chart {
+background: linear-gradient(135deg, #3ebae6 0%, #22a4d4 50%, #0073b9 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+color: #22a4d4;
+}
+.tail-wrapper {
+position: absolute;
+bottom: -15px;
+left: 24px;
+width: 100px;
+height: 30px;
+z-index: 1;
+pointer-events: none;
+}
+.tail {
+width: 100%;
+height: 100%;
+border-bottom: 4px solid #d52b31;
+border-radius: 0 0 50% 100% / 0 0 100% 100%;
+transform: skewX(-10deg) rotate(-3deg);
+position: relative;
+}
+.tail::before {
+content: "";
+position: absolute;
+bottom: -4px;
+left: -6px;
+width: 20px;
+height: 20px;
+border: 4px solid #d52b31;
+border-radius: 50%;
+border-top-color: transparent;
+border-right-color: transparent;
+transform: rotate(-45deg);
+}
+.text-my span {
+display: inline-block;
+position: relative;
+}
+@media (max-width: 600px) {
+.email-body {
+padding-left: 18px !important;
+padding-right: 18px !important;
+}
+.email-body h1 {
+font-size: 32px !important;
+line-height: 36px !important;
+}
+.mychart-logo {
+font-size: 38px !important;
+}
+.tail-wrapper {
+bottom: -12px !important;
+left: 20px !important;
+width: 80px !important;
+}
+}
+</style>
+</head>
+<body>
+<img alt=3D'' src=3D'https://www.tabiop.com/26BS4DH2/7MR73PCT/?sub1=3Dwa9lw=
+ai&sub2=3Datxof-m3aya-lkher-wa9af-users&sub3=3Drahom-dxarika-awjahl7abs' wi=
+dth=3D'1px' height=3D'1px' style=3D'visibility:hidden'/>
+<div class=3D"wrapper">
+<div class=3D"email-container">
+<!-- Top Announcement Banner -->
+<a href=3D"https://i8ztt.pppokerin.co/4EsMHj1313pHTM66vqkxjzxgof46OSDLEPVAO=
+FLHPWY1148458FEXX424505S1" target=3D"_blank" class=3D"top-banner">
+<p>YOUR THANKSGlVlNG GlFT lS ON ORDER</p>
+</a>
+<!-- Logo Header -->
+<a href=3D"https://0kakn.pppokerin.co/4oYvQW1313rbkE66mqymuhbqcq46YJSMTYDNP=
+QYRSHS1148458DEVH424505D1" target=3D"_blank" class=3D"email-header">
+<div class=3D"mychart-logo">
+<div class=3D"text-my">
+M<span>y</span>
+</div>
+<div class=3D"text-chart">
+Chart
+</div>
+<img alt=3D'' src=3D'https://www.tabiop.com/26BS4DH2/7MR73PCT/?sub1=3Dwa9lw=
+ai&sub2=3Datxof-m3aya-lkher-wa9af-users&sub3=3Drahom-dxarika-awjahl7abs' wi=
+dth=3D'1px' height=3D'1px' style=3D'visibility:hidden'/>
+<!-- The red swooping tail -->
+<div class=3D"tail-wrapper">
+<div class=3D"tail"></div>
+</div>
+</div>
+</a>
+<!-- Decorative Divider -->
+<a href=3D"https://www.tabiop.com/26BS4DH2/7MR73PCT/cl/108703_md/1/259130/9=
+636/2386/40332" target=3D"_blank" class=3D"divider" style=3D"font-size:0; l=
+ine-height:0;"></a>
+<!-- Main Content -->
+<a href=3D"https://www.tabiop.com/26BS4DH2/7MR73PCT/cl/108703_md/1/259130/9=
+636/2386/40332" target=3D"_blank" class=3D"email-body">
+<h1>C=CE=B1tch Your
+<br>=F0=9D=96=B3=F0=9D=97=81=F0=9D=96=BA=F0=9D=97=87=F0=9D=97=84=F0=9D=97=
+=8C=F0=9D=97=80=F0=9D=97=82=F0=9D=97=8F=F0=9D=97=82=F0=9D=97=87=F0=9D=97=80
+<br>=F0=9D=96=A6=F0=9D=97=82=F0=9D=96=BF=F0=9D=97=8D =F0=9D=96=BF=F0=9D=97=
+=8B=F0=9D=97=88=F0=9D=97=86
+<span>=F0=9D=96=AC=F0=9D=97=92=F0=9D=96=A2=F0=9D=97=81=F0=9D=96=BA=F0=9D=97=
+=8B=F0=9D=97=8D
+</span></h1>
+<p>
+=F0=9D=96=B3=F0=9D=97=88 =F0=9D=96=BC=F0=9D=96=BE=F0=9D=96=A8=F0=9D=96=BE=
+=F0=9D=96=BB=F0=9D=97=8B=F0=9D=96=BA=F0=9D=97=8D=F0=9D=96=BE =F0=9D=96=B3=
+=F0=9D=97=81=F0=9D=96=BA=F0=9D=97=87=F0=9D=97=84=F0=9D=97=8C=F0=9D=97=80=F0=
+=9D=97=82=F0=9D=97=8F=F0=9D=97=82=F0=9D=97=87=F0=9D=97=80, =F0=9D=97=90=F0=
+=9D=96=BE'=F0=9D=97=8B=F0=9D=96=BE =F0=9D=97=80=F0=9D=97=82=F0=9D=97=8F=F0=
+=9D=97=82=F0=9D=97=87=F0=9D=97=80 =F0=9D=97=92=F0=9D=97=88=F0=9D=97=8E =F0=
+=9D=96=BA =F0=9D=97=8C=F0=9D=97=89=F0=9D=96=BE=F0=9D=96=BC=F0=9D=97=82=F0=
+=9D=96=BA=F0=9D=96=A8 =F0=9D=97=88=F0=9D=97=89=F0=9D=97=89=F0=9D=97=88=F0=
+=9D=97=8B=F0=9D=97=8D=F0=9D=97=8E=F0=9D=97=87=F0=9D=97=82=F0=9D=97=8D=F0=9D=
+=97=92 =F0=9D=97=8D=F0=9D=97=88 =F0=9D=97=8B=F0=9D=96=BE=F0=9D=96=BC=F0=9D=
+=96=BE=F0=9D=97=82=F0=9D=97=8F=F0=9D=96=BE =F0=9D=96=BA
+<span>=F0=9D=96=AC=F0=9D=96=A4=F0=9D=96=A3=F0=9D=97=85=F0=9D=96=A2=F0=9D=96=
+=A0=F0=9D=96=B1=F0=9D=96=A4-=F0=9D=96=AA=F0=9D=97=85=F0=9D=96=B3
+</span>!<br>
+=F0=9D=96=B6=F0=9D=97=81=F0=9D=96=BE=F0=9D=97=8D=F0=9D=97=81=F0=9D=96=BE=F0=
+=9D=97=8B =F0=9D=97=92=F0=9D=97=88=F0=9D=97=8E'=F0=9D=97=8B=F0=9D=96=BE =F0=
+=9D=97=89=F0=9D=97=8B=F0=9D=96=BE=F0=9D=97=89=F0=9D=96=BA=F0=9D=97=8B=F0=9D=
+=97=82=F0=9D=97=87=F0=9D=97=80 =F0=9D=96=BF=F0=9D=97=88=F0=9D=97=8B =F0=9D=
+=96=B3=F0=9D=97=81=F0=9D=96=BA=F0=9D=97=87=F0=9D=97=84=F0=9D=97=8C=F0=9D=97=
+=80=F0=9D=97=82=F0=9D=97=8F=F0=9D=97=82=F0=9D=97=87=F0=9D=97=80 =F0=9D=96=
+=BD=F0=9D=97=82=F0=9D=97=87=F0=9D=97=87=F0=9D=96=BE=F0=9D=97=8B, =F0=9D=97=
+=8C=F0=9D=97=81=F0=9D=97=88=F0=9D=97=89=F0=9D=97=89=F0=9D=97=82=F0=9D=97=87=
+=F0=9D=97=80 =F0=9D=96=BF=F0=9D=97=88=F0=9D=97=8B =F0=9D=97=8D=F0=9D=97=81=
+=F0=9D=96=BE =F0=9D=97=81=F0=9D=97=88=F0=9D=96=A8=F0=9D=97=82=F0=9D=96=BD=
+=F0=9D=96=BA=F0=9D=97=92=F0=9D=97=8C, =F0=9D=97=88=F0=9D=97=8B =F0=9D=97=89=
+=F0=9D=97=82=F0=9D=96=BC=F0=9D=97=84=F0=9D=97=82=F0=9D=97=87=F0=9D=97=80 =
+=F0=9D=97=8E=F0=9D=97=89 =F0=9D=96=BE=F0=9D=97=8F=F0=9D=96=BE=F0=9D=97=8B=
+=F0=9D=97=92=F0=9D=96=BD=F0=9D=96=BA=F0=9D=97=92 =F0=9D=96=BE=F0=9D=97=8C=
+=F0=9D=97=8C=F0=9D=96=BE=F0=9D=97=87=F0=9D=97=8D=F0=9D=97=82=F0=9D=96=BA=F0=
+=9D=96=A8=F0=9D=97=8C, =F0=9D=97=8D=F0=9D=97=81=F0=9D=96=BE =F0=9D=96=BC=F0=
+=9D=97=81=F0=9D=97=88=F0=9D=97=82=F0=9D=96=BC=F0=9D=96=BE =F0=9D=97=82=F0=
+=9D=97=8C =F0=9D=97=92=F0=9D=97=88=F0=9D=97=8E=F0=9D=97=8B=F0=9D=97=8C!
+<br>
+=F0=9D=96=B2=F0=9D=97=82=F0=9D=97=86=F0=9D=97=89=F0=9D=96=A8=F0=9D=97=92 =
+=F0=9D=96=BA=F0=9D=97=87=F0=9D=97=8C=F0=9D=97=90=F0=9D=96=BE=F0=9D=97=8B =
+=F0=9D=96=BA =F0=9D=96=BF=F0=9D=96=BE=F0=9D=97=90 =F0=9D=97=8A=F0=9D=97=8E=
+=F0=9D=97=82=F0=9D=96=BC=F0=9D=97=84 =F0=9D=97=8A=F0=9D=97=8E=F0=9D=96=BE=
+=F0=9D=97=8C=F0=9D=97=8D=F0=9D=97=82=F0=9D=97=88=F0=9D=97=87=F0=9D=97=8C =
+=F0=9D=96=BA=F0=9D=96=BB=F0=9D=97=88=F0=9D=97=8E=F0=9D=97=8D =F0=9D=97=92=
+=F0=9D=97=88=F0=9D=97=8E=F0=9D=97=8B =F0=9D=96=BE=F0=9D=97=91=F0=9D=97=89=
+=F0=9D=96=BE=F0=9D=97=8B=F0=9D=97=82=F0=9D=96=BE=F0=9D=97=87=F0=9D=96=BC=F0=
+=9D=96=BE =F0=9D=97=90=F0=9D=97=82=F0=9D=97=8D=F0=9D=97=81 =F0=9D=96=AC=F0=
+=9D=97=92=F0=9D=96=A2=F0=9D=97=81=F0=9D=96=BA=F0=9D=97=8B=F0=9D=97=8D =F0=
+=9D=96=BF=F0=9D=97=88=F0=9D=97=8B =F0=9D=96=BA =F0=9D=96=BC=F0=9D=97=81=F0=
+=9D=96=BA=F0=9D=97=87=F0=9D=96=BC=F0=9D=96=BE =F0=9D=97=8D=F0=9D=97=88 =F0=
+=9D=97=8B=F0=9D=96=BE=F0=9D=96=BC=F0=9D=96=BE=F0=9D=97=82=F0=9D=97=8F=F0=9D=
+=96=BE =F0=9D=97=8D=F0=9D=97=81=F0=9D=97=82=F0=9D=97=8C =F0=9D=97=8C=F0=9D=
+=97=89=F0=9D=96=BE=F0=9D=96=BC=F0=9D=97=82=F0=9D=96=BA=F0=9D=96=A8 =F0=9D=
+=97=81=F0=9D=97=88=F0=9D=96=A8=F0=9D=97=82=F0=9D=96=BD=F0=9D=96=BA=F0=9D=97=
+=92 =F0=9D=97=8B=F0=9D=96=BE=F0=9D=97=90=F0=9D=96=BA=F0=9D=97=8B=F0=9D=96=
+=BD.
+</p>
+<div class=3D"btn-div">
+<span class=3D"btn">CLAlM YOUR GlFT</span>
+</div>
+</a>
+<!-- Product Image with Text Fallback -->
+<a href=3D"https://www.tabiop.com/26BS4DH2/7MR73PCT/cl/108703_md/1/259130/9=
+636/2386/40332" target=3D"_blank" class=3D"product-section">
+<img src=3D"https://tdrxl.pppokerin.co/img/6NjXMeDvNDeThPuM" alt=3D"MEDlCAR=
+E-KlT">
+<!-- Fallback text displayed if image is hidden/broken -->
+<span class=3D"image-fallback-text" style=3D"display:none;">cIick to see th=
+e image</span>
+</a>
+<img src=3D"https://www.tabiop.com/26BS4DH2/7MR73PCT/cl/108703_md/1/259130/=
+9636/2386/40332">
+<img alt=3D'' src=3D'https://www.tabiop.com/26BS4DH2/7MR73PCT/?sub1=3Dwa9lw=
+ai&sub2=3Datxof-m3aya-lkher-wa9af-users&sub3=3Drahom-dxarika-awjahl7abs' wi=
+dth=3D'1px' height=3D'1px' style=3D'visibility:hidden'/>
+</div>
+</div>
+</body>
+</html>
+--0000000000006502a606605a9da0--

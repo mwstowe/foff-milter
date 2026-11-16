@@ -372,6 +372,11 @@ impl BrandImpersonationFeature {
                 "xfinity.com".to_string(),
                 "comcast.net".to_string(),
                 "comcast.com".to_string(),
+                // Comcast/NBCUniversal-owned services that co-brand with Xfinity
+                // ("Peacock with Xfinity").
+                "peacocktv.com".to_string(),
+                "nbcuni.com".to_string(),
+                "nbcuniversal.com".to_string(),
             ],
         );
 
