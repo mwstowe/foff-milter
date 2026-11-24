@@ -14,21 +14,79 @@ pub struct DomainInfo {
     pub cached_at: SystemTime,
 }
 
+/// How long a successful lookup is reused.
+const CACHE_TTL: Duration = Duration::from_secs(24 * 60 * 60);
+/// How long a failed lookup is reused. Without this, a domain whose registry has no
+/// usable WHOIS costs a full timeout on every message from it.
+const FAILURE_TTL: Duration = Duration::from_secs(60 * 60);
+/// Most domains kept in the cache; a long-running milter sees many senders.
+const CACHE_CAPACITY: usize = 10_000;
+
+#[derive(Debug, Clone)]
+enum CacheEntry {
+    Known(DomainInfo),
+    Failed { error: String, at: SystemTime },
+}
+
+impl CacheEntry {
+    fn stored_at(&self) -> SystemTime {
+        match self {
+            CacheEntry::Known(info) => info.cached_at,
+            CacheEntry::Failed { at, .. } => *at,
+        }
+    }
+
+    fn is_fresh(&self, now: SystemTime) -> bool {
+        let ttl = match self {
+            CacheEntry::Known(_) => CACHE_TTL,
+            CacheEntry::Failed { .. } => FAILURE_TTL,
+        };
+        now.duration_since(self.stored_at())
+            .map(|age| age < ttl)
+            .unwrap_or(true)
+    }
+}
+
+/// Looks up domain registration dates via WHOIS.
+///
+/// Clones share one cache, so create a single checker and clone it (or use
+/// [`with_timeout`](Self::with_timeout)) rather than creating one per lookup.
 #[derive(Debug, Clone)]
 pub struct DomainAgeChecker {
-    cache: Arc<RwLock<HashMap<String, DomainInfo>>>,
-    cache_ttl: Duration,
+    cache: Arc<RwLock<HashMap<String, CacheEntry>>>,
     timeout: Duration,
     use_mock: bool,
+}
+
+/// The registry WHOIS server named by a `refer:` line (IANA referral format).
+fn whois_referral(response: &str) -> Option<String> {
+    response.lines().find_map(|line| {
+        let (key, value) = line.split_once(':')?;
+        let value = value.trim();
+        (key.trim().eq_ignore_ascii_case("refer") && !value.is_empty()).then(|| value.to_string())
+    })
+}
+
+/// Whether a WHOIS response comes from whois.iana.org, which only knows about TLDs.
+fn is_iana_response(response: &str) -> bool {
+    response.contains("% IANA WHOIS server")
 }
 
 impl DomainAgeChecker {
     pub fn new(timeout_seconds: u64, use_mock: bool) -> Self {
         Self {
             cache: Arc::new(RwLock::new(HashMap::new())),
-            cache_ttl: Duration::from_secs(24 * 60 * 60), // 24 hours
             timeout: Duration::from_secs(timeout_seconds),
             use_mock,
+        }
+    }
+
+    /// A checker with a different query timeout that shares this checker's cache.
+    pub fn with_timeout(&self, timeout_seconds: u64) -> Self {
+        Self {
+            cache: Arc::clone(&self.cache),
+            timeout: Duration::from_secs(timeout_seconds),
+            use_mock: self.use_mock,
         }
     }
 
@@ -136,39 +194,66 @@ impl DomainAgeChecker {
         }
     }
 
-    /// Get domain information (with caching)
+    /// Get domain information (with caching). Failed lookups are cached too, for a
+    /// shorter time, and keep returning the error while cached.
     pub async fn get_domain_info(&self, domain: &str) -> Result<DomainInfo> {
         let domain = domain.to_lowercase();
 
         // Check cache first
         {
             let cache = self.cache.read().await;
-            if let Some(cached_info) = cache.get(&domain) {
-                let cache_age = SystemTime::now()
-                    .duration_since(cached_info.cached_at)
-                    .unwrap_or(Duration::from_secs(0));
-
-                if cache_age < self.cache_ttl {
+            match cache.get(&domain) {
+                Some(entry) if entry.is_fresh(SystemTime::now()) => {
                     log::debug!("Using cached domain info for: {domain}");
-                    return Ok(cached_info.clone());
+                    return match entry {
+                        CacheEntry::Known(info) => Ok(info.clone()),
+                        CacheEntry::Failed { error, .. } => {
+                            Err(anyhow!("{error} (cached failure)"))
+                        }
+                    };
                 }
+                _ => {}
             }
         }
 
         // Fetch fresh data
-        let domain_info = if self.use_mock {
-            self.get_mock_domain_info(&domain).await?
+        let result = if self.use_mock {
+            self.get_mock_domain_info(&domain).await
         } else {
-            self.fetch_domain_info(&domain).await?
+            self.fetch_domain_info(&domain).await
         };
 
-        // Update cache
-        {
-            let mut cache = self.cache.write().await;
-            cache.insert(domain.clone(), domain_info.clone());
+        let entry = match &result {
+            Ok(info) => CacheEntry::Known(info.clone()),
+            Err(e) => CacheEntry::Failed {
+                error: e.to_string(),
+                at: SystemTime::now(),
+            },
+        };
+        let mut cache = self.cache.write().await;
+        if cache.len() >= CACHE_CAPACITY && !cache.contains_key(&domain) {
+            Self::make_room(&mut cache);
         }
+        cache.insert(domain, entry);
 
-        Ok(domain_info)
+        result
+    }
+
+    /// Drop expired entries, and if the cache is still full, the oldest tenth.
+    fn make_room(cache: &mut HashMap<String, CacheEntry>) {
+        let now = SystemTime::now();
+        cache.retain(|_, entry| entry.is_fresh(now));
+        if cache.len() < CACHE_CAPACITY {
+            return;
+        }
+        let mut by_age: Vec<(SystemTime, String)> = cache
+            .iter()
+            .map(|(domain, entry)| (entry.stored_at(), domain.clone()))
+            .collect();
+        by_age.sort();
+        for (_, domain) in by_age.into_iter().take(CACHE_CAPACITY / 10) {
+            cache.remove(&domain);
+        }
     }
 
     /// Fetch domain information from WHOIS servers
@@ -180,7 +265,10 @@ impl DomainAgeChecker {
         log::debug!("Using WHOIS server: {whois_server} for domain: {domain}");
 
         // Query the WHOIS server directly
-        match self.query_whois_server(&whois_server, domain).await {
+        match self
+            .query_whois_following_referral(&whois_server, domain)
+            .await
+        {
             Ok(whois_text) => {
                 log::debug!("Got WHOIS response ({} chars)", whois_text.len());
                 self.parse_text_whois(&whois_text, domain)
@@ -259,13 +347,31 @@ impl DomainAgeChecker {
         Ok(response)
     }
 
+    /// Query `server`, and if it only refers to the registry's WHOIS server (as
+    /// whois.iana.org does for every TLD), query that server instead. IANA's answer
+    /// describes the TLD itself, including the TLD's creation date, so it must never
+    /// be parsed as the domain's record.
+    async fn query_whois_following_referral(&self, server: &str, domain: &str) -> Result<String> {
+        let response = self.query_whois_server(server, domain).await?;
+        match whois_referral(&response) {
+            Some(referred) if !referred.eq_ignore_ascii_case(server) => {
+                log::debug!("WHOIS {server} refers {domain} to {referred}");
+                self.query_whois_server(&referred, domain).await
+            }
+            _ if is_iana_response(&response) => {
+                Err(anyhow!("IANA has no registry WHOIS server for {domain}"))
+            }
+            _ => Ok(response),
+        }
+    }
+
     /// Try fallback WHOIS servers if primary fails
     async fn try_fallback_whois_servers(&self, domain: &str) -> Result<DomainInfo> {
         let fallback_servers = vec!["whois.iana.org", "whois.internic.net"];
 
         for server in fallback_servers {
             log::debug!("Trying fallback WHOIS server: {server}");
-            match self.query_whois_server(server, domain).await {
+            match self.query_whois_following_referral(server, domain).await {
                 Ok(whois_text) => {
                     if let Ok(info) = self.parse_text_whois(&whois_text, domain) {
                         return Ok(info);
@@ -290,6 +396,11 @@ impl DomainAgeChecker {
             text.len(),
             domain
         );
+
+        // A TLD record from IANA carries the TLD's dates, not the domain's
+        if is_iana_response(text) {
+            return Err(anyhow!("WHOIS response for {domain} is an IANA TLD record"));
+        }
 
         // Common patterns for creation date in WHOIS text
         let patterns = vec![
@@ -487,6 +598,23 @@ impl DomainAgeChecker {
 
 #[cfg(test)]
 mod tests {
+
+    #[test]
+    fn test_iana_referral_is_followed_not_parsed() {
+        // whois.iana.org's answer for a domain on a TLD without a known server
+        let iana = "% IANA WHOIS server\n% for more information on IANA, visit http://www.iana.org\n\nrefer:        whois.nic.buzz\n\ndomain:       BUZZ\ncreated:      2013-12-12\n";
+        assert_eq!(whois_referral(iana).as_deref(), Some("whois.nic.buzz"));
+        assert!(is_iana_response(iana));
+
+        let checker = DomainAgeChecker::new(5, false);
+        assert!(checker.parse_text_whois(iana, "schwab-6.buzz").is_err());
+
+        let registry = "Domain Name: schwab-6.buzz\nCreation Date: 2026-02-02T04:13:35Z\n";
+        assert_eq!(whois_referral(registry), None);
+        assert!(!is_iana_response(registry));
+        assert!(checker.parse_text_whois(registry, "schwab-6.buzz").is_ok());
+    }
+
     use super::*;
 
     #[test]
@@ -569,6 +697,99 @@ mod tests {
         // Edge cases
         assert_eq!(checker.extract_root_domain("single"), "single");
         assert_eq!(checker.extract_root_domain("a.b"), "a.b");
+    }
+
+    async fn insert(checker: &DomainAgeChecker, domain: &str, entry: CacheEntry) {
+        checker
+            .cache
+            .write()
+            .await
+            .insert(domain.to_string(), entry);
+    }
+
+    fn failure(age: Duration) -> CacheEntry {
+        CacheEntry::Failed {
+            error: "no WHOIS data".to_string(),
+            at: SystemTime::now() - age,
+        }
+    }
+
+    #[tokio::test]
+    async fn test_failed_lookups_are_cached_for_an_hour() {
+        // A mock lookup always succeeds, so an error proves the cache answered
+        let checker = DomainAgeChecker::new(10, true);
+        insert(
+            &checker,
+            "failing.example",
+            failure(Duration::from_secs(60)),
+        )
+        .await;
+        let err = checker
+            .get_domain_info("failing.example")
+            .await
+            .unwrap_err();
+        assert!(err.to_string().contains("cached failure"), "{err}");
+
+        // After the failure TTL the domain is looked up again
+        insert(&checker, "failing.example", failure(FAILURE_TTL * 2)).await;
+        assert!(checker.get_domain_info("failing.example").await.is_ok());
+    }
+
+    #[tokio::test]
+    async fn test_clones_and_timeouts_share_the_cache() {
+        let checker = DomainAgeChecker::new(5, true);
+        let shared = checker.with_timeout(30);
+        checker.get_domain_info("google.com").await.unwrap();
+        assert!(shared.cache.read().await.contains_key("google.com"));
+        assert!(checker
+            .clone()
+            .cache
+            .read()
+            .await
+            .contains_key("google.com"));
+    }
+
+    #[test]
+    fn test_make_room_drops_expired_then_oldest() {
+        let now = SystemTime::now();
+        let known = |age: Duration| {
+            CacheEntry::Known(DomainInfo {
+                domain: String::new(),
+                creation_date: None,
+                age_days: Some(1),
+                cached_at: now - age,
+            })
+        };
+
+        let fresh = |n: usize| -> HashMap<String, CacheEntry> {
+            (0..n)
+                .map(|i| {
+                    (
+                        format!("d{i}.example"),
+                        known(Duration::from_secs(i as u64)),
+                    )
+                })
+                .collect()
+        };
+
+        // Dropping the expired entries makes enough room: all fresh ones stay
+        let mut cache = fresh(CACHE_CAPACITY - 2);
+        cache.insert("stale.example".to_string(), known(CACHE_TTL * 2));
+        cache.insert(
+            "stale-failure.example".to_string(),
+            failure(FAILURE_TTL * 2),
+        );
+        DomainAgeChecker::make_room(&mut cache);
+        assert_eq!(cache.len(), CACHE_CAPACITY - 2);
+        assert!(!cache.contains_key("stale.example"));
+        assert!(!cache.contains_key("stale-failure.example"));
+
+        // All fresh: the oldest tenth goes
+        let mut cache = fresh(CACHE_CAPACITY);
+        DomainAgeChecker::make_room(&mut cache);
+        assert_eq!(cache.len(), CACHE_CAPACITY - CACHE_CAPACITY / 10);
+        assert!(cache.contains_key("d0.example"));
+        assert!(!cache.contains_key(&format!("d{}.example", CACHE_CAPACITY - 1)));
     }
 
     #[tokio::test]

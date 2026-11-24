@@ -263,9 +263,30 @@ impl SenderAlignmentAnalyzer {
             let display_part = from_header[..angle_start].trim().trim_matches('"');
             let email_part = &from_header[angle_start + 1..].trim_end_matches('>');
 
-            // Check for suspicious display name patterns
+            // Check for suspicious display name patterns. An address in the display
+            // name is only suspicious when it names a different organization than the
+            // real address (`"support@paypal.com" <x@evil.example>`); many senders
+            // repeat their own address there (`"service@paypal.com" <service@paypal.com>`).
             let suspicious_chars = ['@', '<', '>', '[', ']', '{', '}', '|', '\\'];
-            if display_part.chars().any(|c| suspicious_chars.contains(&c)) {
+            let email_domain = email_part.rsplit('@').next().unwrap_or("").trim();
+            let display_addresses_match_sender = display_part.contains('@')
+                && !display_part
+                    .chars()
+                    .any(|c| c != '@' && suspicious_chars.contains(&c))
+                && display_part
+                    .split(|c: char| c.is_whitespace() || c == ',' || c == ';')
+                    .filter_map(|w| w.split_once('@').map(|(_, d)| d))
+                    .all(|d| {
+                        let d = d.trim_matches(|c: char| !c.is_ascii_alphanumeric());
+                        !d.is_empty()
+                            && crate::domain_utils::DomainUtils::same_registrable_domain(
+                                d,
+                                email_domain,
+                            )
+                    });
+            if display_part.chars().any(|c| suspicious_chars.contains(&c))
+                && !display_addresses_match_sender
+            {
                 // Skip if it's a legitimate business format like "Business Name (email@domain.com)"
                 let business_contact_pattern =
                     regex::Regex::new(r"^[^<>]+\s*\([^)]+@[^)]+\)$").unwrap();
@@ -744,6 +765,9 @@ impl SenderAlignmentAnalyzer {
             .unwrap_or(false)
             && crate::features::esp_validation::is_from_trusted_esp(context);
 
+        // Established, self-contained: its links stay on its own domain as well
+        let established_sender = crate::features::is_established_self_contained_sender(context);
+
         // Original brand pattern checking (for backward compatibility)
         for (brand, legitimate_domains) in &self.brand_patterns {
             // Check if brand is mentioned in display name, subject, or body
@@ -757,6 +781,14 @@ impl SenderAlignmentAnalyzer {
                 // part of the sender's own From display name (i.e. the sender is
                 // not claiming to be the brand).
                 if co_branding_ok && !sender_info.from_display_name.to_lowercase().contains(brand) {
+                    continue;
+                }
+                // Likewise for an established domain signing its own mail, linking only to
+                // itself, that names the brand only in the body (an invoice paid via PayPal).
+                if established_sender
+                    && !sender_info.from_display_name.to_lowercase().contains(brand)
+                    && !subject.to_lowercase().contains(brand)
+                {
                     continue;
                 }
 
@@ -2129,3 +2161,31 @@ impl SenderAlignmentAnalyzer {
     }
 }
 impl SenderAlignmentAnalyzer {}
+
+#[cfg(test)]
+mod display_name_tests {
+    use super::SenderAlignmentAnalyzer;
+
+    fn flagged(from: &str) -> bool {
+        let (_, evidence) = SenderAlignmentAnalyzer::new().analyze_display_name_consistency(from);
+        evidence
+            .iter()
+            .any(|e| e == "Display name contains suspicious characters")
+    }
+
+    #[test]
+    fn own_address_in_display_name_is_not_suspicious() {
+        assert!(!flagged("\"service@paypal.com\" <service@paypal.com>"));
+        assert!(!flagged(
+            "\"billing@example.com\" <noreply@mail.example.com>"
+        ));
+    }
+
+    #[test]
+    fn other_organizations_address_in_display_name_is_suspicious() {
+        assert!(flagged("\"support@paypal.com\" <x@evil.example>"));
+        assert!(flagged(
+            "\"service@paypal.com [Secure]\" <service@paypal.com>"
+        ));
+    }
+}

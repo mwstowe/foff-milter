@@ -639,27 +639,17 @@ impl ContextAnalyzer {
         let subject = context.subject.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
 
-        // Medicare/healthcare keywords - made more specific
-        let medicare_keywords = [
-            "medicare",
-            "medicareadvantage",
-            "medicare advantage",
-            "medicare plan",
-            "medicare enrollment",
-            "ehealth",
-            "aep",
-            "enrollment period",
-            "advantage plan",
-            "medicare supplement",
-            "medigap",
-        ];
-
-        // Check for Medicare content
-        let has_medicare_content = medicare_keywords.iter().any(|keyword| {
-            subject.to_lowercase().contains(keyword)
-                || body.to_lowercase().contains(keyword)
-                || from_header.to_lowercase().contains(keyword)
+        // Medicare/healthcare keywords, matched as whole words: short keywords like
+        // "aep" otherwise match inside unrelated words and encoded data.
+        static MEDICARE_KEYWORDS: std::sync::LazyLock<Regex> = std::sync::LazyLock::new(|| {
+            Regex::new(
+                r"(?i)\b(medicare|medicareadvantage|ehealth|aep|enrollment period|advantage plan|medigap)\b",
+            )
+            .unwrap()
         });
+        let has_medicare_content = MEDICARE_KEYWORDS.is_match(subject)
+            || MEDICARE_KEYWORDS.is_match(body)
+            || MEDICARE_KEYWORDS.is_match(from_header);
 
         // Skip Medicare scam detection for legitimate entertainment services
         let is_legitimate_service = from_header.to_lowercase().contains("disney")

@@ -55,9 +55,9 @@ impl MediaAnalyzer {
                 // Urgency patterns
                 Regex::new(r"(?i)(act.*now|limited.*time|expires|urgent|immediate|offer.*ends)")
                     .unwrap(),
-                // Brand impersonation
-                Regex::new(r"(?i)(norton|mcafee|microsoft|apple|amazon|paypal)").unwrap(),
-                // Invoice scam (requires brand + invoice context)
+                // Invoice scam (requires brand + invoice context). A brand name on its
+                // own is not impersonation: real invoices name the payment method
+                // ("paid via PayPal"); brand impersonation is judged against the sender.
                 Regex::new(r"(?i)(invoice|overdue).{0,50}(paypal|amazon|apple|norton|mcafee)")
                     .unwrap(),
                 Regex::new(r"(?i)(paypal|amazon|apple|norton|mcafee).{0,50}(invoice|overdue)")

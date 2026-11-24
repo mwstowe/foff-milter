@@ -198,6 +198,8 @@ async fn analyze_email_file(
     let mut from_email = None;
     let mut reply_to_email = None;
     let mut return_path_email = None;
+    // One checker, so From, Reply-To and Return-Path on the same domain share a lookup
+    let domain_checker = foff_milter::domain_age::DomainAgeChecker::new(10, false);
 
     if let Some(from) = headers.get("from") {
         println!("From: {}", from);
@@ -208,7 +210,6 @@ async fn analyze_email_file(
                 println!("  └─ Domain: {}", domain);
 
                 // Check domain age
-                let domain_checker = foff_milter::domain_age::DomainAgeChecker::new(10, false);
                 match domain_checker.get_domain_info(domain).await {
                     Ok(info) => {
                         if let Some(age_days) = info.age_days {
@@ -238,7 +239,6 @@ async fn analyze_email_file(
                 println!("  └─ Domain: {}", domain);
 
                 // Check domain age
-                let domain_checker = foff_milter::domain_age::DomainAgeChecker::new(10, false);
                 match domain_checker.get_domain_info(domain).await {
                     Ok(info) => {
                         if let Some(age_days) = info.age_days {
@@ -269,7 +269,6 @@ async fn analyze_email_file(
                 println!("  └─ Domain: {}", domain);
 
                 // Check domain age
-                let domain_checker = foff_milter::domain_age::DomainAgeChecker::new(10, false);
                 match domain_checker.get_domain_info(domain).await {
                     Ok(info) => {
                         if let Some(age_days) = info.age_days {
@@ -711,7 +710,7 @@ async fn analyze_email_file(
     // The filter engine handles decoding and normalization
 
     // Build mail context (matching milter mode setup exactly)
-    let mut mail_context = foff_milter::filter::MailContext {
+    let mail_context = foff_milter::filter::MailContext {
         sender: Some(sender.clone()),
         from_header: headers.get("from").cloned(),
         recipients: recipients.clone(),
@@ -740,11 +739,7 @@ async fn analyze_email_file(
         sender_domain_age_days: None,
     };
 
-    // Pre-compute DKIM verification (first hop behavior - must be done before any header modifications)
-    use foff_milter::dkim_verification::DkimVerifier;
-    let sender_domain = sender.split('@').nth(1);
-    mail_context.dkim_verification =
-        Some(DkimVerifier::verify(&mail_context.headers, sender_domain));
+    // DKIM verification happens inside evaluate(), exactly as in milter mode
 
     // Let FilterEngine do all the processing (same as milter mode)
     let (action, matched_rules, headers_to_add) = filter_engine.evaluate(&mail_context).await;
@@ -2437,7 +2432,7 @@ async fn test_email_file(
         forwarding_info: None,   // Will be detected during evaluation
         proximate_mailer: None,  // Will be detected during evaluation
         normalized: None,        // Will be populated during evaluation
-        dkim_verification: None, // Will be populated below
+        dkim_verification: None, // Populated by evaluate()
         trusted_esp: None,       // Will be detected by ESP validation feature
         raw_body: Some(body),
         media_spam_score: 0,
@@ -2445,10 +2440,7 @@ async fn test_email_file(
         sender_domain_age_days: None,
     };
 
-    // Populate DKIM verification for test mode
-    use foff_milter::dkim_verification::DkimVerifier;
-    let sender_domain = sender.split('@').nth(1);
-    context.dkim_verification = Some(DkimVerifier::verify(&context.headers, sender_domain));
+    // DKIM verification happens inside evaluate(), exactly as in milter mode
 
     // Add legitimate business detection for test mode
     context.is_legitimate_business = is_legitimate_business_test(&context);

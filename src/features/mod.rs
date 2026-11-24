@@ -167,6 +167,10 @@ pub fn is_dkim_authenticated_org_identity(context: &MailContext) -> bool {
 /// to cover ordinary small businesses.
 pub const ESTABLISHED_DOMAIN_MIN_AGE_DAYS: u32 = 1095;
 
+/// A sender domain registered more recently than this (days) earns no authentication
+/// trust bonus: signing your own mail is trivial on a throwaway domain.
+pub const YOUNG_DOMAIN_MAX_AGE_DAYS: u32 = 365;
+
 /// Registrable domain of the From header address, lowercased.
 pub fn from_registrable_domain(context: &MailContext) -> Option<String> {
     let from = context.from_header.as_deref()?;
@@ -222,14 +226,7 @@ pub fn links_stay_on_domain(body: &str, registrable: &str) -> bool {
 /// reproducible on a throwaway domain, but registration age is not. An unknown age (no
 /// WHOIS result) NEVER qualifies, so lookup failures fail closed.
 pub fn is_established_self_contained_sender(context: &MailContext) -> bool {
-    let age = match context.sender_domain_age_days {
-        Some(a) => a,
-        None => {
-            log::debug!("Established-sender check: sender domain age unknown");
-            return false;
-        }
-    };
-    if age < ESTABLISHED_DOMAIN_MIN_AGE_DAYS {
+    if !is_authenticated_established_sender(context) {
         return false;
     }
     let from_domain = match from_registrable_domain(context) {
@@ -248,6 +245,40 @@ pub fn is_established_self_contained_sender(context: &MailContext) -> bool {
         );
         return false;
     }
+
+    // Links in the body AND in any text extracted from the PDF must stay on the sender's
+    // domain (a PDF that sends you to a different site to "pay" is not self-contained).
+    let body_ok = links_stay_on_domain(context.body.as_deref().unwrap_or(""), &from_domain);
+    let media_ok = links_stay_on_domain(&context.extracted_media_text, &from_domain);
+    log::debug!(
+        "Established-sender check for {from_domain}: body_links_ok={body_ok} media_links_ok={media_ok}"
+    );
+    body_ok && media_ok
+}
+
+/// Recognize the sender's identity as established: the From domain is at least
+/// [`ESTABLISHED_DOMAIN_MIN_AGE_DAYS`] old and the message carries a passing DKIM
+/// signature from the same organization. A phisher can't produce both for a domain they
+/// don't control, so content heuristics keyed on ordinary transactional wording ("payment
+/// received", "billing statement") must not fire on such mail.
+///
+/// Unlike [`is_established_self_contained_sender`] this says nothing about links or
+/// attachments. An unknown age (no WHOIS result) never qualifies.
+pub fn is_authenticated_established_sender(context: &MailContext) -> bool {
+    let age = match context.sender_domain_age_days {
+        Some(a) => a,
+        None => {
+            log::debug!("Established-sender check: sender domain age unknown");
+            return false;
+        }
+    };
+    if age < ESTABLISHED_DOMAIN_MIN_AGE_DAYS {
+        return false;
+    }
+    let from_domain = match from_registrable_domain(context) {
+        Some(d) => d,
+        None => return false,
+    };
 
     // DKIM must pass with a signing domain in the same organization as From.
     let dkim = match context.dkim_verification.as_ref() {
@@ -277,15 +308,8 @@ pub fn is_established_self_contained_sender(context: &MailContext) -> bool {
         );
         return false;
     }
-
-    // Links in the body AND in any text extracted from the PDF must stay on the sender's
-    // domain (a PDF that sends you to a different site to "pay" is not self-contained).
-    let body_ok = links_stay_on_domain(context.body.as_deref().unwrap_or(""), &from_domain);
-    let media_ok = links_stay_on_domain(&context.extracted_media_text, &from_domain);
-    log::debug!(
-        "Established-sender check for {from_domain}: age={age}d body_links_ok={body_ok} media_links_ok={media_ok}"
-    );
-    body_ok && media_ok
+    log::debug!("Established-sender check: {from_domain} is {age} days old with DKIM in org");
+    true
 }
 
 /// Structured tags for inter-feature communication.

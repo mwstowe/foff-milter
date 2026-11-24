@@ -61,8 +61,13 @@ impl AuthenticationAnalyzer {
 
         // Extract sender domain - prioritize From header for forwarded mail
         let sender_domain = if let Some(from_header) = &context.from_header {
-            // For forwarded mail, use the From header (original sender) not envelope sender
-            self.extract_domain(from_header).unwrap_or_default()
+            // For forwarded mail, use the From header (original sender) not envelope sender.
+            // Take the address in angle brackets: the display name may itself contain an
+            // address (`"service@paypal.com" <service@paypal.com>`).
+            crate::milter::extract_email_from_header(from_header)
+                .and_then(|addr| self.extract_domain(&addr))
+                .or_else(|| self.extract_domain(from_header))
+                .unwrap_or_default()
         } else if let Some(sender) = &context.sender {
             self.extract_domain(sender).unwrap_or_default()
         } else {
@@ -1292,6 +1297,31 @@ mod tests {
             Some("example.com".to_string())
         );
         assert_eq!(analyzer.extract_domain("invalid"), None);
+    }
+
+    #[test]
+    fn test_dkim_alignment_uses_address_not_display_name() {
+        // The display name is itself an address, as PayPal sends it
+        let analyzer = AuthenticationAnalyzer::new(create_test_config());
+        let mut headers = std::collections::HashMap::new();
+        headers.insert(
+            "authentication-results".to_string(),
+            "mx.example.net; dkim=pass header.d=paypal.com".to_string(),
+        );
+        headers.insert(
+            "dkim-signature".to_string(),
+            "v=1; a=rsa-sha256; d=paypal.com; s=pp; b=abc".to_string(),
+        );
+        let context = MailContext {
+            from_header: Some("\"service@paypal.com\" <service@paypal.com>".to_string()),
+            headers,
+            ..Default::default()
+        };
+        let (_, _, evidence) = analyzer.analyze_authentication(&context);
+        assert!(
+            evidence.iter().any(|e| e == "DKIM domain properly aligned"),
+            "{evidence:?}"
+        );
     }
 
     #[test]

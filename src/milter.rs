@@ -323,9 +323,11 @@ impl Milter {
             log::warn!("Failed to reload config data: {}", e);
         }
 
-        // Create new engine with updated configuration
+        // Create new engine with updated configuration. Domain ages don't depend on
+        // the configuration, so keep the cached lookups.
         let mut new_engine = FilterEngine::new(config.clone())?;
         new_engine.set_toml_config(toml_config);
+        new_engine.set_domain_age_checker(self.engine.domain_age_checker().clone());
         self.engine = Arc::new(new_engine);
 
         // Update statistics collector if configuration changed

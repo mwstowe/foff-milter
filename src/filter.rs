@@ -192,6 +192,57 @@ lazy_static! {
     static ref RE_CONTENT_WORDS: Regex = Regex::new(r"[a-z]{5,}").unwrap();
 }
 
+/// Registrable domains of shared link, tracking and asset infrastructure. A link to
+/// one of these says nothing about whether the sender's call to action is related to
+/// the sender.
+const KNOWN_LINK_INFRA: &[&str] = &[
+    "sendgrid.net",
+    "cloudfront.net",
+    "mjt.lu",
+    "mailjet.com",
+    "cloudinary.com",
+    "googleapis.com",
+    "w3.org",
+    "toasttab.com",
+    "list-manage.com",
+    "mailchimp.com",
+    "mcsv.net",
+    "rsgsv.net",
+    "amazonaws.com",
+    "akamaihd.net",
+    "sparkpostmail.com",
+    "hubspotlinks.com",
+    "hs-sites.com",
+    "constantcontact.com",
+    "exct.net",
+    "bit.ly",
+    "t.co",
+    // Oracle Eloqua click tracking, pixels and assets
+    "eoaclk.com",
+    "eoapxl.com",
+    "en25.com",
+];
+
+fn is_known_link_infra(registrable: &str) -> bool {
+    // Marketo tracks clicks on per-customer `mkt<number>.com` domains
+    let marketo = registrable
+        .strip_prefix("mkt")
+        .and_then(|rest| rest.strip_suffix(".com"))
+        .is_some_and(|n| !n.is_empty() && n.bytes().all(|b| b.is_ascii_digit()));
+    marketo
+        || KNOWN_LINK_INFRA
+            .iter()
+            .any(|k| registrable == *k || registrable.ends_with(&format!(".{k}")))
+}
+
+/// Built-in rules that match ordinary billing and receipt wording. They are skipped
+/// for an established sender signing its own mail, which sends exactly this wording.
+const BILLING_WORDING_RULES: &[&str] = &[
+    "Credit Card Bill Phishing",
+    "Payment Service Abuse",
+    "Transaction Confirmation Enhanced",
+];
+
 // Cache for unsubscribe link validation results
 #[derive(Clone)]
 struct ValidationResult {
@@ -239,6 +290,8 @@ pub struct FilterEngine {
     seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer,
     // Email normalization engine
     normalizer: EmailNormalizer,
+    // Domain age lookups, one cache for all messages
+    domain_age_checker: DomainAgeChecker,
     // Shared domain registry
     pub domain_registry: std::sync::Arc<crate::domain_registry::DomainRegistry>,
 }
@@ -438,112 +491,41 @@ impl FilterEngine {
         decoded_text.to_string()
     }
 
-    /// Extract the best text part from a multipart MIME body
-    fn extract_mime_text_part(&self, body: &str, content_type: &str) -> Option<String> {
-        let boundary = content_type
-            .find("boundary=")
-            .map(|i| &content_type[i + 9..])
-            .map(|s| s.trim_matches('"').split(';').next().unwrap_or("").trim())?;
-        if boundary.is_empty() {
-            return None;
-        }
-        log::debug!(
-            "MIME extraction: boundary='{}', body_len={}",
-            boundary,
-            body.len()
-        );
+    /// Text of a multipart body for analysis: the first HTML part, otherwise the
+    /// first plain text part, decoded to UTF-8. Attachments (including text
+    /// attachments such as certificates) are skipped. Returns `None` if the body
+    /// has no text part.
+    ///
+    /// MIME parsing is left to `mail-parser`, which handles folded part headers,
+    /// case-sensitive boundaries, nested multiparts and charsets. Line endings
+    /// are normalized to `\n`: the milter receives CRLF, test mode reads files
+    /// with LF, and both must analyze the same text.
+    fn extract_mime_text_part(body: &str, content_type: &str) -> Option<String> {
+        use mail_parser::{MessageParser, PartType};
 
-        let separator = format!("--{}", boundary);
-        let parts: Vec<&str> = body.split(&separator).collect();
-        let mut best_part = String::new();
+        // Only the top-level Content-Type is needed to split the body
+        let raw = format!("Content-Type: {}\r\n\r\n{}", content_type, body);
+        let message = MessageParser::default().parse(raw.as_bytes())?;
 
-        for part in parts.iter().skip(1) {
-            if part.trim().is_empty() || part.starts_with("--") {
-                continue;
-            }
-
-            let mut part_ct = String::new();
-            let mut part_enc = String::new();
-            let mut in_headers = true;
-            let mut found_header = false;
-            let mut part_body = String::new();
-
-            for line in part.lines() {
-                if in_headers {
-                    if line.trim().is_empty() {
-                        if found_header {
-                            in_headers = false;
-                        }
-                        continue;
-                    }
-                    let lower = line.to_lowercase();
-                    if let Some(ct) = lower.strip_prefix("content-type:") {
-                        part_ct = ct.trim().to_string();
-                        found_header = true;
-                    } else if let Some(enc) = lower.strip_prefix("content-transfer-encoding:") {
-                        part_enc = enc.trim().to_string();
-                        found_header = true;
-                    } else if line.contains(':') {
-                        found_header = true;
-                    }
-                } else {
-                    part_body.push_str(line);
-                    part_body.push('\n');
-                }
-            }
-
-            // Recurse into nested multipart
-            if part_ct.contains("multipart") {
-                log::debug!("MIME: recursing into nested multipart: {}", part_ct);
-                if let Some(nested) = self.extract_mime_text_part(&part_body, &part_ct) {
-                    return Some(nested);
-                }
-                continue;
-            }
-
-            log::debug!(
-                "MIME part: ct='{}', enc='{}', body_len={}",
-                part_ct,
-                part_enc,
-                part_body.len()
-            );
-
-            if part_ct.contains("text/html")
-                || (part_ct.contains("text/plain") && best_part.is_empty())
-            {
-                // Extract charset from content-type
-                let part_charset = part_ct
-                    .find("charset")
-                    .and_then(|i| {
-                        let rest = &part_ct[i..];
-                        rest.find('=').map(|eq| {
-                            rest[eq + 1..]
-                                .trim()
-                                .trim_matches('"')
-                                .split(';')
-                                .next()
-                                .unwrap_or("utf-8")
-                                .trim()
-                        })
-                    })
-                    .unwrap_or("utf-8");
-                let decoded = if !part_enc.is_empty() {
-                    self.decode_body(&part_body, &part_enc, part_charset)
-                } else {
-                    part_body
-                };
-                if part_ct.contains("text/html") {
-                    return Some(decoded);
-                }
-                best_part = decoded;
-            }
-        }
-
-        if !best_part.is_empty() {
-            Some(best_part)
-        } else {
-            None
-        }
+        // `html_body` and `text_body` list the displayable parts; each falls back
+        // to the other kind, so check the actual part type.
+        let html = message
+            .html_body
+            .iter()
+            .find_map(|&id| match &message.part(id)?.body {
+                PartType::Html(html) => Some(html.to_string()),
+                _ => None,
+            });
+        html.or_else(|| {
+            message
+                .text_body
+                .iter()
+                .find_map(|&id| match &message.part(id)?.body {
+                    PartType::Text(text) => Some(text.to_string()),
+                    _ => None,
+                })
+        })
+        .map(|text| text.replace("\r\n", "\n"))
     }
 
     /// Get evasion score from normalized content with authentication-based exclusions
@@ -1139,12 +1121,23 @@ impl FilterEngine {
             business_analyzer: crate::business_context::BusinessContextAnalyzer::new(),
             seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer::new(),
             normalizer: EmailNormalizer::new(),
+            domain_age_checker: DomainAgeChecker::new(5, false),
             domain_registry: std::sync::Arc::new(crate::domain_registry::DomainRegistry::default()),
         };
 
         // Pre-compile all regex patterns for better performance
         engine.compile_patterns()?;
         Ok(engine)
+    }
+
+    /// The domain age checker, to hand its cache to a replacement engine.
+    pub fn domain_age_checker(&self) -> &DomainAgeChecker {
+        &self.domain_age_checker
+    }
+
+    /// Use `checker` (and its cache) for domain age lookups, e.g. after a reload.
+    pub fn set_domain_age_checker(&mut self, checker: DomainAgeChecker) {
+        self.domain_age_checker = checker;
     }
 
     pub fn set_toml_config(&mut self, toml_config: crate::toml_config::TomlConfig) {
@@ -1312,7 +1305,17 @@ impl FilterEngine {
         let invoice_like = ["invoice", "amount due", "payment", "receipt", "billing"]
             .iter()
             .any(|k| text.contains(k));
-        has_list_headers || invoice_like
+        // Credential requests: a young domain asking to verify a mailbox is phishing
+        let credential_like = [
+            "verify",
+            "verification",
+            "credential",
+            "password",
+            "mailbox",
+        ]
+        .iter()
+        .any(|k| text.contains(k));
+        has_list_headers || invoice_like || credential_like
     }
 
     /// Age in days of the From domain's registrable domain, or `None` when it cannot be
@@ -1320,7 +1323,7 @@ impl FilterEngine {
     /// callers either fail closed (invoice exemption) or fall back to prior behavior.
     async fn lookup_sender_domain_age(&self, context: &MailContext) -> Option<u32> {
         let domain = crate::features::from_registrable_domain(context)?;
-        let checker = DomainAgeChecker::new(5, false);
+        let checker = &self.domain_age_checker;
         let root = checker.extract_root_domain(&domain);
         match checker.get_domain_info(&root).await {
             Ok(info) => info.age_days,
@@ -2170,6 +2173,12 @@ impl FilterEngine {
         // Clone context to modify hop detection fields
         let mut context = context.clone();
 
+        // Verify DKIM before anything reads it or modifies headers. Doing it here,
+        // not in the callers, keeps milter and test mode identical: the trust
+        // analysis and the ESP checks below need the result, and the milter never
+        // computed it before evaluate().
+        context.dkim_verification();
+
         // Compute legitimate business status once for consistent use throughout evaluation
         let is_legitimate_business = self.is_legitimate_business_email(&context);
 
@@ -2260,7 +2269,7 @@ impl FilterEngine {
                     .get("content-type")
                     .or_else(|| context.headers.get("Content-Type"))
                 {
-                    if let Some(extracted) = self.extract_mime_text_part(body, content_type) {
+                    if let Some(extracted) = Self::extract_mime_text_part(body, content_type) {
                         context.body = Some(extracted);
                     }
                 }
@@ -2890,6 +2899,16 @@ impl FilterEngine {
             );
         }
 
+        let (credential_score, credential_reason) =
+            self.credential_phishing_score(&context_with_attachments);
+        if credential_score > 0 {
+            total_score += credential_score;
+            scoring_rules.push(format!(
+                "Credential Phishing: {} (+{})",
+                credential_reason, credential_score
+            ));
+        }
+
         // Check for domain-content semantic mismatch
         let mismatch_score = self.get_domain_content_mismatch_score(&context_with_attachments);
         if mismatch_score > 0 {
@@ -3169,9 +3188,7 @@ impl FilterEngine {
             ));
         }
 
-        // Encoding evasion analysis
-        // Ensure DKIM verification is populated before evasion score calculation
-        context_with_attachments.dkim_verification();
+        // Encoding evasion analysis (DKIM verification was populated at the start of evaluate)
         let evasion_score = self.get_evasion_score(&context_with_attachments);
         if evasion_score > 0 {
             total_score += evasion_score;
@@ -3460,11 +3477,28 @@ impl FilterEngine {
                 false
             };
 
+            // An established domain (years old) signing its own mail sends real bills and
+            // receipts, and many receiving MTAs don't record DMARC at all. Only the rules
+            // keyed purely on ordinary billing wording are skipped for it: spammers do
+            // use aged domains, so everything else still applies.
+            let is_established_sender = !is_authenticated_sender
+                && !is_esp_authenticated
+                && crate::features::is_authenticated_established_sender(&context_with_attachments)
+                && !feature_analysis.scores.iter().any(|s| {
+                    s.tags
+                        .iter()
+                        .any(|t| matches!(t, crate::features::FeatureTag::BrandImpersonation(_)))
+                });
+
             let suppress_rules = is_authenticated_sender || is_esp_authenticated;
             if suppress_rules {
                 log::info!(
                     "Verified sender detected (dmarc={}, esp={}) - phishing/content rules will be suppressed",
                     is_authenticated_sender, is_esp_authenticated
+                );
+            } else if is_established_sender {
+                log::info!(
+                    "Established authenticated sender - billing-wording rules will be suppressed"
                 );
             }
 
@@ -3587,12 +3621,15 @@ impl FilterEngine {
                             continue;
                         }
 
-                        // Skip positive-scoring phishing/content rules for verified senders
-                        if suppress_rules
-                            && rule.score.unwrap_or(0) > 0
-                            && (module.name.contains("Phishing")
-                                || module.name.contains("Content Threats")
-                                || module.name.contains("Brand Protection"))
+                        // Skip positive-scoring phishing/content rules for verified senders,
+                        // and billing-wording rules for established senders
+                        if rule.score.unwrap_or(0) > 0
+                            && ((suppress_rules
+                                && (module.name.contains("Phishing")
+                                    || module.name.contains("Content Threats")
+                                    || module.name.contains("Brand Protection")))
+                                || (is_established_sender
+                                    && BILLING_WORDING_RULES.contains(&rule.name.as_str())))
                         {
                             log::info!(
                                 "Module '{}' Rule '{}' skipped for verified sender",
@@ -3614,20 +3651,27 @@ impl FilterEngine {
                             .evidence
                             .iter()
                             .any(|e| e.contains("Health-supplement VSL/affiliate marketing"));
+                        // A domain registered within the last year signing its own mail
+                        // proves nothing: that's the throwaway-domain phishing setup.
+                        let young_sender_domain = context_with_attachments
+                            .sender_domain_age_days
+                            .is_some_and(|age| age < crate::features::YOUNG_DOMAIN_MAX_AGE_DAYS);
                         if rule.score.unwrap_or(0) < 0
                             && (module.name.contains("ESP Infrastructure")
                                 || rule.name.contains("Perfect Authentication"))
                             && (insurance_spam_score > 0
                                 || solar_spam_score > 0
-                                || has_health_vsl_content)
+                                || has_health_vsl_content
+                                || young_sender_domain)
                         {
                             log::info!(
-                                "Module '{}' Rule '{}' trust bonus withheld: spam content detected (insurance={}, solar={}, health_vsl={})",
+                                "Module '{}' Rule '{}' trust bonus withheld: spam content or young domain (insurance={}, solar={}, health_vsl={}, young_domain={})",
                                 module.name,
                                 rule.name,
                                 insurance_spam_score,
                                 solar_spam_score,
-                                has_health_vsl_content
+                                has_health_vsl_content,
+                                young_sender_domain
                             );
                             continue;
                         }
@@ -4749,37 +4793,9 @@ impl FilterEngine {
         // looking and is not recognized link infrastructure. Keying on the
         // registrable domain (not an arbitrary subdomain label) avoids flagging
         // ESP tracking hosts like `u1187755.ct.sendgrid.net`.
-        const KNOWN_LINK_INFRA: &[&str] = &[
-            "sendgrid.net",
-            "cloudfront.net",
-            "mjt.lu",
-            "mailjet.com",
-            "cloudinary.com",
-            "googleapis.com",
-            "w3.org",
-            "toasttab.com",
-            "list-manage.com",
-            "mailchimp.com",
-            "mcsv.net",
-            "rsgsv.net",
-            "amazonaws.com",
-            "akamaihd.net",
-            "sparkpostmail.com",
-            "hubspotlinks.com",
-            "hs-sites.com",
-            "constantcontact.com",
-            "exct.net",
-            "bit.ly",
-            "t.co",
-        ];
-
         link_hosts.iter().any(|h| {
             let reg = DomainUtils::registrable_domain(h);
-            if reg.is_empty()
-                || KNOWN_LINK_INFRA
-                    .iter()
-                    .any(|k| reg == *k || reg.ends_with(&format!(".{k}")))
-            {
+            if reg.is_empty() || is_known_link_infra(&reg) {
                 return false;
             }
             // Second-level label (registrable name without its TLD).
@@ -4815,6 +4831,111 @@ impl FilterEngine {
                 .unwrap_or(false);
             all_hex || mostly_digits || risky_tld || hex_subdomain
         })
+    }
+
+    /// Score a mailbox-credential phish: the message refers to the recipient's own
+    /// mailbox, asks them to verify or update their credentials, and links to a site
+    /// unrelated to both the sender and the recipient. A link carrying the
+    /// recipient's address (plain or base64, how phishing kits pre-fill the login
+    /// form) adds to the score. DKIM-aligned ESP senders are exempt; their account
+    /// notices are handled by the other checks.
+    ///
+    /// Returns the score and a description of what matched.
+    fn credential_phishing_score(&self, context: &MailContext) -> (i32, String) {
+        lazy_static! {
+            static ref MAILBOX_REF: Regex = Regex::new(
+                r"(?i)\b(your\s+(mailbox|e-?mail\s+account|webmail|e-?mail\s+password)|mailbox\s+(quota|storage|is\s+(almost\s+)?full|error|verification|has\s+been|will\s+be)|webmail)\b"
+            )
+            .unwrap();
+            static ref CREDENTIAL_CTA: Regex = Regex::new(
+                r"(?i)\b(verify|validate|re-?validate|confirm|re-?activate|re-?authenticate|update|upgrade|unlock|restore)\b[^.\n]{0,40}\b(credentials?|password|account|mailbox|e-?mail|login|identity)\b|\b(credentials?|password)\b[^.\n]{0,40}\b(verify|validate|confirm|expir\w*)"
+            )
+            .unwrap();
+        }
+
+        if self.is_dkim_aligned_esp_sender(context) {
+            return (0, String::new());
+        }
+        let body = context.body.as_deref().unwrap_or("");
+        let subject = context.subject.as_deref().unwrap_or("");
+        let text = format!("{} {}", subject, RE_HTML_TAGS.replace_all(body, " "));
+        let text_lower = text.to_lowercase();
+
+        if !CREDENTIAL_CTA.is_match(&text) {
+            return (0, String::new());
+        }
+
+        // The recipient's own addresses: To header and envelope recipients
+        let mut recipients: Vec<String> = Vec::new();
+        if let Some(to) = context.headers.get("to") {
+            recipients.extend(
+                RE_EMAIL_ADDR
+                    .find_iter(to)
+                    .map(|m| m.as_str().to_lowercase()),
+            );
+        }
+        for r in &context.recipients {
+            recipients.extend(
+                RE_EMAIL_ADDR
+                    .find_iter(r)
+                    .map(|m| m.as_str().to_lowercase()),
+            );
+        }
+        recipients.sort();
+        recipients.dedup();
+        let recipient_domains: Vec<String> = recipients
+            .iter()
+            .filter_map(|r| r.split('@').nth(1))
+            .map(DomainUtils::registrable_domain)
+            .collect();
+
+        let sender_domain = crate::features::from_registrable_domain(context).unwrap_or_default();
+
+        // Links to a site unrelated to both sides, and whether one embeds the recipient
+        let mut unrelated_link = false;
+        let mut address_in_link = false;
+        for m in RE_URL.find_iter(body) {
+            let url = m.as_str();
+            let Some(host) = self.extract_host_from_url(url) else {
+                continue;
+            };
+            let reg = DomainUtils::registrable_domain(&host.to_lowercase());
+            if reg.is_empty()
+                || is_known_link_infra(&reg)
+                || (!sender_domain.is_empty() && reg == sender_domain)
+                || recipient_domains.contains(&reg)
+            {
+                continue;
+            }
+            unrelated_link = true;
+            let url_lower = url.to_lowercase();
+            if recipients.iter().any(|r| {
+                let encoded = BASE64_STANDARD.encode(r);
+                url_lower.contains(r.as_str()) || url.contains(encoded.trim_end_matches('='))
+            }) {
+                address_in_link = true;
+            }
+        }
+        if !unrelated_link {
+            return (0, String::new());
+        }
+
+        let mentions_mailbox = MAILBOX_REF.is_match(&text)
+            || recipients.iter().any(|r| text_lower.contains(r.as_str()))
+            || recipient_domains
+                .iter()
+                .any(|d| text_lower.contains(&format!("@{d}")));
+        if !mentions_mailbox && !address_in_link {
+            return (0, String::new());
+        }
+
+        let mut score = 70;
+        let mut reason = "mailbox credential request linking to an unrelated site".to_string();
+        if address_in_link {
+            score += 40;
+            reason.push_str(", link embeds the recipient's address");
+        }
+        (score, reason)
     }
 
     /// True if the sender presents a valid DKIM-aligned signature on a
@@ -6324,8 +6445,12 @@ impl FilterEngine {
                     let check_reply_to_flag = check_reply_to.unwrap_or(false);
                     let check_from_header_flag = check_from_header.unwrap_or(false);
 
-                    // Create a domain age checker with the specified settings
-                    let checker = DomainAgeChecker::new(timeout, use_mock);
+                    // Share the engine's cache; mock data gets a separate one
+                    let checker = if use_mock {
+                        DomainAgeChecker::new(timeout, true)
+                    } else {
+                        self.domain_age_checker.with_timeout(timeout)
+                    };
                     let mut domains_to_check = Vec::new();
 
                     // Collect domains to check based on configuration
@@ -11017,5 +11142,189 @@ impl FilterEngine {
         }
 
         false
+    }
+}
+
+#[cfg(test)]
+mod mime_extraction_tests {
+    use super::FilterEngine;
+
+    fn extract(content_type: &str, body: &str) -> Option<String> {
+        FilterEngine::extract_mime_text_part(&body.replace('\n', "\r\n"), content_type)
+    }
+
+    #[test]
+    fn nested_alternative_with_folded_header_and_mixed_case_boundary() {
+        // multipart/mixed > multipart/alternative + PDF, as sent by most billing
+        // systems. The nested Content-Type is folded and its boundary has
+        // upper-case letters.
+        let body = "\
+--outer_Xy
+Content-Type: multipart/alternative;
+\tboundary=\"Inner_AbC\"
+
+--Inner_AbC
+Content-Type: text/plain; charset=utf-8
+
+Plain receipt
+--Inner_AbC
+Content-Type: text/html; charset=\"iso-8859-1\"
+Content-Transfer-Encoding: quoted-printable
+
+<p>Receipt for Jos=E9: $20.06</p>
+--Inner_AbC--
+
+--outer_Xy
+Content-Type: application/pdf; name=\"Invoice.pdf\"
+Content-Disposition: attachment; filename=\"Invoice.pdf\"
+Content-Transfer-Encoding: base64
+
+JVBERi0xLjQKaepw8p4pppomsqplbmrzdhjl
+--outer_Xy--
+";
+        let text = extract("multipart/mixed; boundary=\"outer_Xy\"", body).unwrap();
+        assert!(text.contains("<p>Receipt for José: $20.06</p>"), "{text:?}");
+        assert!(
+            !text.contains('\r'),
+            "line endings must be normalized: {text:?}"
+        );
+        assert!(
+            !text.contains("JVBERi0"),
+            "attachment data leaked: {text:?}"
+        );
+    }
+
+    #[test]
+    fn text_attachment_is_not_the_body() {
+        // A reply with a certificate attached as a text/plain file. The message
+        // itself is inside a nested multipart/alternative.
+        let body = "\
+--b1
+Content-Type: multipart/alternative;
+\tboundary=\"b1_Alt\"
+
+--b1_Alt
+Content-Type: text/plain; charset=utf-8
+
+Please install the attached certificate.
+--b1_Alt--
+
+--b1
+Content-Type: text/plain; name=\"ssl.txt\"
+Content-Disposition: attachment; filename=\"ssl.txt\"
+
+-----BEGIN CERTIFICATE-----
+MIIEszCCA5ugAwIBAgIQ
+-----END CERTIFICATE-----
+--b1--
+";
+        let text = extract("multipart/mixed; boundary=b1", body).unwrap();
+        assert!(text.contains("Please install the attached certificate."));
+        assert!(!text.contains("BEGIN CERTIFICATE"), "{text:?}");
+    }
+
+    #[test]
+    fn plain_text_is_used_when_there_is_no_html() {
+        let body = "\
+--b2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+
+SGVsbG8gd29ybGQ=
+--b2--
+";
+        assert_eq!(
+            extract("multipart/alternative; boundary=b2", body)
+                .as_deref()
+                .map(str::trim),
+            Some("Hello world")
+        );
+    }
+
+    #[test]
+    fn attachments_only_has_no_text() {
+        let body = "\
+--b3
+Content-Type: application/zip; name=\"x.zip\"
+Content-Disposition: attachment; filename=\"x.zip\"
+Content-Transfer-Encoding: base64
+
+UEsDBAoAAAAAAA==
+--b3--
+";
+        assert_eq!(extract("multipart/mixed; boundary=b3", body), None);
+    }
+}
+
+#[cfg(test)]
+mod credential_phishing_tests {
+    use super::{is_known_link_infra, FilterEngine, MailContext};
+    use crate::heuristic_config::Config;
+    use base64::Engine as _;
+    use std::collections::HashMap;
+
+    fn phish(link: &str) -> MailContext {
+        let mut headers = HashMap::new();
+        headers.insert("to".to_string(), "victim@example.org".to_string());
+        MailContext {
+            from_header: Some("Mail Support <rose@sender-domain.example>".to_string()),
+            subject: Some("Prompt Verification Required for victim@example.org".to_string()),
+            body: Some(format!(
+                "<p>We detected an error in your mailbox victim@example.org. Please verify your \
+                 credentials to resolve this issue.</p><a href=\"{link}\">Verify Now</a>"
+            )),
+            headers,
+            ..Default::default()
+        }
+    }
+
+    fn score(context: &MailContext) -> i32 {
+        // Building the engine compiles every rule, so share one across the tests
+        static ENGINE: std::sync::OnceLock<FilterEngine> = std::sync::OnceLock::new();
+        ENGINE
+            .get_or_init(|| FilterEngine::new(Config::default()).unwrap())
+            .credential_phishing_score(context)
+            .0
+    }
+
+    #[test]
+    fn mailbox_credential_phish_is_scored() {
+        let fragment = base64::engine::general_purpose::STANDARD.encode("victim@example.org");
+        assert_eq!(
+            score(&phish("https://webmail-autho.phish.example/login")),
+            70
+        );
+        // A phishing kit pre-filling the victim's address adds to it
+        assert_eq!(
+            score(&phish(&format!(
+                "https://webmail-autho.phish.example/login#{fragment}"
+            ))),
+            110
+        );
+    }
+
+    #[test]
+    fn links_to_sender_or_recipient_are_not_unrelated() {
+        assert_eq!(score(&phish("https://www.sender-domain.example/verify")), 0);
+        assert_eq!(score(&phish("https://mail.example.org/settings")), 0);
+    }
+
+    #[test]
+    fn no_credential_request_no_score() {
+        let mut context = phish("https://webmail-autho.phish.example/login");
+        context.subject = Some("Newsletter".to_string());
+        context.body = Some(
+            "<p>Read our latest news.</p><a href=\"https://news.other.example\">More</a>".into(),
+        );
+        assert_eq!(score(&context), 0);
+    }
+
+    #[test]
+    fn marketing_platform_tracking_domains_are_infrastructure() {
+        assert!(is_known_link_infra("mkt3838.com"));
+        assert!(is_known_link_infra("eoaclk.com"));
+        assert!(!is_known_link_infra("mkt.com"));
+        assert!(!is_known_link_infra("mktx38.com"));
+        assert!(!is_known_link_infra("phish.example"));
     }
 }
