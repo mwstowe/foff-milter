@@ -429,20 +429,15 @@ impl Default for EspValidationFeature {
 }
 
 impl EspValidationFeature {
-    /// Resolve CNAME for a domain to detect custom ESP return-path domains
-    pub fn resolve_cname(domain: &str) -> Option<String> {
-        use std::process::Command;
-        // Use dig for CNAME resolution (fast, no async needed)
-        let output = Command::new("dig")
-            .args(["+short", "+time=2", "+tries=1", domain, "CNAME"])
-            .output()
-            .ok()?;
-        let result = String::from_utf8_lossy(&output.stdout);
-        let cname = result.trim().trim_end_matches('.').to_lowercase();
-        if cname.is_empty() || cname == domain {
-            None
+    /// CNAME target of `domain`, used to detect custom ESP return-path domains. Only the
+    /// envelope sender's domain is known: `FilterEngine::evaluate` resolves it before the
+    /// feature analysis (the extractors can't do async DNS).
+    pub fn resolve_cname(context: &MailContext, domain: &str) -> Option<String> {
+        let sender_domain = context.sender.as_deref()?.split('@').nth(1)?;
+        if sender_domain == domain {
+            context.sender_domain_cname.clone()
         } else {
-            Some(cname)
+            None
         }
     }
 
@@ -649,7 +644,7 @@ impl FeatureExtractor for EspValidationFeature {
             // (e.g., em4475.colocrossing.com -> u26807539.wl040.sendgrid.net)
             if let Some(ref d) = domain {
                 if !self.analyzer.is_esp_domain(d) {
-                    if let Some(cname) = Self::resolve_cname(d) {
+                    if let Some(cname) = Self::resolve_cname(context, d) {
                         log::info!("ESP Validation: CNAME {} -> {}", d, cname);
                         if self.analyzer.is_esp_domain(&cname) {
                             Some(cname)
@@ -1017,5 +1012,32 @@ mod tests {
 
         assert_eq!(analyzer.calculate_esp_score("sendgrid.net"), -15); // Trusted ESP
         assert_eq!(analyzer.calculate_esp_score("unknown.com"), 0); // Not an ESP
+    }
+}
+
+#[cfg(test)]
+mod cname_tests {
+    use super::EspValidationFeature;
+    use crate::MailContext;
+
+    #[test]
+    fn resolved_cname_is_only_returned_for_the_sender_domain() {
+        let context = MailContext {
+            sender: Some("bounce@em4475.example.com".to_string()),
+            sender_domain_cname: Some("u123.wl040.sendgrid.net".to_string()),
+            ..Default::default()
+        };
+        assert_eq!(
+            EspValidationFeature::resolve_cname(&context, "em4475.example.com").as_deref(),
+            Some("u123.wl040.sendgrid.net")
+        );
+        assert_eq!(
+            EspValidationFeature::resolve_cname(&context, "other.example"),
+            None
+        );
+        assert_eq!(
+            EspValidationFeature::resolve_cname(&MailContext::default(), "em4475.example.com"),
+            None
+        );
     }
 }

@@ -144,25 +144,30 @@ fn decode_quoted_printable(data: &str) -> Vec<u8> {
     result
 }
 
+/// This host's name: `$HOSTNAME`, else the system host name. Looked up once.
 fn get_hostname() -> String {
-    std::env::var("HOSTNAME")
-        .or_else(|_| {
-            use std::process::Command;
-            Command::new("hostname")
-                .output()
+    static HOSTNAME: std::sync::OnceLock<String> = std::sync::OnceLock::new();
+    HOSTNAME
+        .get_or_init(|| {
+            std::env::var("HOSTNAME")
                 .ok()
-                .and_then(|output| {
-                    if output.status.success() {
-                        String::from_utf8(output.stdout)
-                            .ok()
-                            .map(|s| s.trim().to_string())
-                    } else {
-                        None
-                    }
-                })
-                .ok_or(())
+                .filter(|h| !h.is_empty())
+                .or_else(system_hostname)
+                .unwrap_or_else(|| "unknown".to_string())
         })
-        .unwrap_or_else(|_| "unknown".to_string())
+        .clone()
+}
+
+fn system_hostname() -> Option<String> {
+    let mut buf = [0u8; 256];
+    // SAFETY: the pointer and length describe `buf`, which outlives the call
+    let rc = unsafe { libc::gethostname(buf.as_mut_ptr().cast(), buf.len()) };
+    if rc != 0 {
+        return None;
+    }
+    let len = buf.iter().position(|&b| b == 0).unwrap_or(buf.len());
+    let name = String::from_utf8_lossy(&buf[..len]).trim().to_string();
+    (!name.is_empty()).then_some(name)
 }
 
 fn extract_sender_domain(context: &MailContext) -> Option<String> {
@@ -292,6 +297,9 @@ pub struct FilterEngine {
     normalizer: EmailNormalizer,
     // Domain age lookups, one cache for all messages
     domain_age_checker: DomainAgeChecker,
+    // DNS resolver for the engine's own lookups, built on first use (needs the runtime).
+    // hickory caches answers, so sharing it also shares the cache.
+    dns_resolver: tokio::sync::OnceCell<Option<hickory_resolver::TokioResolver>>,
     // Shared domain registry
     pub domain_registry: std::sync::Arc<crate::domain_registry::DomainRegistry>,
 }
@@ -328,6 +336,10 @@ pub struct MailContext {
     /// is final. Read it through `FilterEngine::feature_analysis`, which computes it when
     /// it isn't set yet.
     pub feature_analysis: Option<std::sync::Arc<crate::features::FeatureAnalysis>>,
+    /// CNAME target of the envelope sender's domain, resolved by `evaluate` before the
+    /// feature analysis (custom ESP return-path domains such as `em123.example.com`
+    /// alias the ESP). `None` when there is no CNAME or it wasn't looked up.
+    pub sender_domain_cname: Option<String>,
 }
 
 impl Default for MailContext {
@@ -358,6 +370,7 @@ impl Default for MailContext {
             domain_registry: None,
             sender_domain_age_days: None,
             feature_analysis: None,
+            sender_domain_cname: None,
         }
     }
 }
@@ -1033,6 +1046,7 @@ impl FilterEngine {
                 domain_registry: context.domain_registry.clone(),
                 sender_domain_age_days: context.sender_domain_age_days,
                 feature_analysis: context.feature_analysis.clone(),
+                sender_domain_cname: context.sender_domain_cname.clone(),
             }
         } else {
             // Fallback to simple normalization if proper normalization not available
@@ -1076,6 +1090,7 @@ impl FilterEngine {
             domain_registry: context.domain_registry.clone(),
             sender_domain_age_days: context.sender_domain_age_days,
             feature_analysis: context.feature_analysis.clone(),
+            sender_domain_cname: context.sender_domain_cname.clone(),
         }
     }
 
@@ -1129,6 +1144,7 @@ impl FilterEngine {
             seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer::new(),
             normalizer: EmailNormalizer::new(),
             domain_age_checker: DomainAgeChecker::new(5, false),
+            dns_resolver: tokio::sync::OnceCell::new(),
             domain_registry: std::sync::Arc::new(crate::domain_registry::DomainRegistry::default()),
         };
 
@@ -1323,6 +1339,50 @@ impl FilterEngine {
         .iter()
         .any(|k| text.contains(k));
         has_list_headers || invoice_like || credential_like
+    }
+
+    /// The shared DNS resolver, or `None` if the system configuration can't be read.
+    /// Lookups give up after 2 s with one attempt, so a slow name server can't stall a
+    /// message for long.
+    async fn dns_resolver(&self) -> Option<&hickory_resolver::TokioResolver> {
+        self.dns_resolver
+            .get_or_init(|| async {
+                let mut builder = Resolver::builder_tokio()
+                    .map_err(|e| log::warn!("DNS resolver unavailable: {e}"))
+                    .ok()?;
+                builder.options_mut().timeout = Duration::from_secs(2);
+                builder.options_mut().attempts = 1;
+                builder
+                    .build()
+                    .map_err(|e| log::warn!("DNS resolver unavailable: {e}"))
+                    .ok()
+            })
+            .await
+            .as_ref()
+    }
+
+    /// CNAME target of `domain` (lowercased, without the trailing dot), or `None` when
+    /// it has none or the lookup fails.
+    async fn lookup_cname(&self, domain: &str) -> Option<String> {
+        use hickory_resolver::proto::rr::{RData, RecordType};
+        let resolver = self.dns_resolver().await?;
+        let answer = match resolver.lookup(domain, RecordType::CNAME).await {
+            Ok(answer) => answer,
+            Err(e) => {
+                log::debug!("CNAME lookup for {domain}: {e}");
+                return None;
+            }
+        };
+        answer
+            .answers()
+            .iter()
+            .find_map(|record| match &record.data {
+                RData::CNAME(target) => {
+                    let target = target.0.to_utf8().trim_end_matches('.').to_lowercase();
+                    (!target.is_empty() && target != domain).then_some(target)
+                }
+                _ => None,
+            })
     }
 
     /// Age in days of the From domain's registrable domain, or `None` when it cannot be
@@ -2477,6 +2537,16 @@ impl FilterEngine {
             context_with_attachments.sender_domain_age_days = self
                 .lookup_sender_domain_age(&context_with_attachments)
                 .await;
+        }
+
+        // The ESP and domain reputation features check whether the envelope sender's
+        // domain aliases an ESP. Resolve it here, asynchronously and once.
+        if let Some(domain) = context_with_attachments
+            .sender
+            .as_deref()
+            .and_then(|s| s.split('@').nth(1))
+        {
+            context_with_attachments.sender_domain_cname = self.lookup_cname(domain).await;
         }
 
         // Analyze attachments (uses raw_body for MIME parsing)

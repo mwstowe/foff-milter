@@ -432,7 +432,9 @@ impl DomainReputationFeature {
                 }
                 // Resolve CNAME to detect custom ESP return-path domains
                 if let Some(cname) =
-                    crate::features::esp_validation::EspValidationFeature::resolve_cname(env_domain)
+                    crate::features::esp_validation::EspValidationFeature::resolve_cname(
+                        context, env_domain,
+                    )
                 {
                     if self.analyzer.is_esp_domain(&cname) {
                         return cname;

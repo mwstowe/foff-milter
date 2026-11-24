@@ -738,6 +738,7 @@ async fn analyze_email_file(
         domain_registry: None,
         sender_domain_age_days: None,
         feature_analysis: None,
+        sender_domain_cname: None,
     };
 
     // DKIM verification happens inside evaluate(), exactly as in milter mode
@@ -2440,6 +2441,7 @@ async fn test_email_file(
         domain_registry: None,
         sender_domain_age_days: None,
         feature_analysis: None,
+        sender_domain_cname: None,
     };
 
     // DKIM verification happens inside evaluate(), exactly as in milter mode
