@@ -1541,7 +1541,7 @@ impl FilterEngine {
 
                     // Check domain patterns
                     for pattern in &blocklist.domain_patterns {
-                        if let Ok(regex) = Regex::new(pattern) {
+                        if let Ok(regex) = crate::cached_regex(pattern) {
                             if regex.is_match(&domain) {
                                 log::info!(
                                     "Email blocklisted by domain pattern '{}': {}",
@@ -1574,7 +1574,7 @@ impl FilterEngine {
 
                         // Check domain patterns
                         for pattern in &blocklist.domain_patterns {
-                            if let Ok(regex) = Regex::new(pattern) {
+                            if let Ok(regex) = crate::cached_regex(pattern) {
                                 if regex.is_match(&domain) {
                                     log::info!(
                                         "Email blocklisted by From header domain pattern '{}': {}",
@@ -1617,7 +1617,7 @@ impl FilterEngine {
 
                     // Check domain patterns
                     for pattern in &whitelist.domain_patterns {
-                        if let Ok(regex) = Regex::new(pattern) {
+                        if let Ok(regex) = crate::cached_regex(pattern) {
                             if regex.is_match(&domain) {
                                 log::info!(
                                     "Email whitelisted by domain pattern '{}': {}",
@@ -1650,7 +1650,7 @@ impl FilterEngine {
 
                         // Check domain patterns
                         for pattern in &whitelist.domain_patterns {
-                            if let Ok(regex) = Regex::new(pattern) {
+                            if let Ok(regex) = crate::cached_regex(pattern) {
                                 if regex.is_match(&domain) {
                                     log::info!(
                                         "Email whitelisted by From header domain pattern '{}': {}",
@@ -2648,7 +2648,7 @@ impl FilterEngine {
             if has_google_group_headers {
                 false
             } else {
-                let re = regex::Regex::new(r"via\s+([a-z0-9]{3,})\s*'?\s*$").unwrap();
+                let re = crate::static_regex!(r"via\s+([a-z0-9]{3,})\s*'?\s*$");
                 re.captures(&from_display_ml)
                     .map(|c| {
                         let name = &c[1];
@@ -4271,7 +4271,7 @@ impl FilterEngine {
         if let Some(list_unsubscribe) = list_unsubscribe {
             // Extract URLs from List-Unsubscribe header: <url1>, <url2>
             // Support both HTTP and mailto links
-            let url_regex = Regex::new(r"<((?:https?|mailto)://[^>]+|mailto:[^>]+)>").unwrap();
+            let url_regex = crate::static_regex!(r"<((?:https?|mailto)://[^>]+|mailto:[^>]+)>");
             for cap in url_regex.captures_iter(list_unsubscribe) {
                 if let Some(url) = cap.get(1) {
                     links.push(url.as_str().to_string());
@@ -4310,7 +4310,7 @@ impl FilterEngine {
 
             // Process anchor text patterns first (higher priority)
             for pattern in &anchor_text_patterns {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     for cap in regex.captures_iter(body) {
                         if let Some(url) = cap.get(1) {
                             links.push(url.as_str().to_string());
@@ -4321,7 +4321,7 @@ impl FilterEngine {
 
             // Process URL-based patterns for backwards compatibility
             for pattern in &url_based_patterns {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     for cap in regex.captures_iter(body) {
                         if let Some(url) = cap.get(1) {
                             links.push(url.as_str().to_string());
@@ -4514,26 +4514,25 @@ impl FilterEngine {
         let mut text = body.to_string();
 
         // Remove MIME boundaries and headers
-        let boundary_regex = Regex::new(r"--[a-zA-Z0-9]+(--)?\n?").unwrap();
+        let boundary_regex = crate::static_regex!(r"--[a-zA-Z0-9]+(--)?\n?");
         text = boundary_regex.replace_all(&text, "\n").to_string();
 
         // Remove Content-Type headers and other MIME headers (more flexible matching)
-        let mime_header_regex = Regex::new(
-            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version):[^\n]*",
-        )
-        .unwrap();
+        let mime_header_regex = crate::static_regex!(
+            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version):[^\n]*"
+        );
         text = mime_header_regex.replace_all(&text, "").to_string();
 
         // Remove base64 encoded content (long strings of base64 characters)
-        let base64_regex = Regex::new(r"[A-Za-z0-9+/]{50,}={0,2}").unwrap();
+        let base64_regex = crate::static_regex!(r"[A-Za-z0-9+/]{50,}={0,2}");
         text = base64_regex.replace_all(&text, " ").to_string();
 
         // Remove HTML tags
-        let tag_regex = Regex::new(r"<[^>]*>").unwrap();
+        let tag_regex = crate::static_regex!(r"<[^>]*>");
         text = tag_regex.replace_all(&text, " ").to_string();
 
         // Remove URLs (they're not meaningful text content)
-        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
+        let url_regex = crate::static_regex!(r"https?://[^\s<>]+");
         text = url_regex.replace_all(&text, " ").to_string();
 
         // Remove email addresses
@@ -4552,7 +4551,7 @@ impl FilterEngine {
             text = text.chars().filter(|c| !c.is_whitespace()).collect();
         } else {
             // Just normalize whitespace
-            let ws_regex = Regex::new(r"\s+").unwrap();
+            let ws_regex = crate::static_regex!(r"\s+");
             text = ws_regex.replace_all(&text, " ").to_string();
             text = text.trim().to_string();
         }
@@ -4567,7 +4566,7 @@ impl FilterEngine {
             // Check for large base64 encoded content (rough heuristic)
             // Base64 encoding increases size by ~33%, so 200KB becomes ~266KB
             // Look for long base64 strings that might indicate large images
-            let base64_pattern = Regex::new(r"[A-Za-z0-9+/]{1000,}").unwrap();
+            let base64_pattern = crate::static_regex!(r"[A-Za-z0-9+/]{1000,}");
             if base64_pattern.is_match(body) {
                 log::debug!("Found large base64 content, likely image attachment");
                 return true;
@@ -4636,7 +4635,7 @@ impl FilterEngine {
         ];
 
         for pattern in &decoy_patterns {
-            if let Ok(regex) = Regex::new(pattern) {
+            if let Ok(regex) = crate::cached_regex(pattern) {
                 if regex.is_match(&text_lower) {
                     log::debug!("Found decoy text pattern: {pattern}");
                     return true;
@@ -4928,14 +4927,8 @@ impl FilterEngine {
     /// Returns the score and a description of what matched.
     fn credential_phishing_score(&self, context: &MailContext) -> (i32, String) {
         lazy_static! {
-            static ref MAILBOX_REF: Regex = Regex::new(
-                r"(?i)\b(your\s+(mailbox|e-?mail\s+account|webmail|e-?mail\s+password)|mailbox\s+(quota|storage|is\s+(almost\s+)?full|error|verification|has\s+been|will\s+be)|webmail)\b"
-            )
-            .unwrap();
-            static ref CREDENTIAL_CTA: Regex = Regex::new(
-                r"(?i)\b(verify|validate|re-?validate|confirm|re-?activate|re-?authenticate|update|upgrade|unlock|restore)\b[^.\n]{0,40}\b(credentials?|password|account|mailbox|e-?mail|login|identity)\b|\b(credentials?|password)\b[^.\n]{0,40}\b(verify|validate|confirm|expir\w*)"
-            )
-            .unwrap();
+            static ref MAILBOX_REF: Regex = Regex::new(r"(?i)\b(your\s+(mailbox|e-?mail\s+account|webmail|e-?mail\s+password)|mailbox\s+(quota|storage|is\s+(almost\s+)?full|error|verification|has\s+been|will\s+be)|webmail)\b").unwrap();
+            static ref CREDENTIAL_CTA: Regex = Regex::new(r"(?i)\b(verify|validate|re-?validate|confirm|re-?activate|re-?authenticate|update|upgrade|unlock|restore)\b[^.\n]{0,40}\b(credentials?|password|account|mailbox|e-?mail|login|identity)\b|\b(credentials?|password)\b[^.\n]{0,40}\b(verify|validate|confirm|expir\w*)").unwrap();
         }
 
         if self.is_dkim_aligned_esp_sender(context) {
@@ -5170,7 +5163,7 @@ impl FilterEngine {
         let mut text = body.to_string();
 
         // Remove entire attachment sections (between MIME boundaries)
-        let boundary_regex = Regex::new(r"--[a-zA-Z0-9]+\r?\n").unwrap();
+        let boundary_regex = crate::static_regex!(r"--[a-zA-Z0-9]+\r?\n");
         let parts: Vec<&str> = boundary_regex.split(&text).collect();
 
         let mut clean_text = String::new();
@@ -5195,18 +5188,17 @@ impl FilterEngine {
         text = clean_text;
 
         // Remove remaining MIME headers
-        let mime_header_regex = Regex::new(
-            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version):[^\n]*",
-        )
-        .unwrap();
+        let mime_header_regex = crate::static_regex!(
+            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version):[^\n]*"
+        );
         text = mime_header_regex.replace_all(&text, "").to_string();
 
         // Remove HTML tags
-        let tag_regex = Regex::new(r"<[^>]*>").unwrap();
+        let tag_regex = crate::static_regex!(r"<[^>]*>");
         text = tag_regex.replace_all(&text, " ").to_string();
 
         // Remove URLs
-        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
+        let url_regex = crate::static_regex!(r"https?://[^\s<>]+");
         text = url_regex.replace_all(&text, " ").to_string();
 
         // Remove email addresses
@@ -5225,7 +5217,7 @@ impl FilterEngine {
             text = text.chars().filter(|c| !c.is_whitespace()).collect();
         } else {
             // Just normalize whitespace
-            let ws_regex = Regex::new(r"\s+").unwrap();
+            let ws_regex = crate::static_regex!(r"\s+");
             text = ws_regex.replace_all(&text, " ").to_string();
             text = text.trim().to_string();
         }
@@ -5245,7 +5237,7 @@ impl FilterEngine {
         let mut text = body.to_string();
 
         // Remove MIME boundaries and headers first
-        let boundary_regex = Regex::new(r"--[a-zA-Z0-9]+\r?\n").unwrap();
+        let boundary_regex = crate::static_regex!(r"--[a-zA-Z0-9]+\r?\n");
         let parts: Vec<&str> = boundary_regex.split(&text).collect();
 
         let mut clean_text = String::new();
@@ -5270,15 +5262,14 @@ impl FilterEngine {
         text = clean_text;
 
         // Remove MIME headers
-        let mime_header_regex = Regex::new(
-            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version|message-id|date|from|to|subject|return-path|received|dkim-signature|authentication-results):[^\n]*",
-        )
-        .unwrap();
+        let mime_header_regex = crate::static_regex!(
+            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version|message-id|date|from|to|subject|return-path|received|dkim-signature|authentication-results):[^\n]*"
+        );
         text = mime_header_regex.replace_all(&text, "").to_string();
 
         // Remove HTML tags if requested
         if ignore_html_tags {
-            let tag_regex = Regex::new(r"<[^>]*>").unwrap();
+            let tag_regex = crate::static_regex!(r"<[^>]*>");
             text = tag_regex.replace_all(&text, " ").to_string();
         }
 
@@ -5299,14 +5290,14 @@ impl FilterEngine {
             ];
 
             for pattern in &sig_patterns {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     text = regex.replace_all(&text, "").to_string();
                 }
             }
         }
 
         // Remove URLs (often just tracking/unsubscribe links in empty emails)
-        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
+        let url_regex = crate::static_regex!(r"https?://[^\s<>]+");
         text = url_regex.replace_all(&text, " ").to_string();
 
         // Remove email addresses
@@ -5327,7 +5318,7 @@ impl FilterEngine {
         ];
 
         for pattern in &empty_patterns {
-            if let Ok(regex) = Regex::new(pattern) {
+            if let Ok(regex) = crate::cached_regex(pattern) {
                 text = regex.replace_all(&text, "").to_string();
             }
         }
@@ -5341,7 +5332,7 @@ impl FilterEngine {
         text = text.replace("&#39;", "'");
 
         // Remove common punctuation-only content
-        let punct_regex = Regex::new(r"^[[:punct:]\s]*$").unwrap();
+        let punct_regex = crate::static_regex!(r"^[[:punct:]\s]*$");
         if punct_regex.is_match(&text) {
             text = String::new();
         }
@@ -5351,7 +5342,7 @@ impl FilterEngine {
             text = text.chars().filter(|c| !c.is_whitespace()).collect();
         } else {
             // Just normalize whitespace
-            let ws_regex = Regex::new(r"\s+").unwrap();
+            let ws_regex = crate::static_regex!(r"\s+");
             text = ws_regex.replace_all(&text, " ").to_string();
             text = text.trim().to_string();
         }
@@ -5938,7 +5929,7 @@ impl FilterEngine {
 
                         // Check evidence pattern
                         if let Some(pattern) = evidence_pattern {
-                            if let Ok(regex) = regex::Regex::new(pattern) {
+                            if let Ok(regex) = crate::cached_regex(pattern) {
                                 let evidence_text = feature_score.evidence.join(" ");
                                 if !regex.is_match(&evidence_text) {
                                     matches = false;
@@ -5983,8 +5974,8 @@ impl FilterEngine {
 
                     if let Some(body) = &context.body {
                         // Extract all URLs from email body and deduplicate
-                        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
-                        let ip_regex = Regex::new(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").unwrap();
+                        let url_regex = crate::static_regex!(r"https?://[^\s<>]+");
+                        let ip_regex = crate::static_regex!(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
 
                         let mut urls = HashSet::new();
                         for url_match in url_regex.find_iter(body) {
@@ -6128,7 +6119,7 @@ impl FilterEngine {
 
                                 // Extract receiving server domains from Received headers to exclude them
                                 let mut receiving_domains = std::collections::HashSet::new();
-                                let received_regex = regex::Regex::new(r"by\s+([^\s;]+)").unwrap();
+                                let received_regex = crate::static_regex!(r"by\s+([^\s;]+)");
                                 for (header_name, header_value) in &context.headers {
                                     if header_name.to_lowercase() == "received" {
                                         // Parse "by hostname" from Received headers
@@ -6195,8 +6186,8 @@ impl FilterEngine {
 
                     if let Some(body) = &context.body {
                         // Extract all URLs from email body and deduplicate
-                        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
-                        let ip_regex = Regex::new(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").unwrap();
+                        let url_regex = crate::static_regex!(r"https?://[^\s<>]+");
+                        let ip_regex = crate::static_regex!(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
 
                         let mut urls = HashSet::new();
                         for url_match in url_regex.find_iter(body) {
@@ -7669,7 +7660,7 @@ impl FilterEngine {
                                     ];
 
                                     for pattern in &suspicious_patterns {
-                                        if let Ok(regex) = regex::Regex::new(pattern) {
+                                        if let Ok(regex) = crate::cached_regex(pattern) {
                                             if regex.is_match(&email) {
                                                 abuse_indicators += 1;
                                                 log::debug!("Suspicious reply-to pattern detected: {email} matches {pattern}");
@@ -8644,7 +8635,7 @@ impl FilterEngine {
         ];
 
         for pattern in &from_patterns {
-            if let Ok(re) = Regex::new(pattern) {
+            if let Ok(re) = crate::cached_regex(pattern) {
                 if let Some(captures) = re.captures(body) {
                     let sender = if captures.len() > 2 && captures.get(2).is_some() {
                         // Extract email from "Name <email>" format
@@ -8699,7 +8690,7 @@ impl FilterEngine {
 
                         // Check domain patterns
                         for pattern in &whitelist.domain_patterns {
-                            if let Ok(re) = Regex::new(pattern) {
+                            if let Ok(re) = crate::cached_regex(pattern) {
                                 if re.is_match(domain) {
                                     return true;
                                 }
@@ -9049,7 +9040,7 @@ impl FilterEngine {
     fn analyze_embedded_images(&self, context: &mut MailContext) {
         if let Some(body) = &context.body {
             // Look for base64 encoded images in HTML (data:image/...)
-            let img_regex = Regex::new(r"data:image/[^;]+;base64,([A-Za-z0-9+/=]+)").unwrap();
+            let img_regex = crate::static_regex!(r"data:image/[^;]+;base64,([A-Za-z0-9+/=]+)");
 
             for cap in img_regex.captures_iter(body) {
                 if let Some(base64_data) = cap.get(1) {
@@ -10008,7 +9999,7 @@ impl FilterEngine {
         ];
 
         for pattern in suspicious_patterns {
-            if let Ok(regex) = regex::Regex::new(pattern) {
+            if let Ok(regex) = crate::cached_regex(pattern) {
                 if regex.is_match(&domain) {
                     log::debug!(
                         "Suspicious domain pattern detected: {} matches {}",

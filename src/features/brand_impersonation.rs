@@ -1,6 +1,5 @@
 use crate::features::{FeatureExtractor, FeatureScore};
 use crate::MailContext;
-use regex::Regex;
 use std::collections::HashMap;
 
 pub struct BrandImpersonationFeature {
@@ -515,7 +514,7 @@ impl BrandImpersonationFeature {
         ];
 
         for pattern in &patterns {
-            if let Ok(regex) = Regex::new(pattern) {
+            if let Ok(regex) = crate::cached_regex(pattern) {
                 if regex.is_match(domain) {
                     return true;
                 }
@@ -548,7 +547,7 @@ impl BrandImpersonationFeature {
             .collect();
         // Normalize "I" used as "l" in lowercase context: e.g., "CIub" → "Club"
         // Pattern: I followed by lowercase letter (and not start of word like "I am")
-        let re = Regex::new(r"([A-Za-z])I([a-z])").unwrap();
+        let re = crate::static_regex!(r"([A-Za-z])I([a-z])");
         result = re.replace_all(&result, "${1}l${2}").to_string();
         result
     }
@@ -556,11 +555,11 @@ impl BrandImpersonationFeature {
     fn detect_brand_mentions(&self, text: &str) -> Vec<String> {
         let mut detected_brands = Vec::new();
         let text_lower = text.to_lowercase();
-        let regex_lowes = Regex::new(r"(?i)\blowe'?s\s").unwrap();
+        let regex_lowes = crate::static_regex!(r"(?i)\blowe'?s\s");
 
         for (brand, patterns) in &self.brand_patterns {
             for pattern in patterns {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     if regex.is_match(&text_lower) {
                         detected_brands.push(brand.clone());
                         break;
@@ -914,7 +913,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
 
         // Also check for spaced-letter evasion: "A M A Z O N" → "AMAZON"
         let has_spaced_letters = {
-            let re = Regex::new(r"(?i)([A-Z]) ([A-Z]) ([A-Z]) ([A-Z])").unwrap();
+            let re = crate::static_regex!(r"(?i)([A-Z]) ([A-Z]) ([A-Z]) ([A-Z])");
             re.is_match(&normalized_text)
         };
 

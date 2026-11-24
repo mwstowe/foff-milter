@@ -219,10 +219,10 @@ impl InvoiceAnalyzer {
 
         // Check for brand + delivery context combinations (phishing specific)
         let delivery_phishing_patterns = vec![
-            Regex::new(r"(?i)delivery.*information.*paypal").unwrap(),
-            Regex::new(r"(?i)paypal.*delivery.*information").unwrap(),
-            Regex::new(r"(?i)shipping.*notification.*(paypal|amazon|ebay)").unwrap(),
-            Regex::new(r"(?i)(paypal|amazon|ebay).*shipping.*notification").unwrap(),
+            crate::static_regex!(r"(?i)delivery.*information.*paypal"),
+            crate::static_regex!(r"(?i)paypal.*delivery.*information"),
+            crate::static_regex!(r"(?i)shipping.*notification.*(paypal|amazon|ebay)"),
+            crate::static_regex!(r"(?i)(paypal|amazon|ebay).*shipping.*notification"),
         ];
 
         let has_delivery_context =
@@ -259,9 +259,9 @@ impl InvoiceAnalyzer {
 
         // Check for academic domain abuse
         let academic_patterns = vec![
-            Regex::new(r"(?i)\.ac\.[a-z]{2}$").unwrap(),
-            Regex::new(r"(?i)\.edu$").unwrap(),
-            Regex::new(r"(?i)\.edu\.[a-z]{2}$").unwrap(),
+            crate::static_regex!(r"(?i)\.ac\.[a-z]{2}$"),
+            crate::static_regex!(r"(?i)\.edu$"),
+            crate::static_regex!(r"(?i)\.edu\.[a-z]{2}$"),
         ];
 
         for pattern in &academic_patterns {
@@ -281,10 +281,10 @@ impl InvoiceAnalyzer {
 
         // Check for transport/logistics scam patterns
         let transport_scam_patterns = vec![
-            Regex::new(r"(?i)(conhecimento.*transporte|CT-e|DACTE)").unwrap(),
-            Regex::new(r"(?i)(transporte.*eletr[ôo]nico)").unwrap(),
-            Regex::new(r"(?i)(arquivo.*XML.*transporte)").unwrap(),
-            Regex::new(r"(?i)(documento.*autorizado.*SINIEF)").unwrap(),
+            crate::static_regex!(r"(?i)(conhecimento.*transporte|CT-e|DACTE)"),
+            crate::static_regex!(r"(?i)(transporte.*eletr[ôo]nico)"),
+            crate::static_regex!(r"(?i)(arquivo.*XML.*transporte)"),
+            crate::static_regex!(r"(?i)(documento.*autorizado.*SINIEF)"),
         ];
 
         for pattern in &transport_scam_patterns {
@@ -475,7 +475,7 @@ impl InvoiceAnalyzer {
             ];
 
             for pattern in &suspicious_patterns {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     if regex.is_match(sender) {
                         return true;
                     }
@@ -516,7 +516,8 @@ impl InvoiceAnalyzer {
 
         // Check if content matches medical communication patterns
         let is_medical_content = medical_communication_patterns.iter().any(|pattern| {
-            Regex::new(pattern).is_ok_and(|re| re.is_match(content) || re.is_match(subject))
+            crate::cached_regex(pattern)
+                .is_ok_and(|re| re.is_match(content) || re.is_match(subject))
         });
 
         is_medical_sender && is_medical_content
@@ -543,7 +544,7 @@ impl InvoiceAnalyzer {
         // Check if subject matches order pattern and sender is legitimate food service
         order_patterns
             .iter()
-            .any(|pattern| Regex::new(pattern).is_ok_and(|re| re.is_match(subject)))
+            .any(|pattern| crate::cached_regex(pattern).is_ok_and(|re| re.is_match(subject)))
             && food_service_domains
                 .iter()
                 .any(|domain| sender.contains(domain))

@@ -315,11 +315,11 @@ impl LinkAnalyzer {
 
     fn extract_text_from_html(&self, html: &str) -> String {
         // Remove HTML tags and extract clean text
-        let tag_regex = Regex::new(r"<[^>]*>").unwrap();
+        let tag_regex = crate::static_regex!(r"<[^>]*>");
         let clean_text = tag_regex.replace_all(html, " ");
 
         // Clean up whitespace
-        let whitespace_regex = Regex::new(r"\s+").unwrap();
+        let whitespace_regex = crate::static_regex!(r"\s+");
         let normalized = whitespace_regex.replace_all(&clean_text, " ");
 
         normalized.trim().to_string()
@@ -393,7 +393,7 @@ impl LinkAnalyzer {
         // If display text suggests account action but domain doesn't match sender
         for (action_type, patterns) in &self.action_patterns {
             for pattern in patterns {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     if regex.is_match(display_text) {
                         return self.check_domain_alignment(
                             &sender_domain,
@@ -1176,7 +1176,7 @@ impl FeatureExtractor for LinkAnalyzer {
 
         // Check for unreplaced template variables in body (fake unsubscribe links)
         if let Some(body) = &context.body {
-            let template_var_regex = Regex::new(r#"href=3D?"?\{[^}]+\}"?"#).unwrap();
+            let template_var_regex = crate::static_regex!(r#"href=3D?"?\{[^}]+\}"?"#);
             if template_var_regex.is_match(body) {
                 score += 60;
                 evidence

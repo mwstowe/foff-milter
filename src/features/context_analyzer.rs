@@ -201,7 +201,7 @@ impl ContextAnalyzer {
 
         // Collect the recipient's own addresses (To header + envelope recipients)
         let mut my_addrs: Vec<String> = Vec::new();
-        let addr_re = Regex::new(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}").unwrap();
+        let addr_re = crate::static_regex!(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}");
         if let Some(to) = context.headers.get("to") {
             for m in addr_re.find_iter(to) {
                 my_addrs.push(m.as_str().to_lowercase());
@@ -294,7 +294,7 @@ impl ContextAnalyzer {
         // Check if matches service alert pattern
         let matches_pattern = service_alert_patterns
             .iter()
-            .any(|pattern| Regex::new(pattern).is_ok_and(|re| re.is_match(text)));
+            .any(|pattern| crate::cached_regex(pattern).is_ok_and(|re| re.is_match(text)));
 
         // Check if sender is legitimate utility/service provider
         let is_legitimate_sender = legitimate_service_domains
@@ -418,7 +418,7 @@ impl ContextAnalyzer {
         if !trusted_authenticated_sender && !is_retail_marketing {
             // Check for employment scam patterns
             for pattern in EMPLOYMENT_SCAM_PATTERNS {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     if regex.is_match(text) {
                         score += 40;
                         evidence.push("Employment scam pattern detected".to_string());
@@ -434,7 +434,7 @@ impl ContextAnalyzer {
             || sender.contains("@hotmail.com")
         {
             for pattern in &generic_name_patterns {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     if regex.is_match(sender) {
                         score += 25;
                         evidence.push("Generic name from free email provider".to_string());
@@ -459,12 +459,12 @@ impl ContextAnalyzer {
         // Check if sender is from academic domain
         let is_academic_domain = academic_domain_patterns
             .iter()
-            .any(|pattern| Regex::new(pattern).is_ok_and(|re| re.is_match(sender)));
+            .any(|pattern| crate::cached_regex(pattern).is_ok_and(|re| re.is_match(sender)));
 
         // Check if content is commercial/service-related
         let has_commercial_content = commercial_content_patterns
             .iter()
-            .any(|pattern| Regex::new(pattern).is_ok_and(|re| re.is_match(text)));
+            .any(|pattern| crate::cached_regex(pattern).is_ok_and(|re| re.is_match(text)));
 
         if is_academic_domain && has_commercial_content {
             (
@@ -642,10 +642,7 @@ impl ContextAnalyzer {
         // Medicare/healthcare keywords, matched as whole words: short keywords like
         // "aep" otherwise match inside unrelated words and encoded data.
         static MEDICARE_KEYWORDS: std::sync::LazyLock<Regex> = std::sync::LazyLock::new(|| {
-            Regex::new(
-                r"(?i)\b(medicare|medicareadvantage|ehealth|aep|enrollment period|advantage plan|medigap)\b",
-            )
-            .unwrap()
+            Regex::new(r"(?i)\b(medicare|medicareadvantage|ehealth|aep|enrollment period|advantage plan|medigap)\b").unwrap()
         });
         let has_medicare_content = MEDICARE_KEYWORDS.is_match(subject)
             || MEDICARE_KEYWORDS.is_match(body)
@@ -793,7 +790,7 @@ impl ContextAnalyzer {
         ];
 
         let has_exclusion = exclusion_patterns.iter().any(|pattern| {
-            if let Ok(regex) = Regex::new(pattern) {
+            if let Ok(regex) = crate::cached_regex(pattern) {
                 regex.is_match(body)
             } else {
                 false
@@ -802,7 +799,7 @@ impl ContextAnalyzer {
 
         let has_wire_content = !has_exclusion
             && wire_transfer_patterns.iter().any(|pattern| {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     regex.is_match(subject) || regex.is_match(body)
                 } else {
                     false
@@ -868,7 +865,7 @@ impl ContextAnalyzer {
             ];
 
             let has_urgency = urgency_patterns.iter().any(|pattern| {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     regex.is_match(body)
                 } else {
                     false
@@ -891,7 +888,7 @@ impl ContextAnalyzer {
             ];
 
             let has_transaction_details = transaction_patterns.iter().any(|pattern| {
-                if let Ok(regex) = Regex::new(pattern) {
+                if let Ok(regex) = crate::cached_regex(pattern) {
                     regex.is_match(body)
                 } else {
                     false
@@ -1464,7 +1461,9 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Consumer email sending corporate IT/authentication content (reply-bait scam)
         if is_consumer {
-            let corp_it_pattern = Regex::new(r"(?i)(authentication required|approval to maintain access|verify your identity|account (access|verification|suspended)|password expir|security (update|alert)|ticket.{0,5}[A-Z]{2,5}-\d{4,})").unwrap();
+            let corp_it_pattern = crate::static_regex!(
+                r"(?i)(authentication required|approval to maintain access|verify your identity|account (access|verification|suspended)|password expir|security (update|alert)|ticket.{0,5}[A-Z]{2,5}-\d{4,})"
+            );
             if corp_it_pattern.is_match(subject) {
                 total_score += 60;
                 all_evidence.push("Corporate IT impersonation from consumer email".to_string());
@@ -1555,7 +1554,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Detect number obfuscation (digit/letter-O mixing: "1OO", "5OO", "1O,OOO")
         {
-            let re = Regex::new(r"\d[Oo][Oo]|[Oo][Oo]\d|\d[Oo],?[Oo]{2}").unwrap();
+            let re = crate::static_regex!(r"\d[Oo][Oo]|[Oo][Oo]\d|\d[Oo],?[Oo]{2}");
             if re.is_match(subject) {
                 total_score += 50;
                 all_evidence
@@ -1565,7 +1564,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Detect I-for-l homoglyph evasion in subject (e.g., "pIan" for "plan")
         {
-            let re = Regex::new(r"[a-z]I[a-z]").unwrap();
+            let re = crate::static_regex!(r"[a-z]I[a-z]");
             if re.is_match(subject) {
                 total_score += 50;
                 all_evidence
@@ -1588,18 +1587,17 @@ impl FeatureExtractor for ContextAnalyzer {
         // Detect punctuation insertion evasion in subject (e.g., "elig;ible", "Disco:unts")
         {
             // Also detect underscore-separated letter evasion: "S_e_n_d_g_r_i_d"
-            let underscore_letters = Regex::new(r"(?i)[A-Z](_[A-Z]){4,}").unwrap();
+            let underscore_letters = crate::static_regex!(r"(?i)[A-Z](_[A-Z]){4,}");
             if underscore_letters.is_match(subject) {
                 total_score += 80;
                 all_evidence.push("Underscore-separated letter evasion in subject".to_string());
             }
 
             // Exclude legitimate colon uses: ref:, re:, vs:, id:, no:, fwd:
-            let cleaned_subj = Regex::new(r"(?i)\b(ref|re|vs|id|no|fwd|fw):")
-                .unwrap()
+            let cleaned_subj = crate::static_regex!(r"(?i)\b(ref|re|vs|id|no|fwd|fw):")
                 .replace_all(subject, "___")
                 .to_string();
-            let re = Regex::new(r"[a-zA-Z][;:][a-zA-Z]").unwrap();
+            let re = crate::static_regex!(r"[a-zA-Z][;:][a-zA-Z]");
             let punct_splits = re.find_iter(&cleaned_subj).count();
             if punct_splits >= 2 {
                 total_score += 70;
@@ -1787,7 +1785,7 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
-        let via_gibberish = Regex::new(r"via\s+([a-z]{6,})\s*'?\s*$").unwrap();
+        let via_gibberish = crate::static_regex!(r"via\s+([a-z]{6,})\s*'?\s*$");
         if let Some(caps) = via_gibberish.captures(&from_display) {
             let group_name = &caps[1];
             let legit_via = [
@@ -1809,7 +1807,7 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Check for IP-based URLs in links (almost always malicious)
-        let ip_url_re = Regex::new(r"https?://\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").unwrap();
+        let ip_url_re = crate::static_regex!(r"https?://\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
         if ip_url_re.is_match(body) {
             total_score += 40;
             all_evidence.push("Link to IP-based URL (likely malicious)".to_string());
@@ -1901,7 +1899,7 @@ impl FeatureExtractor for ContextAnalyzer {
             .map(|r| r.is_legitimate(&sender_domain))
             .unwrap_or(false);
         let raw_body = body;
-        let hidden_block_re = Regex::new(r#"(?i)display:\s*none[^>]*>([^<]{200,})"#).unwrap();
+        let hidden_block_re = crate::static_regex!(r#"(?i)display:\s*none[^>]*>([^<]{200,})"#);
         if let Some(caps) = hidden_block_re.captures(raw_body) {
             let hidden_text = &caps[1];
             // Check if hidden text contains conversational English (not CSS/encoded)
@@ -1924,10 +1922,9 @@ impl FeatureExtractor for ContextAnalyzer {
             // Bayesian-poisoning filler is a large block of conversational words with
             // no such padding, so only treat the block as a preheader when padding
             // dominates and the amount of real text is small.
-            let padding_entities = Regex::new(
-                r"(?i)&(?:zwnj|zwj|nbsp|shy|#847|#8199|#8204|#8203|#65279|#x200[bcd]|#x34f);",
+            let padding_entities = crate::static_regex!(
+                r"(?i)&(?:zwnj|zwj|nbsp|shy|#847|#8199|#8204|#8203|#65279|#x200[bcd]|#x34f);"
             )
-            .unwrap()
             .find_iter(hidden_text)
             .count();
             let is_preheader_padding = padding_entities >= 20 && word_count <= 40;
@@ -1957,8 +1954,7 @@ impl FeatureExtractor for ContextAnalyzer {
         let reverse_mortgage_subject = (subject_lower.contains("home")
             || subject_lower.contains("house")
             || subject_lower.contains("property"))
-            && Regex::new(r"pay(s|ing)?\s+you|pay\s+back|extra\s+income")
-                .unwrap()
+            && crate::static_regex!(r"pay(s|ing)?\s+you|pay\s+back|extra\s+income")
                 .is_match(&subject_lower);
         if reverse_mortgage_subject || body_lower.contains("reverse mortgage") {
             total_score += 35;
@@ -2026,7 +2022,7 @@ impl FeatureExtractor for ContextAnalyzer {
                 || subject_lower.contains("statement"))
         {
             // Check for random alphanumeric codes in subject (order IDs)
-            let has_random_code = Regex::new(r"[A-Z0-9]{6,}").unwrap().is_match(subject);
+            let has_random_code = crate::static_regex!(r"[A-Z0-9]{6,}").is_match(subject);
             if has_random_code {
                 total_score += 80;
                 all_evidence.push("Fake order/invoice from consumer email address".to_string());
@@ -2266,11 +2262,8 @@ impl FeatureExtractor for ContextAnalyzer {
         // security-awareness mail that merely discusses these scams does not match.
         {
             let hay = format!("{} {}", subject_lower, body.to_lowercase());
-            let has_btc_address = Regex::new(r"\bbc1[a-z0-9]{25,62}\b")
-                .unwrap()
-                .is_match(&hay)
-                || (Regex::new(r"\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b")
-                    .unwrap()
+            let has_btc_address = crate::static_regex!(r"\bbc1[a-z0-9]{25,62}\b").is_match(&hay)
+                || (crate::static_regex!(r"\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b")
                     .is_match(&format!("{} {}", subject_lower, body))
                     && (hay.contains("bitcoin") || hay.contains("btc")));
             let crypto_demand = has_btc_address
@@ -2361,7 +2354,7 @@ impl FeatureExtractor for ContextAnalyzer {
                     || body_lower.contains("wallet")
                     || body_lower.contains("account"));
             // Spaced-out domain evasion (e.g., "BLOOMKOIN. COM (remove the space)")
-            let spaced_domain = Regex::new(r"(?i)[a-z]{4,}\.\s+com").unwrap().is_match(body)
+            let spaced_domain = crate::static_regex!(r"(?i)[a-z]{4,}\.\s+com").is_match(body)
                 || body_lower.contains("remove the space");
             if crypto_terms && portfolio_added {
                 total_score += 90;
@@ -2461,7 +2454,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Check for recipient email address embedded in subject (spam indicator)
         let email_in_subject =
-            Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+            crate::static_regex!(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}");
         if email_in_subject.is_match(subject) {
             total_score += 20;
             all_evidence.push("Email address embedded in subject".to_string());
@@ -2486,9 +2479,8 @@ impl FeatureExtractor for ContextAnalyzer {
         // The visible HTML payload often differs from the text/plain part.
         let stripped_body = {
             let raw = context.body.as_deref().unwrap_or("");
-            let no_tags = Regex::new(r"<[^>]+>").unwrap().replace_all(raw, " ");
-            Regex::new(r"\s+")
-                .unwrap()
+            let no_tags = crate::static_regex!(r"<[^>]+>").replace_all(raw, " ");
+            crate::static_regex!(r"\s+")
                 .replace_all(&no_tags, " ")
                 .to_lowercase()
         };
@@ -2999,7 +2991,9 @@ impl FeatureExtractor for ContextAnalyzer {
         );
 
         // Giveaway language patterns with industry awareness
-        let giveaway_language_regex = Regex::new(r"(?i)\b(your.*(prize|gift).*awaits|claim.*your.*(prize|gift)|congratulations.*winner|you.*have.*won)\b").unwrap();
+        let giveaway_language_regex = crate::static_regex!(
+            r"(?i)\b(your.*(prize|gift).*awaits|claim.*your.*(prize|gift)|congratulations.*winner|you.*have.*won)\b"
+        );
         if giveaway_language_regex.is_match(&combined_text) && !is_dkim_aligned_brand {
             let base_score = 35;
             let industry_multiplier = if let Some(industry) = &industry_context {
@@ -3014,10 +3008,9 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Prize notification subjects
         if let Some(subject) = context.subject.as_deref() {
-            let prize_subject_regex = Regex::new(
-                r"(?i)\b(awaits|claim.*from|congratulations.*[a-z]+|winner.*notification)\b",
-            )
-            .unwrap();
+            let prize_subject_regex = crate::static_regex!(
+                r"(?i)\b(awaits|claim.*from|congratulations.*[a-z]+|winner.*notification)\b"
+            );
             if prize_subject_regex.is_match(subject) {
                 total_score += 25;
                 all_evidence.push("Prize notification subject pattern detected".to_string());
@@ -3025,7 +3018,9 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Product prize scam detection (very specific to scam contexts)
-        let product_prize_regex = Regex::new(r"(?i)\b(yeti.*(rambler|tumbler).*awaits|your.*(prize|gift).*awaits|claim.*your.*(prize|gift).*from)\b").unwrap();
+        let product_prize_regex = crate::static_regex!(
+            r"(?i)\b(yeti.*(rambler|tumbler).*awaits|your.*(prize|gift).*awaits|claim.*your.*(prize|gift).*from)\b"
+        );
         if product_prize_regex.is_match(&combined_text) {
             // Skip for legitimate news organizations
             let sender_domain = context
@@ -3047,7 +3042,9 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Holiday/seasonal giveaway scams (more specific to actual scam patterns)
-        let seasonal_giveaway_regex = Regex::new(r"(?i)\b(thanksgiving|christmas|holiday|black.*friday).*(claim.*from|giveaway.*from|gift.*from|you.*won|congratulations.*selected|prize.*awaits)\b").unwrap();
+        let seasonal_giveaway_regex = crate::static_regex!(
+            r"(?i)\b(thanksgiving|christmas|holiday|black.*friday).*(claim.*from|giveaway.*from|gift.*from|you.*won|congratulations.*selected|prize.*awaits)\b"
+        );
         if seasonal_giveaway_regex.is_match(&combined_text) {
             // Check if this is from a legitimate business (reduce false positives)
             if context.is_legitimate_business {
@@ -3061,7 +3058,9 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Exclusive opportunity language detection with industry awareness
-        let exclusive_regex = Regex::new(r"(?i)\b(exclusive.*opportunity.*receive|you.*chosen.*exclusive|selected.*exclusive.*offer|exclusive.*collection.*unclaimed)\b").unwrap();
+        let exclusive_regex = crate::static_regex!(
+            r"(?i)\b(exclusive.*opportunity.*receive|you.*chosen.*exclusive|selected.*exclusive.*offer|exclusive.*collection.*unclaimed)\b"
+        );
         if exclusive_regex.is_match(&combined_text) {
             let base_score = 25;
             let industry_multiplier = if let Some(industry) = &industry_context {
@@ -3179,7 +3178,7 @@ impl FeatureExtractor for ContextAnalyzer {
                 r"(?i)complete\s+(casino|gambling)\s+bases?",
             ];
             for pattern in &solicitation_patterns {
-                if let Ok(re) = regex::Regex::new(pattern) {
+                if let Ok(re) = crate::cached_regex(pattern) {
                     if re.is_match(&combined) {
                         total_score += 60;
                         all_evidence.push("B2B spam solicitation detected".to_string());
@@ -3208,40 +3207,45 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Congratulations/prize scam detection
-        let prize_scam_regex = Regex::new(r"(?i)\b(congratulations.*you.*chosen|you.*been.*selected|exclusive.*opportunity|winner.*notification)\b").unwrap();
+        let prize_scam_regex = crate::static_regex!(
+            r"(?i)\b(congratulations.*you.*chosen|you.*been.*selected|exclusive.*opportunity|winner.*notification)\b"
+        );
         if prize_scam_regex.is_match(&combined_text) {
             total_score += 40;
             all_evidence.push("Prize/congratulations scam pattern detected".to_string());
         }
 
         // Mystery box scam detection
-        let mystery_box_regex = Regex::new(r"(?i)\b(mystery box|lost items|unclaimed treasures|abandoned packages|undelivered packages)\b").unwrap();
+        let mystery_box_regex = crate::static_regex!(
+            r"(?i)\b(mystery box|lost items|unclaimed treasures|abandoned packages|undelivered packages)\b"
+        );
         if mystery_box_regex.is_match(&combined_text) {
             total_score += 60;
             all_evidence.push("Mystery box scam pattern detected".to_string());
         }
 
         // Survey scam detection
-        let survey_scam_regex = Regex::new(r"(?i)\b(complete.*survey.*unlock|survey.*special offer|quick survey.*unlock|survey.*exclusive)\b").unwrap();
+        let survey_scam_regex = crate::static_regex!(
+            r"(?i)\b(complete.*survey.*unlock|survey.*special offer|quick survey.*unlock|survey.*exclusive)\b"
+        );
         if survey_scam_regex.is_match(&combined_text) {
             total_score += 55;
             all_evidence.push("Survey scam pattern detected".to_string());
         }
 
         // Questionnaire/opinion scam detection (Costco-style)
-        let questionnaire_regex = Regex::new(
-            r"(?i)\b(share your opinions|questionnaire program|valued.*member.*participating|member-focused.*questionnaire)\b",
-        )
-        .unwrap();
+        let questionnaire_regex = crate::static_regex!(
+            r"(?i)\b(share your opinions|questionnaire program|valued.*member.*participating|member-focused.*questionnaire)\b"
+        );
         if questionnaire_regex.is_match(&combined_text) {
             total_score += 30;
             all_evidence.push("Questionnaire/survey scam pattern detected".to_string());
         }
 
         // Enhanced survey + brand impersonation detection
-        let sender_survey_regex =
-            Regex::new(r"(?i)\b(prime.*survey|customer.*survey|member.*survey|survey.*panel)\b")
-                .unwrap();
+        let sender_survey_regex = crate::static_regex!(
+            r"(?i)\b(prime.*survey|customer.*survey|member.*survey|survey.*panel)\b"
+        );
         let has_survey_sender = sender_survey_regex.is_match(sender);
         let has_brand_impersonation = all_evidence
             .iter()
@@ -3264,7 +3268,7 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Subject pattern analysis
-        let subject_special_chars = Regex::new(r"[.?%#]{3,}").unwrap();
+        let subject_special_chars = crate::static_regex!(r"[.?%#]{3,}");
         let subject_text = context.subject.as_deref().unwrap_or("");
         if subject_special_chars.is_match(subject_text) {
             let penalty = if self.is_legitimate_retailer(sender) {
@@ -3277,10 +3281,9 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Gift card survey scam detection
-        let gift_card_scam_regex = Regex::new(
-            r"(?i)\b(you'?ll?\s+receive.*\$\d+.*gift\s*card|win.*\$\d+.*gift\s*card|\$\d+.*gift\s*card.*(participation|survey|review)|explore.*gift\s*card|gift\s*card\s*information|learn.*about.*gift\s*card|earned.*\$\d+.*(card|gift)|you'?ve\s+earned.*\$\d+)\b",
-        )
-        .unwrap();
+        let gift_card_scam_regex = crate::static_regex!(
+            r"(?i)\b(you'?ll?\s+receive.*\$\d+.*gift\s*card|win.*\$\d+.*gift\s*card|\$\d+.*gift\s*card.*(participation|survey|review)|explore.*gift\s*card|gift\s*card\s*information|learn.*about.*gift\s*card|earned.*\$\d+.*(card|gift)|you'?ve\s+earned.*\$\d+)\b"
+        );
         let return_path_lower = context
             .headers
             .get("return-path")
@@ -3299,10 +3302,9 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Aggressive urgency detection
-        let aggressive_urgency_regex = Regex::new(
-            r"(?i)\b(last\s+chance|final\s+opportunity|ends\s+today|don'?t\s+miss\s+out|act\s+now\s+or|time\s+is\s+running\s+out)\b",
-        )
-        .unwrap();
+        let aggressive_urgency_regex = crate::static_regex!(
+            r"(?i)\b(last\s+chance|final\s+opportunity|ends\s+today|don'?t\s+miss\s+out|act\s+now\s+or|time\s+is\s+running\s+out)\b"
+        );
         if aggressive_urgency_regex.is_match(&combined_text) {
             // Reduce urgency scoring for legitimate platforms and retail
             let sender_lower = sender.to_lowercase();
@@ -3329,30 +3331,27 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Business solicitation spam detection
-        let business_solicitation_regex = Regex::new(
-            r"(?i)\b(bid\s*proposals?|tender\s*proposals?|supply\s+collaboration|procurement\s+opportunity|vendor\s+opportunity|contract\s+opportunity|upcoming\s+bid)\b",
-        )
-        .unwrap();
+        let business_solicitation_regex = crate::static_regex!(
+            r"(?i)\b(bid\s*proposals?|tender\s*proposals?|supply\s+collaboration|procurement\s+opportunity|vendor\s+opportunity|contract\s+opportunity|upcoming\s+bid)\b"
+        );
         if business_solicitation_regex.is_match(&combined_text) {
             total_score += 50;
             all_evidence.push("Business solicitation spam pattern detected".to_string());
         }
 
         // Social engineering detection
-        let social_eng_regex = Regex::new(
-            r"(?i)\b(screenshot of the error|would you like me to send|technical assistance)\b",
-        )
-        .unwrap();
+        let social_eng_regex = crate::static_regex!(
+            r"(?i)\b(screenshot of the error|would you like me to send|technical assistance)\b"
+        );
         if social_eng_regex.is_match(&combined_text) {
             total_score += 40;
             all_evidence.push("Social engineering pattern detected".to_string());
         }
 
         // Financial spam detection (more specific patterns)
-        let financial_regex = Regex::new(
-            r"(?i)\b(refinance rates|lower refinance rates|lock in.{0,20}(savings|rates)|fha.{0,20}(rate|guide)|mortgage rates are here)\b",
-        )
-        .unwrap();
+        let financial_regex = crate::static_regex!(
+            r"(?i)\b(refinance rates|lower refinance rates|lock in.{0,20}(savings|rates)|fha.{0,20}(rate|guide)|mortgage rates are here)\b"
+        );
         let subject_text = context.subject.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
         let financial_check_text = format!("{} {} {}", subject_text, body, from_header);
@@ -3363,7 +3362,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Content mismatch detection
         if let Some(body) = &context.body {
-            let title_match = Regex::new(r"<title>([^<]+)</title>").unwrap();
+            let title_match = crate::static_regex!(r"<title>([^<]+)</title>");
             if let Some(title_cap) = title_match.captures(body) {
                 let title = title_cap.get(1).unwrap().as_str().to_lowercase();
                 let sender_lower = sender.to_lowercase();
@@ -3380,7 +3379,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Health spam detection
         let health_regex =
-            Regex::new(r"(?i)\b(keto|diet.?miracle|weight.?loss|health.?supplement)\b").unwrap();
+            crate::static_regex!(r"(?i)\b(keto|diet.?miracle|weight.?loss|health.?supplement)\b");
         let from_header = context.from_header.as_deref().unwrap_or("");
         let check_text = format!("{} {}", sender, from_header);
         if health_regex.is_match(&check_text)
@@ -3499,7 +3498,9 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Authority impersonation detection (improved to avoid false positives from domain names)
         // Skip for established business domains (their content may mention government agencies)
-        let authority_regex = Regex::new(r"(?i)\b(customs? (and )?protection|border (patrol|protection)|immigration (office|department)|homeland security|tax office|irs|internal revenue service|fbi|police department|court (order|notice)|legal department|government (agency|office)|federal (agency|office)|official (notice|communication)|enforcement (agency|division))\b").unwrap();
+        let authority_regex = crate::static_regex!(
+            r"(?i)\b(customs? (and )?protection|border (patrol|protection)|immigration (office|department)|homeland security|tax office|irs|internal revenue service|fbi|police department|court (order|notice)|legal department|government (agency|office)|federal (agency|office)|official (notice|communication)|enforcement (agency|division))\b"
+        );
 
         // Additional check: exclude matches that are part of domain names or URLs
         let mut authority_match = false;
@@ -3549,9 +3550,9 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Package delivery scam detection
-        let delivery_regex =
-            Regex::new(r"(?i)\b(package|shipment|delivery).{0,30}(arrived|pending|held|custody)\b")
-                .unwrap();
+        let delivery_regex = crate::static_regex!(
+            r"(?i)\b(package|shipment|delivery).{0,30}(arrived|pending|held|custody)\b"
+        );
         if delivery_regex.is_match(&combined_text) {
             total_score += 45;
             all_evidence.push("Package delivery scam patterns detected".to_string());
@@ -3559,7 +3560,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Information harvesting detection
         let harvesting_regex =
-            Regex::new(r"(?i)\bprovide.{0,20}(your|personal).{0,20}information\b").unwrap();
+            crate::static_regex!(r"(?i)\bprovide.{0,20}(your|personal).{0,20}information\b");
         if harvesting_regex.is_match(&combined_text) {
             total_score += 35;
             all_evidence.push("Information harvesting request detected".to_string());
@@ -3575,7 +3576,7 @@ impl FeatureExtractor for ContextAnalyzer {
         let fake_security_hits = fake_security_patterns
             .iter()
             .filter(|p| {
-                Regex::new(p)
+                crate::cached_regex(p)
                     .unwrap()
                     .is_match(&format!("{} {}", subject_lower, body_lower))
             })
@@ -3624,8 +3625,8 @@ impl FeatureExtractor for ContextAnalyzer {
         let doc_sign_body = {
             let raw = context.body.as_deref().unwrap_or("");
             // Strip HTML tags and collapse whitespace so phrases aren't broken by markup
-            let no_tags = Regex::new(r"<[^>]+>").unwrap().replace_all(raw, " ");
-            let collapsed = Regex::new(r"\s+").unwrap().replace_all(&no_tags, " ");
+            let no_tags = crate::static_regex!(r"<[^>]+>").replace_all(raw, " ");
+            let collapsed = crate::static_regex!(r"\s+").replace_all(&no_tags, " ");
             collapsed.to_lowercase()
         };
         let doc_sign_phrases = [
@@ -3725,9 +3726,7 @@ impl FeatureExtractor for ContextAnalyzer {
             || subject_lower.contains("courtesy of");
         if has_reward_subject {
             // Strip HTML tags to get visible text, check first 600 chars
-            let stripped = Regex::new(r"<[^>]+>")
-                .unwrap()
-                .replace_all(&body_lower, " ");
+            let stripped = crate::static_regex!(r"<[^>]+>").replace_all(&body_lower, " ");
             let body_start = &stripped[..stripped
                 .char_indices()
                 .take_while(|(i, _)| *i < 600)

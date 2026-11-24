@@ -74,7 +74,7 @@ impl DomainBusinessMismatchAnalyzer {
         ];
 
         generic_patterns.iter().any(|pattern| {
-            Regex::new(pattern)
+            crate::cached_regex(pattern)
                 .map(|r| r.is_match(text))
                 .unwrap_or(false)
         })

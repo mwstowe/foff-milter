@@ -250,7 +250,9 @@ impl SenderAlignmentAnalyzer {
         }
 
         // Must contain at least one dot and valid TLD
-        let domain_regex = Regex::new(r"^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$").unwrap();
+        let domain_regex = crate::static_regex!(
+            r"^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$"
+        );
         domain_regex.is_match(domain)
     }
 
@@ -288,8 +290,7 @@ impl SenderAlignmentAnalyzer {
                 && !display_addresses_match_sender
             {
                 // Skip if it's a legitimate business format like "Business Name (email@domain.com)"
-                let business_contact_pattern =
-                    regex::Regex::new(r"^[^<>]+\s*\([^)]+@[^)]+\)$").unwrap();
+                let business_contact_pattern = crate::static_regex!(r"^[^<>]+\s*\([^)]+@[^)]+\)$");
                 if !business_contact_pattern.is_match(display_part) {
                     score += 20;
                     evidence.push("Display name contains suspicious characters".to_string());
@@ -407,7 +408,7 @@ impl SenderAlignmentAnalyzer {
 
     fn extract_domain(&self, header: &str) -> String {
         // Try to extract from angle brackets first (most reliable)
-        if let Some(angle_match) = Regex::new(r"<[^<>]*@([^<>\s]+)>").unwrap().captures(header) {
+        if let Some(angle_match) = crate::static_regex!(r"<[^<>]*@([^<>\s]+)>").captures(header) {
             if let Some(domain) = angle_match.get(1) {
                 return domain.as_str().trim_end_matches('>').to_string();
             }
@@ -590,7 +591,7 @@ impl SenderAlignmentAnalyzer {
                             log::debug!("Checking received header: {}", header_value);
 
                             for pattern in SUSPICIOUS_INFRASTRUCTURE {
-                                if regex::Regex::new(pattern).unwrap().is_match(header_value) {
+                                if crate::cached_regex(pattern).unwrap().is_match(header_value) {
                                     log::info!(
                                         "INFRASTRUCTURE MISMATCH DETECTED: {} using {}",
                                         brand.to_uppercase(),
@@ -2144,7 +2145,7 @@ impl SenderAlignmentAnalyzer {
                         "protonmail.com",
                     ];
                     if !consumer_domains.iter().any(|d| domain == *d) {
-                        let re = regex::Regex::new(r"^[a-z]+[._][a-z]+\d{2,}$").unwrap();
+                        let re = crate::static_regex!(r"^[a-z]+[._][a-z]+\d{2,}$");
                         if re.is_match(local_part) {
                             score += 25;
                             evidence.push(

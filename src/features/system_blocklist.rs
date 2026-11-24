@@ -1,6 +1,5 @@
 use crate::features::{FeatureExtractor, FeatureScore};
 use crate::MailContext;
-use regex::Regex;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -69,7 +68,7 @@ impl FeatureExtractor for SystemBlocklistFeature {
 
                 // Check domain patterns (exact same logic as user blocklist)
                 for pattern in &self.config.patterns.suspicious_patterns {
-                    if let Ok(regex) = Regex::new(pattern) {
+                    if let Ok(regex) = crate::cached_regex(pattern) {
                         if regex.is_match(&domain) {
                             score += 300;
                             evidence.push(format!(
@@ -103,7 +102,7 @@ impl FeatureExtractor for SystemBlocklistFeature {
 
                 // Check domain patterns
                 for pattern in &self.config.patterns.suspicious_patterns {
-                    if let Ok(regex) = Regex::new(pattern) {
+                    if let Ok(regex) = crate::cached_regex(pattern) {
                         if regex.is_match(&domain) {
                             score += 300;
                             evidence.push(format!(

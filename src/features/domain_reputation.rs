@@ -356,7 +356,7 @@ impl FeatureExtractor for DomainReputationFeature {
                     (r"(?i)(gacor|park.*for|temp.*site)", "Parking/gambling"),
                 ];
                 for (pattern, desc) in &suspicious_domain_patterns {
-                    if let Ok(re) = regex::Regex::new(pattern) {
+                    if let Ok(re) = crate::cached_regex(pattern) {
                         if re.is_match(&d) {
                             score += 30;
                             evidence.push(format!(

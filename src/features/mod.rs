@@ -192,11 +192,10 @@ pub fn from_registrable_domain(context: &MailContext) -> Option<String> {
 /// XML namespace declarations (`xmlns="http://www.w3.org/..."`) appear in nearly every HTML
 /// email and would otherwise make every sender look like it links off-domain.
 pub fn links_stay_on_domain(body: &str, registrable: &str) -> bool {
-    use regex::Regex;
-    let url_re = Regex::new(r#"https?://([^/\s<>"')\]:?#]+)"#).unwrap();
+    let url_re = crate::static_regex!(r#"https?://([^/\s<>"')\]:?#]+)"#);
     // Strip DOCTYPE declarations and xmlns attributes before scanning.
-    let doctype_re = Regex::new(r"(?is)<!DOCTYPE[^>]*>").unwrap();
-    let xmlns_re = Regex::new(r#"(?i)\bxmlns(?::[a-z0-9_-]+)?\s*=\s*["'][^"']*["']"#).unwrap();
+    let doctype_re = crate::static_regex!(r"(?is)<!DOCTYPE[^>]*>");
+    let xmlns_re = crate::static_regex!(r#"(?i)\bxmlns(?::[a-z0-9_-]+)?\s*=\s*["'][^"']*["']"#);
     // The body may still be quoted-printable encoded (soft line breaks split hostnames,
     // "=3D" hides attribute syntax). Decode it robustly first; fall back to the raw text.
     let decoded = if body.contains("=\n") || body.contains("=\r\n") || body.contains("=3D") {
