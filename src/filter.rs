@@ -324,6 +324,10 @@ pub struct MailContext {
     /// Age in days of the From domain's registrable domain (WHOIS, cached). `None` when not
     /// looked up or unknown -- unknown must never be treated as established.
     pub sender_domain_age_days: Option<u32>,
+    /// Feature analysis of this message, computed once per evaluation after the context
+    /// is final. Read it through `FilterEngine::feature_analysis`, which computes it when
+    /// it isn't set yet.
+    pub feature_analysis: Option<std::sync::Arc<crate::features::FeatureAnalysis>>,
 }
 
 impl Default for MailContext {
@@ -353,6 +357,7 @@ impl Default for MailContext {
             media_spam_score: 0,
             domain_registry: None,
             sender_domain_age_days: None,
+            feature_analysis: None,
         }
     }
 }
@@ -1027,6 +1032,7 @@ impl FilterEngine {
                 media_spam_score: context.media_spam_score,
                 domain_registry: context.domain_registry.clone(),
                 sender_domain_age_days: context.sender_domain_age_days,
+                feature_analysis: context.feature_analysis.clone(),
             }
         } else {
             // Fallback to simple normalization if proper normalization not available
@@ -1069,6 +1075,7 @@ impl FilterEngine {
             media_spam_score: context.media_spam_score,
             domain_registry: context.domain_registry.clone(),
             sender_domain_age_days: context.sender_domain_age_days,
+            feature_analysis: context.feature_analysis.clone(),
         }
     }
 
@@ -1826,14 +1833,16 @@ impl FilterEngine {
         extract_email_from_header(header_value)
     }
 
-    /// Get feature analysis results for use in YAML rules
-    fn get_feature_analysis_results(
+    /// The feature analysis of `context`: the one computed for this evaluation, or a
+    /// fresh one when it hasn't been computed yet (or for a different context).
+    fn feature_analysis(
         &self,
         context: &MailContext,
-    ) -> Vec<crate::features::FeatureScore> {
-        // Run feature analysis on the context
-        let analysis = self.feature_engine.analyze(context);
-        analysis.scores
+    ) -> std::sync::Arc<crate::features::FeatureAnalysis> {
+        match &context.feature_analysis {
+            Some(analysis) => std::sync::Arc::clone(analysis),
+            None => std::sync::Arc::new(self.feature_engine.analyze(context)),
+        }
     }
 
     /// Check if an IP address is in a private range
@@ -2519,6 +2528,12 @@ impl FilterEngine {
             );
         }
 
+        // The context is final from here on: analyze the features once and share the
+        // result with every check and rule criterion that needs it.
+        context_with_attachments.feature_analysis = Some(std::sync::Arc::new(
+            self.feature_engine.analyze(&context_with_attachments),
+        ));
+
         // Handle user-initiated forwarding with dual context analysis
         let mut user_forwarding_adjustment = 0i32;
         if let Some(forwarding_info) = &context_with_attachments.forwarding_info {
@@ -3200,7 +3215,7 @@ impl FilterEngine {
         }
 
         // Advanced feature-based analysis
-        let feature_analysis = self.feature_engine.analyze(&context_with_attachments);
+        let feature_analysis = self.feature_analysis(&context_with_attachments);
         total_score += feature_analysis.total_score;
         for feature_score in &feature_analysis.scores {
             if feature_score.score != 0 {
@@ -3325,7 +3340,7 @@ impl FilterEngine {
                 .unwrap_or(50);
 
             // Still run feature analysis but skip threat detection rules
-            let feature_results = self.feature_engine.analyze(&context_with_attachments);
+            let feature_results = self.feature_analysis(&context_with_attachments);
             let feature_score: i32 = feature_results.scores.iter().map(|s| s.score).sum();
 
             log::info!(
@@ -5829,10 +5844,11 @@ impl FilterEngine {
                     log::debug!("Checking feature analysis for: {}", feature_name);
 
                     // Get feature analysis results from context
-                    let feature_results = self.get_feature_analysis_results(context);
+                    let feature_results = self.feature_analysis(context);
 
                     // Find the matching feature
                     if let Some(feature_score) = feature_results
+                        .scores
                         .iter()
                         .find(|f| f.feature_name == *feature_name)
                     {
@@ -9439,8 +9455,8 @@ impl FilterEngine {
 
     /// Check if there are infrastructure validation issues that should block business adjustments
     fn has_infrastructure_validation_issues(&self, context: &MailContext) -> bool {
-        // Use the feature engine to run analysis and check for sender alignment issues
-        let feature_analysis = self.feature_engine.analyze(context);
+        // Check the feature analysis for sender alignment issues
+        let feature_analysis = self.feature_analysis(context);
 
         // Look for sender alignment issues in the feature scores
         for feature_score in &feature_analysis.scores {
