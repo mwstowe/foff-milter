@@ -54,6 +54,8 @@ impl CacheEntry {
 #[derive(Debug, Clone)]
 pub struct DomainAgeChecker {
     cache: Arc<RwLock<HashMap<String, CacheEntry>>>,
+    // DNS fallback resolver, built on first use and shared by clones
+    resolver: Arc<tokio::sync::OnceCell<Option<hickory_resolver::TokioResolver>>>,
     timeout: Duration,
     use_mock: bool,
 }
@@ -76,6 +78,7 @@ impl DomainAgeChecker {
     pub fn new(timeout_seconds: u64, use_mock: bool) -> Self {
         Self {
             cache: Arc::new(RwLock::new(HashMap::new())),
+            resolver: Arc::new(tokio::sync::OnceCell::new()),
             timeout: Duration::from_secs(timeout_seconds),
             use_mock,
         }
@@ -85,6 +88,7 @@ impl DomainAgeChecker {
     pub fn with_timeout(&self, timeout_seconds: u64) -> Self {
         Self {
             cache: Arc::clone(&self.cache),
+            resolver: Arc::clone(&self.resolver),
             timeout: Duration::from_secs(timeout_seconds),
             use_mock: self.use_mock,
         }
@@ -470,11 +474,22 @@ impl DomainAgeChecker {
     async fn fallback_domain_check(&self, domain: &str) -> Result<DomainInfo> {
         log::debug!("Using DNS fallback for domain: {domain}");
 
-        use hickory_resolver::Resolver;
+        let resolver = self
+            .resolver
+            .get_or_init(|| async {
+                hickory_resolver::Resolver::builder_tokio()
+                    .and_then(|b| b.build())
+                    .map_err(|e| log::warn!("DNS resolver unavailable: {e}"))
+                    .ok()
+            })
+            .await
+            .as_ref()
+            .ok_or_else(|| anyhow!("no DNS resolver"))?;
 
-        let resolver = Resolver::builder_tokio().and_then(|b| b.build())?;
-
-        match resolver.lookup_ip(domain).await {
+        match tokio::time::timeout(self.timeout, resolver.lookup_ip(domain))
+            .await
+            .map_err(|_| anyhow!("DNS lookup for {domain} timed out"))?
+        {
             Ok(_) => {
                 log::debug!("Domain {domain} resolves, but age unknown");
                 // Domain resolves, but we can't determine age

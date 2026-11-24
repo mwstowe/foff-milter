@@ -240,6 +240,55 @@ fn is_known_link_infra(registrable: &str) -> bool {
             .any(|k| registrable == *k || registrable.ends_with(&format!(".{k}")))
 }
 
+/// `pattern` without a leading `.{0,N}`/`.*` and a trailing `.*`/`.{0,N}`.
+///
+/// Rule patterns are only used with `is_match`, an unanchored search, where those parts
+/// can never change the result: a match with nothing before or after it is still a
+/// match. They are not free, though: a leading `.{0,100}` makes the regex engine track
+/// up to 100 extra paths from every position, which made rule matching ~30x slower.
+fn match_only_pattern(pattern: &str) -> std::borrow::Cow<'_, str> {
+    use std::borrow::Cow;
+    // Optional leading inline flags such as `(?i)` or `(?is)` (not a `(?i:...)` group)
+    let flags_len = pattern
+        .strip_prefix("(?")
+        .and_then(|rest| {
+            rest.find(')').filter(|&end| {
+                rest[..end]
+                    .bytes()
+                    .all(|b| b.is_ascii_alphabetic() || b == b'-')
+            })
+        })
+        .map_or(0, |end| end + 3);
+    let (flags, body) = pattern.split_at(flags_len);
+
+    let gap = crate::static_regex!(r"^(?:\.\*\??|\.\{0,\d+\}\??)");
+    let body = match gap.find(body) {
+        Some(m) => &body[m.end()..],
+        None => body,
+    };
+    let tail = crate::static_regex!(r"(?:\.\*\??|\.\{0,\d+\}\??)$");
+    let body = match tail.find(body) {
+        // Only if the `.` isn't escaped (`\.*` repeats a literal dot)
+        Some(m)
+            if body[..m.start()]
+                .bytes()
+                .rev()
+                .take_while(|&b| b == b'\\')
+                .count()
+                % 2
+                == 0 =>
+        {
+            &body[..m.start()]
+        }
+        _ => body,
+    };
+    if flags.len() + body.len() == pattern.len() {
+        Cow::Borrowed(pattern)
+    } else {
+        Cow::Owned(format!("{flags}{body}"))
+    }
+}
+
 /// Built-in rules that match ordinary billing and receipt wording. They are skipped
 /// for an established sender signing its own mail, which sends exactly this wording.
 const BILLING_WORDING_RULES: &[&str] = &[
@@ -340,6 +389,9 @@ pub struct MailContext {
     /// feature analysis (custom ESP return-path domains such as `em123.example.com`
     /// alias the ESP). `None` when there is no CNAME or it wasn't looked up.
     pub sender_domain_cname: Option<String>,
+    /// Whether the From header's host resolves (A/AAAA), resolved by `evaluate` for the
+    /// sender alignment feature, which can't do async DNS. `None` when not looked up.
+    pub from_host_resolves: Option<(String, bool)>,
 }
 
 impl Default for MailContext {
@@ -371,6 +423,7 @@ impl Default for MailContext {
             sender_domain_age_days: None,
             feature_analysis: None,
             sender_domain_cname: None,
+            from_host_resolves: None,
         }
     }
 }
@@ -845,7 +898,7 @@ impl FilterEngine {
     }
 
     /// Check if a domain exists using DNS lookup (optimized for performance)
-    fn domain_exists(&self, domain: &str) -> bool {
+    async fn domain_exists(&self, domain: &str) -> bool {
         if domain.is_empty() || domain == "unknown" {
             return false;
         }
@@ -874,13 +927,10 @@ impl FilterEngine {
             return true;
         }
 
-        // Use std::net for synchronous DNS lookup
-        use std::net::ToSocketAddrs;
-
-        // Try to resolve the domain
-        match format!("{}:80", domain).to_socket_addrs() {
-            Ok(mut addrs) => addrs.next().is_some(),
-            Err(_) => {
+        // Try to resolve the domain (async; a blocking lookup would stall a runtime worker)
+        match self.host_resolves(domain, Duration::from_secs(5)).await {
+            Some(true) => true,
+            _ => {
                 // Check for obviously suspicious patterns
                 let suspicious_patterns = [
                     "automated",
@@ -1047,6 +1097,7 @@ impl FilterEngine {
                 sender_domain_age_days: context.sender_domain_age_days,
                 feature_analysis: context.feature_analysis.clone(),
                 sender_domain_cname: context.sender_domain_cname.clone(),
+                from_host_resolves: context.from_host_resolves.clone(),
             }
         } else {
             // Fallback to simple normalization if proper normalization not available
@@ -1091,6 +1142,7 @@ impl FilterEngine {
             sender_domain_age_days: context.sender_domain_age_days,
             feature_analysis: context.feature_analysis.clone(),
             sender_domain_cname: context.sender_domain_cname.clone(),
+            from_host_resolves: context.from_host_resolves.clone(),
         }
     }
 
@@ -1342,18 +1394,12 @@ impl FilterEngine {
     }
 
     /// The shared DNS resolver, or `None` if the system configuration can't be read.
-    /// Lookups give up after 2 s with one attempt, so a slow name server can't stall a
-    /// message for long.
+    /// Callers bound each lookup with their own timeout.
     async fn dns_resolver(&self) -> Option<&hickory_resolver::TokioResolver> {
         self.dns_resolver
             .get_or_init(|| async {
-                let mut builder = Resolver::builder_tokio()
-                    .map_err(|e| log::warn!("DNS resolver unavailable: {e}"))
-                    .ok()?;
-                builder.options_mut().timeout = Duration::from_secs(2);
-                builder.options_mut().attempts = 1;
-                builder
-                    .build()
+                Resolver::builder_tokio()
+                    .and_then(|b| b.build())
                     .map_err(|e| log::warn!("DNS resolver unavailable: {e}"))
                     .ok()
             })
@@ -1361,15 +1407,30 @@ impl FilterEngine {
             .as_ref()
     }
 
+    /// Whether `host` has A/AAAA records: `Some(true)` if it resolves, `Some(false)` if
+    /// the lookup fails (no records, NXDOMAIN, timeout), `None` if DNS is unavailable.
+    async fn host_resolves(&self, host: &str, timeout: Duration) -> Option<bool> {
+        let resolver = self.dns_resolver().await?;
+        Some(matches!(
+            tokio::time::timeout(timeout, resolver.lookup_ip(host)).await,
+            Ok(Ok(addrs)) if addrs.iter().next().is_some()
+        ))
+    }
+
     /// CNAME target of `domain` (lowercased, without the trailing dot), or `None` when
     /// it has none or the lookup fails.
     async fn lookup_cname(&self, domain: &str) -> Option<String> {
         use hickory_resolver::proto::rr::{RData, RecordType};
         let resolver = self.dns_resolver().await?;
-        let answer = match resolver.lookup(domain, RecordType::CNAME).await {
-            Ok(answer) => answer,
-            Err(e) => {
+        let lookup = resolver.lookup(domain, RecordType::CNAME);
+        let answer = match tokio::time::timeout(Duration::from_secs(2), lookup).await {
+            Ok(Ok(answer)) => answer,
+            Ok(Err(e)) => {
                 log::debug!("CNAME lookup for {domain}: {e}");
+                return None;
+            }
+            Err(_) => {
+                log::debug!("CNAME lookup for {domain} timed out");
                 return None;
             }
         };
@@ -1764,10 +1825,10 @@ impl FilterEngine {
     async fn validate_email_domain_dns(&self, domain: &str, timeout_seconds: u64) -> bool {
         log::debug!("Checking email domain DNS for: {domain} (timeout: {timeout_seconds}s)");
 
-        let resolver = match Resolver::builder_tokio().and_then(|b| b.build()) {
-            Ok(resolver) => resolver,
-            Err(e) => {
-                log::warn!("Failed to create DNS resolver for {domain}: {e}");
+        let resolver = match self.dns_resolver().await {
+            Some(resolver) => resolver,
+            None => {
+                log::warn!("No DNS resolver to check {domain}");
                 return false;
             }
         };
@@ -1804,10 +1865,10 @@ impl FilterEngine {
     async fn validate_domain_dns(&self, domain: &str, timeout_seconds: u64) -> bool {
         log::debug!("Checking DNS for domain: {domain} (timeout: {timeout_seconds}s)");
 
-        let resolver = match Resolver::builder_tokio().and_then(|b| b.build()) {
-            Ok(resolver) => resolver,
-            Err(e) => {
-                log::warn!("Failed to create DNS resolver for {domain}: {e}");
+        let resolver = match self.dns_resolver().await {
+            Some(resolver) => resolver,
+            None => {
+                log::warn!("No DNS resolver to check {domain}");
                 return false;
             }
         };
@@ -1972,7 +2033,7 @@ impl FilterEngine {
             | Criteria::MediaTextPattern { pattern }
             | Criteria::CombinedTextPattern { pattern } => {
                 if !self.compiled_patterns.contains_key(pattern) {
-                    let regex = Regex::new(pattern).map_err(|e| {
+                    let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                         anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                     })?;
                     self.compiled_patterns.insert(pattern.clone(), regex);
@@ -1980,7 +2041,7 @@ impl FilterEngine {
             }
             Criteria::HeaderPattern { pattern, .. } => {
                 if !self.compiled_patterns.contains_key(pattern) {
-                    let regex = Regex::new(pattern).map_err(|e| {
+                    let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                         anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                     })?;
                     self.compiled_patterns.insert(pattern.clone(), regex);
@@ -2039,7 +2100,7 @@ impl FilterEngine {
             }
             Criteria::UnsubscribeLinkPattern { pattern } => {
                 if !self.compiled_patterns.contains_key(pattern) {
-                    let regex = Regex::new(pattern).map_err(|e| {
+                    let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                         anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                     })?;
                     self.compiled_patterns.insert(pattern.clone(), regex);
@@ -2066,7 +2127,7 @@ impl FilterEngine {
                 if let Some(patterns) = suspicious_patterns {
                     for pattern in patterns {
                         if !self.compiled_patterns.contains_key(pattern) {
-                            let regex = Regex::new(pattern).map_err(|e| {
+                            let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                                 anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                             })?;
                             self.compiled_patterns.insert(pattern.clone(), regex);
@@ -2084,7 +2145,7 @@ impl FilterEngine {
                 if let Some(patterns) = suspicious_redirect_patterns {
                     for pattern in patterns {
                         if !self.compiled_patterns.contains_key(pattern) {
-                            let regex = Regex::new(pattern).map_err(|e| {
+                            let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                                 anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                             })?;
                             self.compiled_patterns.insert(pattern.clone(), regex);
@@ -2138,10 +2199,14 @@ impl FilterEngine {
                 content_pattern,
                 ..
             } => {
-                self.compiled_patterns
-                    .insert(domain_pattern.clone(), Regex::new(domain_pattern)?);
-                self.compiled_patterns
-                    .insert(content_pattern.clone(), Regex::new(content_pattern)?);
+                self.compiled_patterns.insert(
+                    domain_pattern.clone(),
+                    Regex::new(&match_only_pattern(domain_pattern))?,
+                );
+                self.compiled_patterns.insert(
+                    content_pattern.clone(),
+                    Regex::new(&match_only_pattern(content_pattern))?,
+                );
             }
             Criteria::MixedScriptDetection { .. } => {
                 // No regex patterns to compile for mixed script detection
@@ -2157,7 +2222,7 @@ impl FilterEngine {
                 if let Some(patterns) = subject_patterns {
                     for pattern in patterns {
                         if !self.compiled_patterns.contains_key(pattern) {
-                            let regex = Regex::new(pattern).map_err(|e| {
+                            let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                                 anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                             })?;
                             self.compiled_patterns.insert(pattern.clone(), regex);
@@ -2167,7 +2232,7 @@ impl FilterEngine {
                 if let Some(patterns) = sender_patterns {
                     for pattern in patterns {
                         if !self.compiled_patterns.contains_key(pattern) {
-                            let regex = Regex::new(pattern).map_err(|e| {
+                            let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                                 anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                             })?;
                             self.compiled_patterns.insert(pattern.clone(), regex);
@@ -2177,7 +2242,7 @@ impl FilterEngine {
                 if let Some(patterns) = body_patterns {
                     for pattern in patterns {
                         if !self.compiled_patterns.contains_key(pattern) {
-                            let regex = Regex::new(pattern).map_err(|e| {
+                            let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                                 anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                             })?;
                             self.compiled_patterns.insert(pattern.clone(), regex);
@@ -2190,7 +2255,7 @@ impl FilterEngine {
                 if let Some(patterns) = tld_patterns {
                     for pattern in patterns {
                         if !self.compiled_patterns.contains_key(pattern) {
-                            let regex = Regex::new(pattern).map_err(|e| {
+                            let regex = Regex::new(&match_only_pattern(pattern)).map_err(|e| {
                                 anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
                             })?;
                             self.compiled_patterns.insert(pattern.clone(), regex);
@@ -2547,6 +2612,13 @@ impl FilterEngine {
             .and_then(|s| s.split('@').nth(1))
         {
             context_with_attachments.sender_domain_cname = self.lookup_cname(domain).await;
+        }
+        if let Some(host) = crate::features::sender_alignment::SenderAlignmentAnalyzer::from_host(
+            &context_with_attachments,
+        ) {
+            if let Some(resolves) = self.host_resolves(&host, Duration::from_secs(5)).await {
+                context_with_attachments.from_host_resolves = Some((host, resolves));
+            }
         }
 
         // Analyze attachments (uses raw_body for MIME parsing)
@@ -6424,16 +6496,13 @@ impl FilterEngine {
                                 log::debug!("Validating reply-to domain: {domain}");
 
                                 // Check DNS resolution
-                                let resolver =
-                                    match Resolver::builder_tokio().and_then(|b| b.build()) {
-                                        Ok(resolver) => resolver,
-                                        Err(e) => {
-                                            log::warn!(
-                                                "Failed to create DNS resolver for {domain}: {e}"
-                                            );
-                                            return true; // Treat resolver failure as suspicious
-                                        }
-                                    };
+                                let resolver = match self.dns_resolver().await {
+                                    Some(resolver) => resolver,
+                                    None => {
+                                        log::warn!("No DNS resolver to check {domain}");
+                                        return true; // Treat resolver failure as suspicious
+                                    }
+                                };
 
                                 // Check A/AAAA records first
                                 let lookup_future = resolver.lookup_ip(domain);
@@ -6570,7 +6639,7 @@ impl FilterEngine {
                     // Check each domain - return true if ANY domain is young
                     for (source, domain) in domains_to_check {
                         // First check if domain exists to avoid expensive WHOIS lookups on non-existent domains
-                        if !self.domain_exists(&domain) {
+                        if !self.domain_exists(&domain).await {
                             log::debug!(
                                 "Domain {domain} from {source} does not exist, skipping age check"
                             );
@@ -11403,5 +11472,36 @@ mod credential_phishing_tests {
         assert!(!is_known_link_infra("mkt.com"));
         assert!(!is_known_link_infra("mktx38.com"));
         assert!(!is_known_link_infra("phish.example"));
+    }
+}
+
+#[cfg(test)]
+mod match_only_pattern_tests {
+    use super::match_only_pattern;
+
+    #[test]
+    fn strips_leading_and_trailing_gaps() {
+        assert_eq!(
+            match_only_pattern("(?i).{0,100}(a.{0,100}b|c).*"),
+            "(?i)(a.{0,100}b|c)"
+        );
+        assert_eq!(match_only_pattern(".*foo.*?"), "foo");
+        assert_eq!(match_only_pattern("(?is).{0,30}x"), "(?is)x");
+        assert_eq!(match_only_pattern("x.{0,20}"), "x");
+    }
+
+    #[test]
+    fn keeps_everything_else() {
+        for p in [
+            "^.{0,100}x", // anchored: the prefix limits where x may start
+            "(?i:a).*b",  // a group, not inline flags
+            r"foo\.*",    // repeated literal dot
+            r"foo\\.*",   // escaped backslash, then a real gap: stripped below
+            "a.{0,100}b", // inner gap changes the meaning
+            ".{1,5}x",    // minimum length > 0 is not a no-op
+        ] {
+            let expected = if p == r"foo\\.*" { r"foo\\" } else { p };
+            assert_eq!(match_only_pattern(p), expected, "{p}");
+        }
     }
 }

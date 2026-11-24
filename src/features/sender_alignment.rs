@@ -5,7 +5,6 @@ use std::collections::HashMap;
 
 pub struct SenderAlignmentAnalyzer {
     brand_patterns: HashMap<String, Vec<String>>,
-    domain_regex: Regex,
 }
 
 impl Default for SenderAlignmentAnalyzer {
@@ -60,23 +59,31 @@ impl SenderAlignmentAnalyzer {
             ],
         );
 
-        Self {
-            brand_patterns,
-            domain_regex: Regex::new(r"@([^>\s]+)").unwrap(),
-        }
+        Self { brand_patterns }
     }
 
     pub fn from_config(_config: &crate::config_loader::SenderAlignmentConfig) -> Self {
         Self::new()
     }
 
-    fn extract_sender_info(&self, context: &MailContext) -> SenderInfo {
-        // Try context.from_header first, then fallback to headers HashMap
-        let from_header = context
+    /// The From header this analyzer checks: the parsed one, else the raw header.
+    fn from_header(context: &MailContext) -> &str {
+        context
             .from_header
             .as_deref()
             .or_else(|| context.headers.get("from").map(|s| s.as_str()))
-            .unwrap_or_default();
+            .unwrap_or_default()
+    }
+
+    /// The From host whose existence `domain_exists` checks, for `evaluate` to resolve
+    /// ahead of the feature analysis. `None` when there is none to look up.
+    pub fn from_host(context: &MailContext) -> Option<String> {
+        let host = Self::header_domain(Self::from_header(context));
+        (host != "unknown" && host.contains('.')).then_some(host)
+    }
+
+    fn extract_sender_info(&self, context: &MailContext) -> SenderInfo {
+        let from_header = Self::from_header(context);
 
         let sender_header = context.sender.as_deref().unwrap_or_default();
 
@@ -100,7 +107,7 @@ impl SenderAlignmentAnalyzer {
         crate::milter::extract_email_from_header(header)
     }
 
-    fn domain_exists(&self, domain: &str) -> bool {
+    fn domain_exists(&self, context: &MailContext, domain: &str) -> bool {
         if domain.is_empty() || domain == "unknown" {
             return false;
         }
@@ -115,13 +122,11 @@ impl SenderAlignmentAnalyzer {
             return true; // Assume legitimate for complex marketing platforms
         }
 
-        // Use std::net for synchronous DNS lookup
-        use std::net::ToSocketAddrs;
-
-        // Try to resolve the domain
-        match format!("{}:80", domain).to_socket_addrs() {
-            Ok(mut addrs) => addrs.next().is_some(),
-            Err(_) => {
+        // Resolved by `FilterEngine::evaluate` (extractors can't do async DNS); a host
+        // that wasn't resolved is treated like a failed lookup
+        match &context.from_host_resolves {
+            Some((host, true)) if host == domain => true,
+            _ => {
                 // Check for obviously suspicious patterns
                 let suspicious_patterns = [
                     "automated",
@@ -407,6 +412,10 @@ impl SenderAlignmentAnalyzer {
     }
 
     fn extract_domain(&self, header: &str) -> String {
+        Self::header_domain(header)
+    }
+
+    fn header_domain(header: &str) -> String {
         // Try to extract from angle brackets first (most reliable)
         if let Some(angle_match) = crate::static_regex!(r"<[^<>]*@([^<>\s]+)>").captures(header) {
             if let Some(domain) = angle_match.get(1) {
@@ -415,7 +424,7 @@ impl SenderAlignmentAnalyzer {
         }
 
         // Fallback to general @ pattern
-        if let Some(cap) = self.domain_regex.captures(header) {
+        if let Some(cap) = crate::static_regex!(r"@([^>\s]+)").captures(header) {
             if let Some(domain) = cap.get(1) {
                 let domain_str = domain.as_str().trim_end_matches('>').trim_end_matches(')');
                 return domain_str.to_string();
@@ -1518,7 +1527,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                 "From header has malformed domain: {}",
                 sender_info.from_domain
             ));
-        } else if !self.domain_exists(&sender_info.from_domain) {
+        } else if !self.domain_exists(context, &sender_info.from_domain) {
             // Skip domain existence check for known legitimate marketing subdomains
             let legitimate_marketing_domains = [
                 "marketing.zoomcare.com",
