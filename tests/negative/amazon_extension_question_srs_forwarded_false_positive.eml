@@ -1,0 +1,130 @@
+Return-Path: <SRS0=PRzX=JO=gmail.com=samsender42@eforward.registrar-servers.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 6AP8BxCv048682
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 25 Nov 2026 08:12:00 GMT
+	(envelope-from SRS0=PRzX=JO=gmail.com=samsender42@eforward.registrar-servers.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b=KVbsc5nu
+Received: from eforward1e-4.registrar-servers.com (eforward1e-4.registrar-servers.com [198.54.122.2])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 6AP8BwlY062386
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 25 Nov 2026 02:11:58 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 6AP8BwlY062386
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KVbsc5nu
+Received: from asp-relay.et.namecheap.tech (unknown [10.51.8.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by eforward.registrar-servers.com (Postfix) with ESMTPS id 4jZC7s11jzz2mGtB
+	for <info@whitehatblackrabbit.com>; Wed, 25 Nov 2026 08:11:53 +0000 (UTC)
+Authentication-Results: asp-relay.et.namecheap.tech;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=KVbsc5nu;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (asp-relay.et.namecheap.tech: domain of samsender42@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=samsender42@gmail.com
+X-Original-To: <info@whitehatblackrabbit.com>
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by asp-relay.et.namecheap.tech (Postfix) with ESMTPS id 4jZC7l6J4Cz7tBS
+	for <info@whitehatblackrabbit.com>; Wed, 25 Nov 2026 08:11:47 +0000 (UTC)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-8b502b9b702so63415297b3.3
+        for <info@whitehatblackrabbit.com>; Wed, 25 Nov 2026 00:11:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WcT25Mdi9mq5SOVQxROSLalGPOx01mF2VosjANp60dZtI/NdH2ixzh6ch0OrgmmK4h
+         jlKI2M1PZnywOAuzDP43kaS0JVq6kVnlVD1NyDLhHNhMO0dbf7pQw8g2rEMegsKC/Lq6
+         tRgpqY63igPfneeey+vgo9YfxHVee64wYv+y1JkfsvhMHosIbEJc2MKaYIW7mKgkxbiQ
+         BmU3xT3HLyWHwjlq4rdSBsVIKH0ldAstpUnU826eGUUzzWqhOJDQ0sgZr5aO3InKlgq9
+         VN+uhPMPgqgy8C/YOY+qpMlHsYzrT33g41UWdXvecKE5RkG3S2QWo0ho4kfQsfIimXCN
+         tprw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=766ve360T41hJo5RPiuhsbAX90jz1TPMnDa3swgBqzo=;
+        fh=6EbaBqLh0y/umFHAIHesnQnbMsaZ3Q12hRUwY4u35fI=;
+        b=PjedE0IEwoCxUE0eDX2lbAh/G96S4Kt7uwfSA+6nuxI7qGkdKQtyjwAZp4hcnmxbRS
+         n1ESHtN4AcQrvwYXt1BoMdweNDN76e4lCyPhuWsCadbGg4Cl/O440Ve1MIGdScsiZwDM
+         YjbNVvkhmp9o4Xibh5OC9dPoyStzMIXd0xde4bAAHy6gvpl+XBysu5E9JHF20pN3l0FT
+         VIgUdHUSVIwFM0xXOqJ2jGjJOD7GCKE8t5UCUsXYINHB0qrGNWfHI8yHO+QTHz2HxvC4
+         hQeNnEPNnr4qSU5lIKideCvicEymQ6ddRyWp66K1cTPexR3uKG3XFqRfCm01zV6otrVe
+         oGUQ==;
+        darn=whitehatblackrabbit.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=555-123-4567; x=555-123-4567; darn=whitehatblackrabbit.com;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=766ve360T41hJo5RPiuhsbAX90jz1TPMnDa3swgBqzo=;
+        b=KVbsc5nupFADuUSttNkeUerEdfU2I5mDfuMoLP0DYe+Y6mNhTzjNvU66sgQf/Tiuen
+         3jSya3qwDW9jpUopnQ5umv7A5mv6oi3UocMVwrLyrQ8uaKJiKyR1QjFVVhQ9fc0fDvFk
+         IS4t1bUEdGDw0CYFH594N7o6ocJbPLjQs/l7Tp0bqyGUY6DZFg6gEAtkrFidsyHUg89E
+         sAW7gI5OBUshDqQmlNVyfyCnMLHaYNhnLJ8p3Rqa429N1SNGsgNJ24YarBzSbGT59wt0
+         +oq/U3NxlY9Tdf9hvSie4Is6M+rfHFJe9w9NYlnyAw6m+/vPSFnS4bYgdZZd23LxpEKg
+         RWqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=555-123-4567; x=555-123-4567;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=766ve360T41hJo5RPiuhsbAX90jz1TPMnDa3swgBqzo=;
+        b=siRHsifVzE7+tz1Ufiq/EmwYmpe9uIYY5fEwFzG3fo/mGo/vl8VpVW1zZ/oIfY3p8s
+         S00bOBCKoX3xQTAOkH2xJmEIRDj1rhpcp9P8reWR1lzbM9iljlJMClwK5boSqbsO/5dc
+         07A57NuixkJPQS+OyyayvuXgMyo+Ug8J34Lyse3t9eTEjbGRLrETWBBtfxd/Hqx5DkWl
+         Bs2G5CAcYI2Ht2o27Hf4gFHAV0xfqxcjKjmZtXKL2OTYIE9LtUB7pFsJvHIof+MT0AEt
+         yjeoTpmnngQ8X2CggqyNegBjF5rpgki/3vhonYHHhXTTVc1SUVqJ5ForWXksXieOxMxR
+         vrCw==
+X-Gm-Message-State: APuU4Z+giZscM1IQ2tM3LVXbjMYwVITvbQ4N6ZUwZcs0+r9frDxcXXvY
+	/tst5O02BP+ABvzENd+58LY+3JO0lACucr2h61INQnwKQ/fcmR6l4/14rViA57ZPmT8PP3vxCsv
+	7SZcuyBNEZE752CWeaZPtrTP3trtqyFrY
+X-Gm-Gg: AZFdTZeLgy7m2EK/il4Isn/Ph1w5C5IWjowJi6hPlAwsArXVTsvXkhOVCOgOaloyY4e
+	oa7oF+xzTr5ZK93U3STZId4mf/6GteI5fR3vrAjMfQJRd0ngnhqPWQngOxT7l4H6h4TCA1kU7PH
+	SkPZI62P4WzMmUPFdn0bwXe8ffgEsqxGBhzMyKUVsRuce2qtA7zTY5now8Gz0azl4oH+fDybNjF
+	WqWMkllPrG9JwXX4v48SfrJE64f9eejzHZFYoCcRv/N1h0T/wT1O7BWJv2KHXIS7vyNEbo7c7xe
+	Dq9fKa+fE7TkE+x4H4dHcBzj9wr+SwesPdR00diQ1M+DNDKhYb4XK6DDf/nQn4u1K/LvEOPQ4Ob
+	+OdxObYq2Khdhg8XDPrZkls5eLWLU8eQPUJHGaW+yjM2NCEtQRHb5WT7vqcyDRyrvDQ==
+X-Received: by 2002:a05:690c:338e:b0:8b4:cd96:e2f0 with SMTP id
+ 00721157ae682-8b52031b32dmr53390307b3.6.1795594306999; Wed, 25 Nov 2026
+ 00:11:46 -0800 (PST)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Wed, 25 Nov 2026 03:11:46 -0500
+MIME-Version: 1.0
+From: Sam Sender <samsender42@gmail.com>
+Date: Wed, 25 Nov 2026 03:11:46 -0500
+X-Gm-Features: Aa3M54p-d_P_1iKbDqvHb9fYQvR7twXosX-q-qsuO919Fl1vvsdGHy7LAWH1TXI
+Message-ID: <CABQH4ShGQR9TKTTyxz8UDOO8cEEeQwH7X-HVnfgifKKb6ZYsDw@mail.gmail.com>
+Subject: =?UTF-8?Q?Amazon_Auto=2DBuy_extension_=E2=80=93_direct_buying=2Drule_URL?=
+	=?UTF-8?Q?_question?=
+To: user@example.com
+Content-Type: multipart/alternative; boundary="000000000000d45a2b066115605f"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 25 Nov 2026 08:12:00 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 25 Nov 2026 02:11:58 -0600 (CST)
+X-Spam-Flag: YES
+
+--000000000000d45a2b066115605f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello, I=E2=80=99m researching your Amazon Auto-Buy extension for sealed Po=
+k=C3=A9mon
+products. Could you share the native Amazon buying-rule creation URL format
+for a given ASIN, or a public source repository for your MPL-licensed
+extension? Does it work for US Amazon listings without a native Auto Buy
+button, and are those listings still subject to Amazon eligibility checks?
+Thank you.
+
+--000000000000d45a2b066115605f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<p>Hello, I=E2=80=99m researching your Amazon Auto-Buy extension for sealed=
+ Pok=C3=A9mon products. Could you share the native Amazon buying-rule creat=
+ion URL format for a given ASIN, or a public source repository for your MPL=
+-licensed extension? Does it work for US Amazon listings without a native A=
+uto Buy button, and are those listings still subject to Amazon eligibility =
+checks? Thank you.</p>
+
+--000000000000d45a2b066115605f--
+

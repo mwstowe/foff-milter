@@ -1040,9 +1040,18 @@ impl FeatureExtractor for BrandImpersonationFeature {
                     .to_lowercase()
             };
 
+            // A brand mentioned only as a topic, in a message with nothing to act on
+            // (no link, image, phone, attachment or foreign Reply-To), is not
+            // impersonation: "I have a question about your Amazon extension".
+            let actionable = crate::features::has_actionable_content(context);
+
             // Check for brand impersonation
             for brand in all_brands {
                 if !self.is_legitimate_domain_for_brand(brand, domain) {
+                    if !has_evasion && !actionable && !from_identity.contains(&brand.to_lowercase())
+                    {
+                        continue;
+                    }
                     // Skip co-branding mentions: DKIM-aligned sender delivered
                     // via a recognized ESP, naming a partner brand that is not
                     // part of the sender's own From identity.

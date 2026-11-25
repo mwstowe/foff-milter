@@ -216,6 +216,45 @@ pub fn links_stay_on_domain(body: &str, registrable: &str) -> bool {
         .all(|h| crate::domain_utils::DomainUtils::same_registrable_domain(h, registrable))
 }
 
+/// Whether the message gives the reader something to act on: a link, an image (which can
+/// carry a link target or phone number), a phone number, an attachment, or a Reply-To on
+/// another domain. Impersonating a brand is harmless without one of these, so brand
+/// checks use this to tell "writes about Amazon" from "pretends to be Amazon".
+pub fn has_actionable_content(context: &MailContext) -> bool {
+    let body = context.body.as_deref().unwrap_or("");
+    let phone = crate::static_regex!(
+        r"(?:\+\d{1,3}[\s.-]?)?\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b|\+\d{1,3}[\s.-]\d[\d\s.-]{6,}\d"
+    );
+    let reply_to_elsewhere = context
+        .headers
+        .get("reply-to")
+        .and_then(|r| crate::milter::extract_email_from_header(r))
+        .and_then(|r| r.rsplit_once('@').map(|(_, d)| d.to_lowercase()))
+        .zip(from_registrable_domain(context))
+        .is_some_and(|(reply, from)| {
+            !crate::domain_utils::DomainUtils::same_registrable_domain(&reply, &from)
+        });
+    body.contains("http://")
+        || body.contains("https://")
+        || body.contains("www.")
+        || body.to_lowercase().contains("<img")
+        || phone.is_match(body)
+        || !context.attachments.is_empty()
+        || reply_to_elsewhere
+}
+
+/// Display name and address local part of the From header, lowercased: the identity the
+/// sender claims, as opposed to topics the message mentions.
+pub fn from_identity(context: &MailContext) -> String {
+    let from = context.from_header.as_deref().unwrap_or("");
+    let (display, addr) = match from.rsplit_once('<') {
+        Some((display, addr)) => (display, addr),
+        None => ("", from),
+    };
+    let local = addr.split('@').next().unwrap_or("");
+    format!("{} {}", display.trim().trim_matches('"'), local).to_lowercase()
+}
+
 /// Recognize an established, self-contained sender: a long-lived domain that signs its own
 /// mail (DKIM pass, aligned with From), carries at most plain PDF attachments, and only links
 /// back to itself. Used to stop generic invoice/billing heuristics from flagging real billing mail
@@ -468,5 +507,45 @@ impl FeatureEngine {
             total_score,
             risk_level,
         }
+    }
+}
+
+#[cfg(test)]
+mod actionable_tests {
+    use super::{from_identity, has_actionable_content};
+    use crate::MailContext;
+
+    fn mail(from: &str, body: &str) -> MailContext {
+        MailContext {
+            from_header: Some(from.to_string()),
+            body: Some(body.to_string()),
+            ..Default::default()
+        }
+    }
+
+    #[test]
+    fn plain_question_has_nothing_to_act_on() {
+        let m = mail(
+            "Sam <sam@gmail.com>",
+            "Does your Amazon extension work for US listings?",
+        );
+        assert!(!has_actionable_content(&m));
+        assert_eq!(from_identity(&m), "sam sam");
+    }
+
+    #[test]
+    fn links_phones_and_foreign_reply_to_are_actionable() {
+        assert!(has_actionable_content(&mail(
+            "a@gmail.com",
+            "see https://x.example"
+        )));
+        assert!(has_actionable_content(&mail(
+            "a@gmail.com",
+            "Call Amazon at (877) 555-0100"
+        )));
+        let mut m = mail("a@gmail.com", "Reply for details");
+        m.headers
+            .insert("reply-to".into(), "claims@other.example".into());
+        assert!(has_actionable_content(&m));
     }
 }

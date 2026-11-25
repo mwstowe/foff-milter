@@ -1,0 +1,967 @@
+Return-Path: <bounce-LMEQ2Y2KRYCUJMM7GUD7YHLVYA.130033@bounce.mc.siriusxm.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 6APFNf0f072360
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Wed, 25 Nov 2026 15:23:42 GMT
+	(envelope-from bounce-LMEQ2Y2KRYCUJMM7GUD7YHLVYA.130033@bounce.mc.siriusxm.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=mc.siriusxm.com header.i=noreply@mc.siriusxm.com header.b=KuzN7Pq5;
+	dkim=pass (2048-bit key; unprotected) header.d=s13.y.mc.salesforce.com header.i=@s13.y.mc.salesforce.com header.b=fIbf+v5X
+Received: from mta13.mc.siriusxm.com (mta13.mc.siriusxm.com [128.245.245.228])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 6APFNdFi069501
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Wed, 25 Nov 2026 09:23:40 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 6APFNdFi069501
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=mc.siriusxm.com header.i=noreply@mc.siriusxm.com header.a=rsa-sha256 header.s=13dkim1 header.b=KuzN7Pq5;
+	dkim=pass (2048-bit key, unprotected) header.d=s13.y.mc.salesforce.com header.i=@s13.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim13 header.b=fIbf+v5X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=13dkim1; d=mc.siriusxm.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=noreply@mc.siriusxm.com;
+ bh=C0ZiksNOFVqkVzCCQX6qbU95py6ip7l1H7ybujbfOPs=;
+ b=KuzN7Pq5CJxB4YVLB4SHWKD2jXUxUBk+AKlA5T9wwDnxSr2/qdJVOWjsZ/Yim9/evDPSb1FqSN74
+   e4lUX9haQbXlNRxhprjXv27H6FJlst+P1t8pz1ATG+siRbk15eUdwMF2zKk27n1FaVg8LkG+Sf8x
+   FWv7AAW1lQPkS9WS9HtQJIfYMqJ1nx6+aYk7G90A9ftUz+iZZlQsAAJUq3rmD/zo7QIpnZOkIScC
+   MK5w9Sm0Jw++Up2XHiIhBh7EttGc74ALHwfadjEC7OMI+Y4Ip8eSBtmoLkuDfQge7GysvLkZdts+
+   l3MT4bjNsymmIOzJk3/sDxhKAkncS12jpolvdQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim13; d=s13.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type;
+ bh=C0ZiksNOFVqkVzCCQX6qbU95py6ip7l1H7ybujbfOPs=;
+ b=fIbf+v5Xeo2b7G4QVvUiy0oZJw3XdL6Wqknt/wHltLGAm30hiP2xyaG8gvhmH6zCt7w35A5Vig57
+   uUhoiFCNo3LFdvNsB5lBGZINNEMQk0c/P0BZBHiZ3/Dd1abyYRwYS2YYNcMXgfn1r+Q8cjk/Kz6V
+   7THouJVHpZ4ZT+sK1zZ+cir9GNROU5EXhxvIFFGq2ZIFu44pMOgJ8ObA2ciNsYMoA8Ao6nzITmXJ
+   vj2KzDwE+Mpc6eAsjT0s8kVKFMm/zJTqRxX+Ovk+fYdU2LilkbPuu78/2X3gmHTpICDCwbuzJAhi
+   bFgW9x2UTrSpnzt+slRRbiRGGPmKcBSAnG2Tlg==
+Received: by mta13.mc.siriusxm.com id h0runm39mjcm for <user@example.com>; Wed, 25 Nov 2026 15:23:39 +0000 (envelope-from <bounce-LMEQ2Y2KRYCUJMM7GUD7YHLVYA.130033@bounce.mc.siriusxm.com>)
+From: "SiriusXM" <noreply@mc.siriusxm.com>
+To: <user@example.com>
+Subject: Michael, Come back to SiriusXM for $1 for first 3 months!
+Date: Wed, 25 Nov 2026 09:23:38 -0600
+List-Unsubscribe: <https://click.mc.siriusxm.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1NDYwMDI2NjUiLCJzIjoiNTczMDQ2MzIiLCJsaWQiOiI5OTYiLCJqIjoiMTYyMzcwIiwiamIiOiI4NzY4IiwiZCI6IjEzMDAzMyJ9.fE0_Ppa2kV7DMs0-rS7j7-_J1E_cKQzGnJZ2e4WSmqM>, <mailto:leave-ZIYV4KMWVGQEXBYK4O2WYV6DPY.130033@leave.mc.siriusxm.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "SiriusXM" <reply-BGLLGDULAMQULE65KFDBVGWGZE.130033@mc.siriusxm.com>
+x-messageKey: f1988fb3-20ad-4c2e-981f-bbb4d5fee869
+X-SFMC-Stack: 13
+x-job: 546002665_162370
+Message-ID: <c79d3847-a1d0-418d-ad5b-93d8afdd37f0@iad4s13mta0608.xt.local>
+Content-Type: multipart/alternative;
+	boundary="2ilKhwtm16tc=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 25 Nov 2026 15:23:42 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 25 Nov 2026 09:23:41 -0600 (CST)
+X-Spam-Flag: YES
+
+This is a multi-part message in MIME format.
+
+--2ilKhwtm16tc=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+SiriusXM
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+   &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;
+ &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;  
+ 
+
+
+
+
+ https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBcy8If3VnI157Jk8WhTZ_Jwlf2Inz5ABk6CqBEGrWYILqz07n8GeahLAcUscreLjnckSpprzlKrzUUHuj1TyNa0qGCPCLaLmrq4X2fg 
+Thanks to your $1 for first 3 months offer.
+  View in a
+
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBdTDtj6a1t_7nUh25Cx-m9h40cAztVQgSadzB_wp4GU_ZNrk03ORYsK-lRnmsf5aoRxfME-c5nceFW8Ha_MCiBqQNkb8zjVrmsJTXMA 
+
+web browser 
+ 
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBdjjNi7QTiKl4u75SZgUkARwcDWMMq7sXz_9XTceK9ho5zxdGgA4tMEUC6t-RWvQXSX957mfWiYPWDbbs9qZ-Z1rbwFn5hwxd3VgTYw 
+
+
+ 
+ 
+
+ MINI HARDTOP 2 DOOR 
+ACCT: &#42;8902 | RADIO ID: 705MUDWG
+
+
+
+
+ SAVE 99%
+ 
+
+ For your first 3 months
+of our all access plan
+ 
+
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBd_LF2aiVX_Fk7QRCL8vf9WzOljHvC7RiTBa6b1kR8h2N3YPN_ohR2Zmihb7-WutnMVMBZZd_WRDCk39fJOGgsCOVN9w6PEMkiy7rWw 
+
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBeD_g_GXxUJMZehbXir8JcJIJYtJCAGkBu6pWg_PYwMHUBt_QF-G82_gfZEWlROqJkPSnfownySNoVVSMOQVHSbPzZUL3etuav8pxrA 
+Lock in your savings 
+
+Or call 
+ 
+tel:+1-555-123-4567 
+1-555-123-4567 
+
+ STAY CLOSER TO YOUR FAVORITES WITH THE SIRIUSXM APP &ndash; ENJOY ON YOUR CONNECTED DEVICES SO YOU CAN TAKE WHAT YOU LOVE WHEREVER YOU GO
+ 
+ Discover original shows and insider moments that bring you closer to your favorites, including bonus content available exclusively through the SiriusXM app
+
+ Immerse yourself in ad-free music programming, across artists, decades, genres and subgenres
+
+ 
+YOUR ACCOUNT INFORMATION:
+Vehicle: 2022 MINI Hardtop 2 Door
+ 
+Radio ID/ESN: 705MUDWG
+ 
+
+
+ Enjoy this offer on the Radio ID/ESN above.
+ 
+
+  
+ 
+
+OFFER DETAILS: Subscribe to the SiriusXM All Access plan and pay $1 for your first 3 months. A credit card is required. After your promotional term ends, your plan will AUTOMATICALLY RENEW every month and you will be charged at then-current rates (currently $25.99/month, effective 1/12/27 $26.99/mo.), unless and until you cancel. Applicable tax and fees may apply. There are no refunds except as provided in our Customer Agreement. Cancel at least 24 hours prior to renewal; cancellation is effective at the end of your current billing period. Please see our Customer Agreement at 
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBefKuOaG5eUiuV0iBolIRMwEP_YSBbUkt_fQcSnODpAdIQb5nrfciB8tMyI8ZMqKIJGegRJN8QuTwG35Wl2Pjd_EsfCH5tfr3QW3tSw 
+www.siriusxm.com  for complete terms and how to cancel, which includes online methods or calling us at 
+tel:+1-555-123-4567 
+1-555-123-4567 . All fees, content and features are subject to change. This offer cannot be combined with any other and may be modified or terminated at any time. Offer is good only on qualifying ESN/Device IDs as determined solely by SiriusXM.
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+ 
+
+ This email was sent to user@example.com
+ 
+
+
+ To ensure that you continue receiving SiriusXM emails, please add us to your address book or safe list. To unsubscribe, please 
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBeuYxa5MXFRXVRwemFZW41lXblbJ0wb80DlYa2TYBrAiYr5D5Omcfgx7Rs31zBPu8B0WVCMWuZ6ocyac8k4xUqqc10FHX7V1g2qXqiA 
+click here .
+ 
+
+
+ NOTE: Please allow up to 10 business days for your preferences to be applied. You may still receive service-related emails if the email address is associated with your subscriber account.
+ 
+
+
+ Have you moved or changed your billing information? Please take a minute now to 
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBe6IXIisObXntKQo3wOyyJcsO-otAhqNAxAgkr_LDT4_dCilw4-JrgDK7v0EcINtsHBckW8h_YAF-WWwm9-UNH9n2QfLnX5Rrv6RgVA 
+update your account information .
+ 
+
+
+ You can read our entire 
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBfE39g0TbFSxIseC8WgA9t0AWvTC5qu1l_Ppt9nxUSlF0qnjlriMUWZpx0tHTZs8o04-RJgPQapGzbBvCwa8wd9jlaO3PMlJloFnN1Q 
+Privacy Policy . 
+
+
+ See our Customer Agreement for complete terms at 
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBfbgCphDvHij5XyCrgEoZU2AopNu8eq48iiE3a30vRFBRmxpxq_mu5wie8AnAQk_sW8JNZofAkkQ3QzAvjIEyTWoexx61RYLLyfEfZA 
+www.siriusxm.com .
+ 
+
+
+
+
+ Sirius XM Radio LLC
+ 
+
+ 1221 Avenue of the Americas
+ 
+
+ New York, New York 10020
+ 
+
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBfsFqfbV8yJ0kR1zgwurP7ypwpfORqpaRXz0axRN-hjT0BwBBUBUY_R8MfGD_-xhWYL3snsw0DHTONYxeTyUvp3MfprqUgqsy2RSwSA 
+www.siriusxm.com 
+
+
+ (c) 2026 Sirius XM Radio LLC. SiriusXM, Pandora and all related logos are trademarks of Sirius XM Radio LLC and its respective subsidiaries. Other marks, channel names and logos are the property of their respective owners. All rights reserved.
+ 
+
+https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBf4b9Ad5XflIdx8ueoC7mOYfiAjZaC1eGppZ6hUbQ7-Wx3rlO1po6af26DzpdqD7Mn1NqIdkQHfHwEj6jLphbPJw7289cWXiv_vzv0w 
+Learn more about how to identify phishing and report suspicious emails. 
+
+ • Q426_XWB_EM15
+  • 1125
+  • 11-25-26 XWB SP Q426 3F1 AA BAU EM
+ 
+
+
+
+
+
+ 
+ 
+
+
+
+--2ilKhwtm16tc=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"       xmlns:v="urn:schemas-microsoft-com:vml"       xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <title>SiriusXM</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark"> 
+    <meta name="supported-color-schemes" content="light dark"> 
+    <!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]-->
+    <!--[if (gte mso 9)|(IE)]> <style type="text/css"> table { border-collapse: collapse; border-spacing: 0; } </style> <![endif]-->
+    <!-- Outlook font -->
+    <!--[if mso]>  <style type="text/css">  body, table, td { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important; }  .mso-no-border { border: none !important; } </style>  <![endif]-->
+<style type="text/css">
+
+@media screen {
+
+ @font-face {
+
+  font-family: 'HelveticaNow';
+  font-style: normal;
+  font-weight: normal;
+  src: url(https://www.siriusxm.com/app-download/fonts/helvetica-now/HelveticaNowTextRegular_normal_normal_subset1.woff2) format('woff2');
+
+}
+
+@font-face {
+
+  font-family: 'HelveticaNow';
+  font-style: normal;
+  font-weight: 900;
+  src: url(https://www.siriusxm.com/app-download/fonts/helvetica-now/HelveticaNowDisplayBlack_normal_normal_subset1.woff2) format('woff2');
+
+}
+
+@font-face {
+
+  font-family: 'HelveticaNow';
+  font-style: normal;
+  font-weight: bold;
+  src: url(https://www.siriusxm.com/app-download/fonts/helvetica-now/HelveticaNowTextBold_normal_normal_subset1.woff2) format('woff2');
+
+}
+
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+
+<style>
+.roboto-mono {
+  font-family: 'Roboto Mono', Consolas, 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', Monaco, 'Courier New', 'monospace';
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+  .roboto-mono-utility {
+  font-family: 'Roboto Mono', Consolas, 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', Monaco, 'Courier New', 'monospace';
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+</style>
+    <style type="text/css">
+      #MessageViewBody, #MessageWebViewDiv {
+        width: 100% !important;
+        margin: 0 auto !important;
+      }
+      #outlook a {
+        padding: 0;
+      }
+      body,
+      table,
+      td,
+      a {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        margin: 0 !important;
+      }
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+      img {
+        border: 0;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+      table {
+        border-collapse: collapse !important;
+      }
+      body {
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
+      @-ms-viewport {
+        width: device-width;
+      }
+    </style>
+    <style>
+      @media only screen and (max-device-width: 480px), screen and (max-width: 480px) {
+        .container {
+          width: 100% !important;
+          height: auto !important;
+        }
+        .show {
+          display: block !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: visible !important;
+          width: auto !important;
+          max-height: inherit !important;
+        }
+        .hide {
+          display: none !important;
+        }
+        .stack {
+          display: block !important;
+          width: 100% !important;
+        }
+        .stack-auto {
+          display: block !important;
+          width: auto !important;
+        }
+        .stack-keepwidth {
+          display: block !important;
+        }
+        .display-header {
+          display: table-header-group !important;
+        }
+        .display-footer {
+          display: table-footer-group !important;
+        }
+        .center {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .align-center {
+          text-align: center !important;
+        }
+        .align-left {
+          text-align: left !important;
+        }
+        .align-right {
+          text-align: right !important;
+        }
+        .center-img img {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .center-table table {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .left-table table {
+          float: left !important;
+        }
+        .right-table table {
+          float: right !important;
+        }
+        .add-break {
+          display: block !important;
+          width: 100% !important;
+          height: 0 !important;
+          font-size: 0 !important;
+          line-height: 0 !important;
+        }
+        .width-full {
+          width: 100% !important;
+          height: auto !important;
+        }
+        .width-half {
+          width: 50% !important;
+          height: auto !important;
+        }
+        .width-third {
+          width: 33.33% !important;
+          height: auto !important;
+        }
+        .width-quarter {
+          width: 25% !important;
+          height: auto !important;
+        }
+        .width-auto {
+          width: auto !important;
+        }
+        .height-auto {
+          height: auto !important;
+        }
+        .width-full-img img {
+          width: 100% !important;
+          height: auto !important;
+        }
+        .width-max-full {
+          max-width: 100% !important;
+        }
+        .width-max-full-img img {
+          max-width: 100% !important;
+        }
+        .pad-0 {
+          padding: 0 !important;
+        }
+        .pad-0LR {
+          padding-right: 0 !important;
+          padding-left: 0 !important;
+        }
+        .pad-0T {
+          padding-top: 0 !important;
+        }
+        .pad-0B {
+          padding-bottom: 0 !important;
+        }
+        .pad-0L {
+          padding-left: 0 !important;
+        }
+        .pad-0R {
+          padding-right: 0 !important;
+        }
+        .pad-5T {
+          padding-top: 5px !important;
+        }
+        .pad-5B {
+          padding-bottom: 5px !important;
+        }
+        .pad-5L {
+          padding-left: 5px !important;
+        }
+        .pad-5R {
+          padding-right: 5px !important;
+        }
+        .pad-10T {
+          padding-top: 10px !important;
+        }
+        .pad-10B {
+          padding-bottom: 10px !important;
+        }
+        .pad-10L {
+          padding-left: 10px !important;
+        }
+        .pad-10R {
+          padding-right: 10px !important;
+        }
+        .pad-10LR {
+          padding-right: 10px !important;
+          padding-left: 10px !important;
+        }
+        .pad-15T {
+          padding-top: 15px !important;
+        }
+        .pad-15B {
+          padding-bottom: 15px !important;
+        }
+        .pad-15L {
+          padding-left: 15px !important;
+        }
+        .pad-15R {
+          padding-right: 15px !important;
+        }
+        .pad-20T {
+          padding-top: 20px !important;
+        }
+        .pad-20B {
+          padding-bottom: 20px !important;
+        }
+        .pad-20L {
+          padding-left: 20px !important;
+        }
+        .pad-20R {
+          padding-right: 20px !important;
+        }
+        .pad-20LR {
+          padding-right: 20px !important;
+          padding-left: 20px !important;
+        }
+        .pad-25T {
+          padding-top: 25px !important;
+        }
+        .pad-25B {
+          padding-bottom: 25px !important;
+        }
+        .pad-25L {
+          padding-left: 25px !important;
+        }
+        .pad-25R {
+          padding-right: 25px !important;
+        }
+        .pad-30T {
+          padding-top: 30px !important;
+        }
+        .pad-30B {
+          padding-bottom: 30px !important;
+        }
+        .pad-30L {
+          padding-left: 30px !important;
+        }
+        .pad-30R {
+          padding-right: 30px !important;
+        }
+        .fnt-10 {
+          font-size: 10px !important;
+          line-height: 14px !important;
+        }
+        .fnt-11 {
+          font-size: 11px !important;
+          line-height: 15px !important;
+        }
+        .fnt-12 {
+          font-size: 12px !important;
+          line-height: 16px !important;
+        }
+        .fnt-14 {
+          font-size: 14px !important;
+          line-height: 18px !important;
+        }
+        .fnt-16 {
+          font-size: 16px !important;
+          line-height: 20px !important;
+        }
+        .fnt-18 {
+          font-size: 18px !important;
+          line-height: 22px !important;
+        }
+        .fnt-20 {
+          font-size: 20px !important;
+          line-height: 24px !important;
+        }
+        .fnt-24 {
+          font-size: 24px !important;
+          line-height: 28px !important;
+        }
+        .fnt-30 {
+          font-size: 30px !important;
+          line-height: 34px !important;
+        }
+        .border-0 {
+          border: 0 !important;
+        }
+        .border-0T {
+          border-top: 0 !important;
+        }
+        .border-0B {
+          border-bottom: 0 !important;
+        }
+        .border-0L {
+          border-left: 0 !important;
+        }
+        .border-0R {
+          border-right: 0 !important;
+        }
+      }
+    </style>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+  </head>
+  <body bgcolor="#fffffe" text="#010101" style="background-color: #FFFFFE; color: #010101; padding: 0px; -webkit-text-size-adjust:none; font-size: 16px; margin:0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div style="font-size:0; line-height:0;">
+      <img src="https://click.mc.siriusxm.com/open.aspx?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBZJyK5I5UjKvOhBXjdXktCrlMBtuwWlAYxB_mTdaK2xIoynmYF4k5JY31U-nl10uUz3g-K9TgfpqlEFNIPohv&d=130033&bmt=0" width="1" height="1" alt="">
+        
+        </div>
+      <!----> 
+      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="container" bgcolor="#FFFFFE">
+        <tr>
+          <td align="center">
+            <table  align="center" border="0" cellpadding="0" cellspacing="0" width="540" style="max-width:540px;" class="container" bgcolor="#FFFFFE">
+              <tr>
+                <td  align="center" bgcolor="#FFFFFE">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"></td></tr></table>
+
+
+<!---->
+<!--[if (gte mso 9)|(IE)]>
+<table align="center" border="0" cellspacing="0" cellpadding="0" width="540">
+<tr>
+<td align="center" valign="top" width="540">
+<![endif]-->
+<table width="540" border="0" cellpadding="0" cellspacing="0" align="center" style="width: 540px;">
+  <tbody>
+    <tr>
+      <td width="297" valign="middle" style="font-family:arial,verdana,sans-serif; font-size:12px; color:#202124; mso-line-height-rule:exactly; line-height:18px;padding-top: 5px; padding-left: 20px; padding-bottom: 6px;">
+        <strong> <a href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBZbuGqUnb2Liddg1CKRP8fiRqrzaK-GnCHjogmosuuNZ578uJn9vYyDl6dITaWskE1Rkwd84ZQdcGVDLzP1II3v4vnVu2UYYX_MWfmA" target="_blank" style="color:#16aeff; text-decoration:underline;" >Thanks to your $1 for first 3 months offer.</a> </strong> <br>       <span style="font-size:11px; font-family:verdana, geneva, sans-serif; color:#666666; mso-line-height-rule:exactly; line-height:16px;">View in a
+<a href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBaP9VZ-jdSAyN14EoAaNTrde-_OdKb-3N1BGJP6B2TZ0IVk9dIYaUE7KakZEwCaHjMMHkvjfNxORqwZab6rEURDCMV9GHyb0VcXHSlA"  style="color:#16aeff; text-decoration:underline;"  target="_blank" >
+web browser</a> </span>
+      </td>
+      <td width="243" style="text-align: right;" >
+        <a href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBaa9_K5ngngrsi7gE3d8sXRU6hdPfQjAtOuUkxFb_cvaCwcP7pkMQpVvYHfh29QCUIEZTu9IOydJSKd7aXROL7lUQVV95U8w9rJ1q2A" target="_blank" ><img src="https://image.mc.siriusxm.com/lib/fe2d11747364047f731275/m/1/2214aea6-4a93-406a-9c45-01b2a2343790.png" border="0" width="243"  height="65" alt="SiriusXM" style="display:block; float: right;"/></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!--[if (gte mso 9)|(IE)]>
+</td>
+</tr>
+</table>
+<![endif]-->
+                  
+                </td>
+              </tr>
+              <tr>
+                <td  align="center" bgcolor="#FFFFFE">
+                  <!-- WB_MWB_AcctBanner2 MODULE START HERE -->
+<!---->
+<table bgcolor="#ffffff" align="center" border="0" cellpadding="0" cellspacing="0" width="540" style="max-width:540px;min-width:540px;">
+  <tr>
+    <td width="540" height="18" align="left" valign="middle" bgcolor="#fffffe" style="font-family: Arial, Helvetica, sans-serif; color: #1e76ba; font-size: 12px; mso-line-height-rule: exactly; line-height: 18px; padding: 10px 20px 10px 30px; border: none;">
+      <!---->MINI HARDTOP 2 DOOR <br><!---->
+      <!---->ACCT: &#42;8902<!---->
+      <!---->&nbsp;|&nbsp;<!---->
+      <!---->RADIO ID: 705MUDWG<!---->
+    </td>
+  </tr>
+</table>
+<!---->
+<!-- WB_MWB_AcctBanner2 MODULE END HERE -->
+
+
+<table align="center"  border="0" cellpadding="0" cellspacing="0" width="540" style="max-width:540px;">
+  <tr>
+    <td bgcolor="#322790" align="center" width="540" style="color: #FFFFFF;font-family: Arial Light, Helvetica, Arial, sans-serif;font-size: 94px; mso-line-height-rule: exactly; line-height: 90px; padding-top: 50px;padding-bottom: 20px; font-weight:bold;">
+      SAVE 99%
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#322790" align="center" width="540" style="color: #FFFFFF;font-family: Arial Light, Helvetica, Arial, sans-serif;font-size: 24px; mso-line-height-rule: exactly; line-height: 30px; padding: 0px 30px 20px 30px;text-transform:uppercase; font-weight:bold;">
+     For your first 3 months<br>of our all access plan
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#322790" align="center" width="540">
+      <a href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBaiWXEQacELovFE4wu35ZorMabRQpsrFzc-fgMT98bpOHDIMs9hVSr8Xj3PDQfbrBsKDorHGoY63qtbNezhrQ4WTFD2RhghYOZ3WkjQ"  target="_blank"><img src="https://image.mc.siriusxm.com/lib/fe2d11747364047f731275/m/1/9d30b4b6-9bb4-4f9c-92c1-7d5673fe5369.jpg" width="540" alt="$1 FOR YOUR FIRST 3 MONTHS of the All Access Plan See Offer Details below." style="display: block; border: none"></a>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#322790" style="padding-top:30px;">
+      <table align="center" bgcolor="#322790"  border="0" cellpadding="0" cellspacing="0" width="540" style="max-width:540px;">               
+        <tr>
+          <td width="540" align="center" valign="top" bgcolor="#322790" style="padding-bottom:10px;">
+            <div>
+              <!--[if mso]>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" rel="noopener" target="_blank" href="https://www.siriusxm.com/3for1AAEM?radioid=705MUDWG&act=*8902&ATOK=5066c9c8-13de-474c-881e-27535c376954" alias="conversion" style="height:56px;v-text-anchor:middle;width:270px;" arcsize="59%" stroke="f" fillcolor="#FFFFFF">
+<w:anchorlock/>
+<center>
+<![endif]-->
+              <a rel="noopener" target="_blank" href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBazRINtWSekyNheKkEJXyWL7CDtpDCBAsjYpbwn0vHDyguH3rxywVaclHiMOJm2CjmVs_t--sOs6ziq8LVf8ya2PNODpjzyBw4i0cCg"  style="background-color:#FFFFFF;border-radius:35px;color:#007ae3;display:inline-block;font-size: 20px; font-family: Helvetica, Arial, sans-serif;font-weight:bold;line-height:56px;text-align:center;text-decoration:none;width:270px;-webkit-text-size-adjust:none;">Lock in your savings</a>
+              <!--[if mso]>
+</center>
+</v:roundrect>
+<![endif]-->
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#322790" align="center" width="540" style="color: #FFFFFF;font-family: Arial Light, Helvetica, Arial, sans-serif;font-size: 20px; mso-line-height-rule: exactly; line-height: 28px; padding-bottom:30px;">Or call 
+      <a href="tel:+1-555-123-4567" alias="TFN" target="_blank" style="color: #FFFFFF;font-weight:bold;">1-555-123-4567</a>
+    </td>
+  </tr>
+</table>
+<table align="center"  border="0" cellpadding="0" cellspacing="0" width="540" style="max-width:540px;">
+  <tr>
+    <td align="center">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%;">
+        <tr>
+          <td style="padding: 30px; margin: 0; font-size: 38px; color: #0066b2; font-family: Arial Light, Helvetica, Arial, sans-serif; line-height: 1.2; text-transform: uppercase; letter-spacing: 0.5px;">
+              STAY CLOSER TO YOUR FAVORITES WITH THE SIRIUSXM APP &ndash; ENJOY ON YOUR CONNECTED DEVICES SO YOU CAN TAKE WHAT YOU LOVE WHEREVER YOU GO
+          </td>
+        </tr>
+        <tr>
+  <td style="padding-bottom: 25px; padding-left: 30px; vertical-align: top;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="47" style="vertical-align: top; padding-top: 2px;">
+          <img src="https://image.mc.siriusxm.com/lib/fe2d11747364047f731275/m/1/c591e17c-e2bf-450b-9913-1945367ec3b4.jpg" width="47" alt="play icon" style="display: block;" border="0" hspace="0" vspace="0"/>
+        </td>
+        <td width="20" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+        <td style="vertical-align: top; font-family: 'Arial Light', Helvetica, Arial, sans-serif;">
+          <div style="font-size: 24px; color: #333333; line-height: 1.3; font-weight:bold;">Discover original shows and insider moments that bring you closer to your favorites, including bonus content available exclusively through the SiriusXM app</div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+        <tr>
+  <td style="padding-bottom: 25px;padding-left: 30px; vertical-align: top;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="47" style="vertical-align: top; padding-top: 2px;">
+          <img src="https://image.mc.siriusxm.com/lib/fe2d11747364047f731275/m/1/e4215825-fb85-4dda-9bef-8a4e27ff53d1.jpg" width="47" alt="plus icon" style="display: block;" border="0" hspace="0" vspace="0"/>
+        </td>
+        <td width="20" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+        <td style="vertical-align: top; font-family: 'Arial Light', Helvetica, Arial, sans-serif;">
+          <div style="font-size: 24px; color: #333333; line-height: 1.3; font-weight:bold;">Immerse yourself in ad-free music programming, across artists, decades, genres and subgenres</div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+        <tr><td>&nbsp;</td></tr>
+</table>
+<table align="center"  border="0" cellpadding="0" cellspacing="0" width="540" style="max-width:540px;">
+  <tr>
+    <td bgcolor="#b4e9fe" align="left" width="540" style="color: #005baa;font-family: Arial Light, Helvetica, Arial, sans-serif;font-size: 20px; mso-line-height-rule: exactly; line-height: 25px; padding: 40px 0px 10px 40px;">
+      <b>YOUR ACCOUNT INFORMATION:</b>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#b4e9fe" align="left" width="540" style="color: #000000;font-family: Arial Light, Helvetica, Arial, sans-serif;font-size: 20px; mso-line-height-rule: exactly; line-height: 28px; padding: 0px 0px 50px 40px">
+      <b>Vehicle:</b> 2022 MINI Hardtop 2 Door
+      <br>
+      <b>Radio ID/ESN:</b> 705MUDWG
+      <br><br>
+      Enjoy this offer on the Radio ID/ESN above.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" width="520" align="left" style="color: #000000;font-family: Helvetica, Arial, sans-serif;font-size: 20px; mso-line-height-rule: exactly; line-height: 20px; padding: 0px 0px 0px 0px;">
+      &nbsp;
+    </td>
+  </tr>
+</table>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="540" bgcolor="#fffffe" style="max-width:540px;">
+
+  <tr>
+    <td align="left" valign="top" style="font-size:12px; color:#101010; mso-line-height-rule: exactly; line-height:18px; font-family: 'HelveticaNow','Helvetica Neue', Helvetica, Arial, sans-serif; padding:10px 15px">
+      <strong>OFFER DETAILS:</strong> Subscribe to the SiriusXM All Access plan and pay $1 for your first 3 months. A credit card is required. After your promotional term ends, your plan will <strong>AUTOMATICALLY RENEW</strong> every month and you will be charged at then-current rates (currently $25.99/month, effective 1/12/27 $26.99/mo.), unless and until you cancel. Applicable tax and fees may apply. There are no refunds except as provided in our Customer Agreement. Cancel at least 24 hours prior to renewal; cancellation is effective at the end of your current billing period. <strong>Please see our Customer Agreement at <a href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBbAJdESbyfJjOaphe2sz6u5ZvoOnWmeqvl2ry-aG6RV-hE6OGGnKcnQxLETqf2fHaBTOivo7rRH1q5CT4ovtGmV8XqqlI-NWOer-8FQ" style="color: #0088ff; text-decoration: underline;">www.siriusxm.com
+</a> for complete terms and how to cancel, which includes online methods or calling us at <a href="tel:+1-555-123-4567" style="text-decoration:none; color:#101010">1-555-123-4567</a>.</strong> All fees, content and features are subject to change. This offer cannot be combined with any other and may be modified or terminated at any time. Offer is good only on qualifying ESN/Device IDs as determined solely by SiriusXM.
+    </td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  
+                </td>
+              </tr>
+              <tr>
+                <td  align="center" bgcolor="#FFFFFE">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;"><table style="MAX-WIDTH: 540px" cellSpacing="0" cellPadding="10" width="540" align="center" border="0">
+  <tbody>
+    <tr>
+      <td style="FONT-SIZE: 10px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLOR: #666666; LINE-HEIGHT: 14px" bgColor="#ffffff" vAlign="top" align="left">
+        <hr>
+        <br>
+        This email was sent to user@example.com
+        <br>
+      </td>
+    </tr>
+  </tbody>
+</table><!---->
+<table style="MAX-WIDTH: 540px" cellSpacing="0" cellPadding="10" width="540" align="center" border="0">
+  <tbody>
+    <tr>
+      <td style="FONT-SIZE: 10px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLOR: #666666; LINE-HEIGHT: 14px" bgColor="#ffffff" vAlign="top" align="left">
+              To ensure that you continue receiving SiriusXM emails, please add us to your address book or safe list. To unsubscribe, please <a _category="Opt_Out" style="COLOR: #11aaff" href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBbUQbRwMq-iAlzKQ832SQVJzPgSmzJPTZMls8ewTDyhFhfw0j8n17XnSSd4AflrCzFeqSri-23VspqjsXIv5LePYYmT_4MkJCXwYLlA" _label="Unsub" >click here</a>.
+        <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table style="MAX-WIDTH: 540px" cellSpacing="0" cellPadding="10" width="540" align="center" border="0">
+  <tbody>
+    <tr>
+      <td style="FONT-SIZE: 10px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLOR: #666666; LINE-HEIGHT: 14px" bgColor="#ffffff" vAlign="top" align="left">
+             NOTE: Please allow up to 10 business days for your preferences to be applied. You may still receive service-related emails if the email address is associated with your subscriber account.
+        <br>
+      </td>
+    </tr>
+  </tbody>
+</table><table style="MAX-WIDTH: 540px" cellSpacing="0" cellPadding="10" width="540" align="center" border="0">
+  <tbody>
+    <tr>
+      <td style="FONT-SIZE: 10px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLOR: #666666; LINE-HEIGHT: 14px" bgColor="#ffffff" vAlign="top" align="left">
+             Have you moved or changed your billing information? Please take a minute now to <a style="COLOR: #11aaff" href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBbumUoeLxIC2WWETfZK3UCANIM0N60d_ombi7oWQ2wwlZ5qhg8CpNd2Mwxl6VnDhnjPZP6Oxc9VdvdxwNpmOuJ7HdVpusRTd8CWxmeg" >update your account information</a>.
+        <br>
+      </td>
+    </tr>
+  </tbody>
+</table><table style="MAX-WIDTH: 540px" cellSpacing="0" cellPadding="10" width="540" align="center" border="0">
+  <tbody>
+    <tr>
+      <td style="FONT-SIZE: 10px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLOR: #666666; LINE-HEIGHT: 14px" bgColor="#ffffff" vAlign="top" align="left">
+              You can read our entire <a style="COLOR: #11aaff" href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBb14MQqL1Fax_C2VF7kmv9r_YlI6Tzjaf6c0LW2MSd8J08NmpTBKvVInsazUfo2OY6Lu7KPBiTYcOYtDaV4wNzAU5-q70r_asXoV7Wg" _label="PrivacyPolicy" _category="Legal" >Privacy Policy</a>. <br>
+      <br>
+      See our Customer Agreement for complete terms at <a style="COLOR: #11aaff" href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBcOfVDQ9K0-rs3NihOly2r3VirpORHLhrGXQgUQxZPPf1iUGsV2tWyJknQbeXzi4n5bIbEyWwUj8vjUHeTuOekQH1j76UiqYv_YfMSA" _label="CustAgreement" _category="Legal" >www.siriusxm.com</a>.
+        <br>
+      </td>
+    </tr>
+  </tbody>
+</table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"><table style="MAX-WIDTH: 540px" cellSpacing="0" cellPadding="10" width="540" align="center" border="0">
+  <tbody>
+    <tr>
+      <td style="FONT-SIZE: 10px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLOR: #666666; LINE-HEIGHT: 14px" bgColor="#ffffff" vAlign="top" align="left">
+        Sirius XM Radio LLC
+        <br>
+        1221 Avenue of the Americas
+        <br>
+        New York, New York 10020
+        <br>
+        <a style="COLOR: #11aaff" href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBcS5QMKXQk2Naj_zKVaDku6sKfb5DRj9ZZUl95gCEjX6V-cFBDd1OV-MOCcSr_qagTYyQln0I2YjwTZB8ys74jZkfzlFfzN-xITGVBQ" >www.siriusxm.com</a> 
+        <br>
+        <br>
+        <hr>
+        <br>
+        &copy; 2026 Sirius XM Radio LLC. SiriusXM, Pandora and all related logos are trademarks of Sirius XM Radio LLC and its respective subsidiaries.  Other marks, channel names and logos are the property of their respective owners. All rights reserved.
+        <br>
+        <br>
+        <a style="COLOR: #11aaff" href="https://click.mc.siriusxm.com/u/?qs=ABp7ImQiOjUwNzEsInQiOjU3OTksInMiOjEzfQANAAAAAAHEEnCBcpLWn8xFyRtbk818ABSg_Yg4AepYlvYx6RlN10CeXx33UkTkCV_Q4NawN_Z06VqIczBV4OjeXGTgci9afIDTyGCqayy97qlZknYsCw" >Learn more about how to identify phishing and report suspicious emails.</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table style="MAX-WIDTH: 540px" cellSpacing="0" cellPadding="0" width="540" align="center" border="0">
+  <tbody>
+    <tr>
+      <td style="FONT-SIZE: 10px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLOR: #fffffe; opacity: 0.1 !important; LINE-HEIGHT: 10px" bgcolor="#fffffe" valign="top" align="left">
+        •&nbsp;Q426_XWB_EM15
+        &nbsp;•&nbsp;1125
+        &nbsp;•&nbsp;11-25-26 XWB SP Q426 3F1 AA BAU EM
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!--ea.account_number=-->
+<!--ea.radio_id=-->
+<!--ea.party_id=-->
+<!--ea.lead_key_id=-->
+<!--ea.request_id=-->
+<!--ea.meta.campaign_name=Q426_XWB_EM15-->
+<!--ea.meta.business_unit=Winback-->
+<!--ea.meta.sub_bu=XWBSP-->
+<!--ea.subscriberid=57304632-->
+<!--ea.meta.journeyid=-->
+<!--ea.meta.message_type=-->
+<!--ea.subscriberkey=705MUDWG_5000134258404-->
+</td></tr></table></td></tr></table></td></tr></table>
+
+<img src="https://pxl.mon-trk.com/a0e41ee3-c136-45db-a438-2ee4174f635a/Q426_XWB_EM15/705MUDWG_5000134258404" height="1" width="1">
+                  
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      </body>
+    </html>
+
+--2ilKhwtm16tc=_?:--
+
+

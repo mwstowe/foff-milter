@@ -1,0 +1,770 @@
+Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 6APIohQ1062912
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 25 Nov 2026 18:50:44 GMT
+	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b=OaE3hbKo
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 6APIofTR072877
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Wed, 25 Nov 2026 12:50:42 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 6APIofTR072877
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OaE3hbKo
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-55d2d380f6aso66695791cf.2
+        for <mstowe@baddomain.com>; Wed, 25 Nov 2026 10:50:42 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20260327;
+        b=YhtVx+L45340RDOIa28pWQim+7HTFcvchMiXvv+kM3floQPhug1LMap2w6hl3UQZEF
+         XmY1l/JbL6Crd91hyfpqKsKzcZlHNviScYY+JGGqueN9sYGETnBUyte5sis9O0NavOVW
+         PGSJSI8uGtpW/V76TFoKJ7n/Az2dXFvozClYyS67AU8HLXb3WGLtYUD27lHeGdVoVXVI
+         i8N++DBQIL6JDdySo9co9iO9zueRW00qqEMLoM+0RKLw+Wdqysu76wSt4dHW6fbkHsH3
+         +wmENdKWFZScgUQGY5JgRmIx1Mv1fLIExW5yFhdSP/Q/SkRglTXcS+aUCb7KbDwv0EBv
+         7fog==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=rcpt_domain:campaign_id:message-id:feedback-id:ox-2025-12
+         :feedback-id:mime-version:feedback-id:content-id
+         :content-transfer-enfcoding:in-reply-to:references
+         :list-unsubscribe-post:subject:list-unsubscribe:errors-to:cc:to:from
+         :date:dkim-signature:delivered-to;
+        bh=zuu4McRw+RrfQIVsCNSxqbXqYfp+oTqOi3x7dlM+anI=;
+        fh=xA3BdiP8GyoUTXJ+7yHQTswci74TM0dI357VZUUleGE=;
+        b=UQc7QRa/WseOljeonYom5r0CWTXy+AkIxy3XnRtxQTZGhnshRcMGlUTx6MiCLx6Ti6
+         7CD5tuBhg4ix4rkmU+TrFR2YK4KKTJBqkRqJig6JhAyg0z2+crw0q+xeUgs+pkW2Z/oo
+         NgWnlLt8YZVNMskgjjXQzlhpjovGGvQn8x9xTYMH1BRqY2hBfsvH/MZ4GlHvSmB48QrH
+         JlVOvZjjfKak89lniw+shyW1x2QQ/9buOGC9mDkRUcfxPoriVIBJ6cTWz64vxOwAS8BF
+         juAmJNdw2iZ+YUj5UwGcFqEHh/gXYGppXBiYqXQy2mqhpgQDKLJTgEDJ6/7kPvlb6+Of
+         weJQ==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20260707 header.b=OaE3hbKo;
+       spf=pass (google.com: domain of marielakilback25940@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=marielakilback25940@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=555-123-4567; x=555-123-4567;
+        h=rcpt_domain:campaign_id:content-type:message-id:feedback-id
+         :ox-2025-12:feedback-id:mime-version:feedback-id:content-id
+         :content-transfer-enfcoding:in-reply-to:references
+         :list-unsubscribe-post:subject:list-unsubscribe:errors-to:cc:to:from
+         :date:x-gm-gg:dkim-signature:delivered-to:x-forwarded-for
+         :x-forwarded-to:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zuu4McRw+RrfQIVsCNSxqbXqYfp+oTqOi3x7dlM+anI=;
+        b=cK3vpKFrvde+Ps4jbFnHoAIsKvgDJgqjtG6uFYayDeSQCnfttCfPNvq3cb2TDgNy5j
+         8rWD1wYmo8jB7OvfboAjwrW+rzcEjxKrk6j5GaVfGQKb4p1FNzkeHrHrGRRNvy0aFBB2
+         nV+hQjFcpz8tm7QU7J+MdKmG1u+l/ofLZed7m+1a1KOVV0x3VKxMeFYYH5eV0ahTe9/D
+         y0jDpzq7n/Q94rpURpW7ZebqdRha82/t9HzlA4YctFsG/BXe1BMos4lslGqBPGmkDKQV
+         0pM7JruSwB4XVJB784LCMhRxWgXgzu5YaQz3BBD/K5N71TEMNWBNOkaBcL6rBawiohJG
+         EaHQ==
+X-Forwarded-Encrypted: i=2; AL+hErEc/+/wJogjPgYdQ9qZLJ7YTNlC/8KaXTh+DukLICv1VB8LhRr8hrHzAMpTOxOMbpc0lj55VYk=@baddomain.com
+X-Gm-Message-State: APuU4Z/+2WwRiskHzzHTg1HJjKhzCLGWlTebW6pCljbK67HyObkAHdF1
+	HmMJ0mkKAsYK/lUrqkP0yZtaNukMNgK2q21LtKbU7NvF2R5751EyFhC7IubkD5qun8AcmM7fJ6y
+	1J48q3bocUrhgVVt7s0BhhK3vHfqq80YxjowY0M3itt+on997s9psy6ZAVSM1EQ==
+X-Received: by 2002:a05:622a:a0a:b0:55c:66f0:5bf0 with SMTP id d75a77b69052e-55d76a187d3mr327690461cf.39.1795632636331;
+        Wed, 25 Nov 2026 10:50:36 -0800 (PST)
+X-Forwarded-To: mstowe@baddomain.com
+X-Forwarded-For: user@example.com mstowe@baddomain.com
+Delivered-To: user@example.com
+Received: by 2002:ad4:414a:0:b0:921:12a4:522 with SMTP id z10csp5696952qvp;
+        Wed, 25 Nov 2026 10:50:34 -0800 (PST)
+X-Received: by 2002:a05:600c:848d:b0:4bb:6687:5386 with SMTP id 5b1f17b1804b1-4bb8880c7f1mr402420735e9.19.1795632633988;
+        Wed, 25 Nov 2026 10:50:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MsSilrv0ek9gVirjT4PZBdeGOmKZlBHb2MKH1E4OR/4lQ4N+us1tO1KRpY+P9ztRxJ
+         W6UWsu0LYZydMYsWhqgd+r5JVSATci1SHyqOaolbpkuL4PS6TjxQ8vAszwQA3ZTmKqzo
+         hsFPVutC/ZJosvAQIR4aZsucX/j2ILJykElLyz+vPLhd0VjXxmC4tSWmoiQfnMf2mTIz
+         qaHx2HS7YwLQqSVgSnMjWcnRVCxY7ZCpcZV8L0WAld3BE/XB9Z0bb7KgTrHmuS5lBD5t
+         ZEauwjGpDk4lG6GwKaMgPYrMZOFt7MQLbuf0hzunRuepaevIhrL9Ut30z0YKA7lm8t2L
+         YQ2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=rcpt_domain:campaign_id:message-id:feedback-id:ox-2025-12
+         :feedback-id:mime-version:feedback-id:content-id
+         :content-transfer-enfcoding:in-reply-to:references
+         :list-unsubscribe-post:subject:list-unsubscribe:errors-to:cc:to:from
+         :date:dkim-signature;
+        bh=zuu4McRw+RrfQIVsCNSxqbXqYfp+oTqOi3x7dlM+anI=;
+        fh=VyGcy0thMV2n8JtdGfOd4/u7hKwTWdVGIjTpjKmsrvk=;
+        b=H/1hH3/wXpP19ZKTkW6NpugnjxKwXw/WZrk/Qo8CuQpMEDvo94AGTR/ZjsWD0554yC
+         zJrOBDhKIeA5C+dvKUGfClLZTQg858OFjQ2keM4vomSCp6V1MHvp0y6sWbUGNbumfmcW
+         98348D2C+3YiGo+awQ5XnCOrbjuQ+LTdNrT0dfnqQDE258vobORSYCGsF5NLuhz+wGea
+         iwO5LOPHTY4ZQeCgmw456k5BFpSCjfBYTdgj5lw8x/v6xal+sVELjPHGk0sbJH+WljUP
+         B2wz8/X+/y7Zkp6Cf+dI0H4H4a8f7fLJcAApQ9V6wAi/XUI6vZCOwIM+/KUR5gKRxY0r
+         GclQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20260707 header.b=OaE3hbKo;
+       spf=pass (google.com: domain of marielakilback25940@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=marielakilback25940@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 5b1f17b1804b1-4bb8876e607sor33135265e9.8.2026.11.25.10.50.33
+        for <user@example.com>
+        (Google Transport Security);
+        Wed, 25 Nov 2026 10:50:33 -0800 (PST)
+Received-SPF: pass (google.com: domain of marielakilback25940@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20260707 header.b=OaE3hbKo;
+       spf=pass (google.com: domain of marielakilback25940@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=marielakilback25940@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=555-123-4567; x=555-123-4567; dara=google.com;
+        h=rcpt_domain:campaign_id:content-type:message-id:feedback-id
+         :ox-2025-12:feedback-id:mime-version:feedback-id:content-id
+         :content-transfer-enfcoding:in-reply-to:references
+         :list-unsubscribe-post:subject:list-unsubscribe:errors-to:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zuu4McRw+RrfQIVsCNSxqbXqYfp+oTqOi3x7dlM+anI=;
+        b=OaE3hbKoVZ2x0o8ADbRdlPPs9LXEV1rl/TfG4/2AvO3Ix7VxzjGG7UEQ4sHk15lfQ8
+         yY9q9+HZyUInqMMjCzkKYngJUS5qeTW69JNVOikRWJHmp2IlFnAi8c9HWIRVRRCqlS8I
+         4qCPVLYs9ySqzOohC9mpVMN+aFggTTaBirb9bhYzR/aTW+OVqPWkXoI6AsPPRNcY6UM3
+         zn0b05K70cx/SDGVAe6zSL1m1ZD2jo71kyHqFqZxVh8fGVPNokkphwcdPi/PaIB9q8Lf
+         uXHaxNJNs82uJ0hbW5f6luCapgYGvC19m30qYx84nUl3hg+5VylIlrg3Sck+yQfQZcpe
+         SDUA==
+X-Gm-Gg: AZFdTZejCSPR8vn24MWimCoQ3n5xUIhTO9Grz2Uav2MeixvZZ1IX3bFhYld6bMaVAuM
+	Zz2mJjLsILLgfHVKePCHy1bRnRpSHibrEt/a8nwhEIPfezpaUHaV/1Q7sQ4wPplLiCMSuEfCr8X
+	poUbctLMxr8zD0er3TtprRaKEUxDHw3Vr6tmTr5EOh3lSRKRaa7hZvk+jTXiWM7UobMb7HtE2Tb
+	MpOlirSk9EWIaY9d2RufJm1sS2kR4MmVvck/99OwJmqUnYDb5WwbMXN4gJp81uQv3AyYiWvzaWm
+	6iMDdUvF+DwkfVNOJJHCzIwAQEkU8lIFxPUnovO3emB3zFMOvsC465CwXFCfwCcZ1S0wHYCZ0Ib
+	x6bQqgVSht+vpWO/s7QQlzM3t5dKOj2EojOBYYD9WbCL05Fcp77D9o2p/0+E8muo85Sxp6CKGe6
+	Ew3R8j1PVmwUytRIOA4U+8MSLAnuiizQERYQKE92jOvd2QoLBmfcykpkKC0XX5441H/4nMqvaRQ
+	QOHiqp40BXhHCm0L9Z4kVZbdSPVmyQXCg92wJJrGnmv
+X-Received: by 2002:a05:600c:3ba3:b0:4bb:6118:4c9a with SMTP id 5b1f17b1804b1-4bb88819940mr438286025e9.30.1795632633182;
+        Wed, 25 Nov 2026 10:50:33 -0800 (PST)
+Received: from thesudburystar.com ([2a01:4f8:c2c:3093::1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb8538b2c5sm532225985e9.5.2026.11.25.10.50.32
+        for <user@example.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 25 Nov 2026 10:50:32 -0800 (PST)
+Date: Wed, 25 Nov 2026 10:50:32 -0800 (PST)
+X-Google-Original-Date: [smtp_date]
+From: Ishaan Joshi <marielakilback25940@gmail.com>
+X-Google-Original-From: Ishaan Joshi <N8uD0Y1K5b12WE.K6zVw9Kjqhwby@subscene.com>
+X-Google-Original-From: Ishaan Joshi <N8uD0Y1K5b12WE.K6zVw9Kjqhwby@subscene.com>
+To: "user@example.com" <user@example.com>
+X-Entity-ID: XLcNaX3qmTmKnvbNjQ2TMH==?=
+CC: "[to]" <[to]@hotel.baddomain.com>
+Errors-To: abuse@LwIun20zoQJzaax.google.com
+X-Report-Abuse: <abuse@subscene.com>
+List-Unsubscribe: <https://www.subscene.com/unsubscribe/?Wz41udvtXeEEZguNSLjDhCs1qfyUy785vQ4DPa5O6rgiiYdobWmg9PvmyD67IMyXsUVUlf4Oj4AmhvD2GsvplwxrPTajE6GN6c88ChzL37BZ9pu4xAPb6JoFL==>
+X-Kmail-Account: G2GwPD
+Subject: present cv 
+X-Mailer: AWeber Composer 2.72.4
+X-Feedback-ID: 1835:49807505:campaign:sailthru
+X-campaignid: b5D1pQhLVkJ6kbuiUspZkzLrNmZa9pDJq2.omIoJDGmyt
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+References: <zLDnztPkuBBoeEAn1PZg14S@subscene.com> <AC700000000GdbrVHITfowiiRsmYmscom_mkt_prod8@mail.gmail.com>
+X-SG-EID: [aa_7]/[aa_49]+/gnYbirXR10eP/wNwHtb/mazeM2HMVFgwRg5iMfhzhF49tZNfxFpHML5R+mazeM2HMVFgwRg5iMfhzhF49tZNfxFpHML5R/NjCEH/SzAXPGvTeXHhWpyn5vrEFH230x81t6yrNbdx4MuA6K3uilzV+LwIun20zoQJzaax/b5D1pQhLVkJ6kbuiUspZkzLrNmZa9pDJq2==?
+In-Reply-To: <maypark1-GdbrVHITfowiiRsmY@GdbrVHITfowiiRsmY.gmail.com><srPQukEJ9FWOp87bMG4q6Da3H5avozJvzC59mT6XTiGL@NjCEH-p3zXp.subscene.com>
+X-Mailer: PHPMailer 6.9.2 (https://github.com/PHPMailer/PHPMailer)
+Content-Transfer-Enfcoding: 7bit
+Content-Id: <LwIun20zoQJzaax.XF3Rma9Dfn3TLcnP@LwIun20zoQJzaax.google.com>
+X-Unsubscribe-Web: https://subscene.com/oc/RSMdyMJaXor0362jSN3F2xFqQ2eCuD.254E/7b80de18
+Feedback-ID: ::1.ap-southeast-1.XF3Rma9Dfn3TLcnP+cezwlDkKAyWMxqc3po7Y=:AmazonSES
+X-Google-Original-From: "GoogleAlerts" <N8uD0Y1K5b12WE.K6zVw9Kjqhwby@gnYbirXR10eP.subscene.com>
+MIME-Version: 1.0
+X-JMailer: ip-10-55-95-109.ec2.internal
+X-rpcampaign: stcsp49807505
+Feedback-ID: G2GwPD:zS4Y0awzII4:forms::container:CK
+X-TM-ID: 1234-5678-9012-3456.49807505.81048
+X-Campaign: b5D1pQhLVkJ6kbuiUspZkzLrNmZa9pDJq2.omIoJDGmyt
+ox-2025-12:
+Feedback-ID: G2GwPD:zS4Y0awzII4:04
+Message-ID: <AC100000000XF3Rma9Dfn3TLcnPmscom_mkt_prod8@[placeholde1]>
+X-Report-Spam: <abuse@subscene.com>
+X-SFMC-Stack: 7
+X-Auto-Response-Suppress: OOF, AutoReply
+X-SFMC-Stack: 7
+X-SES-Outgoing: 2026.03.16-2a01:4f8:c2c:3093::1
+Content-Type: multipart/signed; boundary="-------WbLtKJxd--==--254E-==--WbLtKJxd--==--"; type="multipart/alternative"
+campaign_id: 511517
+X-Feedback-ID: 1781223:SG
+rcpt_domain: gmail.com
+X-SES-Outgoing: 2026.03.16-2a01:4f8:c2c:3093::1
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 25 Nov 2026 18:50:44 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 25 Nov 2026 12:50:42 -0600 (CST)
+
+---------WbLtKJxd--==--254E-==--WbLtKJxd--==--
+Content-Type: multipart/form-data; boundary="_-------sHUsRWn8pHwxmYQibwPt.LwIun20zoQJzaax-775134147823852sHUsRWn8pHwxmYQibwPt.LwIun20zoQJzaax=:"
+
+
+
+--_-------sHUsRWn8pHwxmYQibwPt.LwIun20zoQJzaax-775134147823852sHUsRWn8pHwxmYQibwPt.LwIun20zoQJzaax=:
+Content-Type: text/html;charset="UTF-8"
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light only">
+  <title>Account activity</title>
+</head>
+<body style="margin:0; padding:24px 12px; background:#eef2f9; font-family:Arial,sans-serif;">
+
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+    This message is regarding your recent account activity.
+  </div>
+
+  <div style="max-width:560px; margin:0 auto; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); font-size:0; line-height:0;">
+
+    <a href="https://nonalizadai9.sfo2.digitaloceanspaces.com/1.html#cl/56722_md/1101/2043097/7/10/534102" style="display:block;">
+      <img src="https://nonalizadai9.sfo2.digitaloceanspaces.com/1.png" alt="" width="560" style="display:block; width:100%; height:auto; border:0;">
+    </a>
+
+    <a href="https://nonalizadai9.sfo2.digitaloceanspaces.com/1.html#cl/56722_md/1101/2043097/7/10/534102" style="display:block; padding:8px;">
+      <img src="https://nonalizadai9.sfo2.digitaloceanspaces.com/2.png" alt="" width="544" style="display:block; width:100%; height:auto; border:0; border-radius:8px;">
+    </a>
+
+  </div>
+
+</body>
+</html>
+<title>
+
+18 May 2021
+Dear parent/carer
+I am writing to inform you of an exciting opportunity for our current Year 11 students. In accordance
+with the government guidelines, The Cowplain School will be offering a range of opportunities for
+the continued development of our students from 7
+th June through to 25th June.
+We have developed a programme of bespoke workshops that are designed to offer guidance and
+advice for our students, and to assist them in the next steps of their journey from secondary
+education to adulthood. These workshops will be a mixture of online and in-school sessions and will
+be hosted by The Cowplain School staff as well as select specialist providers.
+Please do have a look through the attached programme of workshops. I hope you will agree there
+are plenty of activities to further enrich our year eleven students before they say their final goodbye
+to The Cowplain School.
+Please do not hesitate to contact your child’s tutor if you have any questions regarding the activities
+listed in the programme. Tutors will be happy to assist with booking specific sessions or providing
+further information about individual sessions. If you already know what sessions you want to attend,
+please see Mr Simmons to book.
+Yours sincerely
+Mrs van den Braak
+Head of Upper School
+Programme of Workshops for Year Eleven
+Week beginning 7th of June
+Date &
+time
+Session Title Summary of Session Other details Location
+7/6- to
+25/6
+Oak Academy This is not a workshop but a website that
+students can use, should they wish to
+continue studying and preparing for
+college. This will be available to all students
+throughout the next 3 weeks
+Link:
+https://classroom.thenational
+.academy/subjects-by-keystage/key-stage-4
+Online
+8/6
+1.10-3pm
+Band jam One final chance to sing along and play
+instruments with Mrs Dobbyn.
+There are only 15 places
+available so sign up early.
+School
+9/6
+1.30-3pm
+Ready, Steady,
+Cook with the
+Kitchen
+Goddesses
+This is a practical workshop for those
+wanting to plan and prepare meals on a
+budget, especially if university is part of the
+plan. Mrs Ashley and Mrs Moore will be
+delivering this workshop.
+Sign up required as there are
+only 20 places.
+School
+10/6
+9-10.30am
+Insight into
+Hairdressing
+Apprenticeships
+This workshop is a great introduction for
+those wishing to venture into the Hair &
+Beauty business. No previous experience
+required.
+Sign up early as there are only
+10 places available.
+School
+10/6
+12.10-
+1.10pm
+Managing Your
+Money
+Want to know how to “use” money and
+avoid debt? Join this workshop led by Mr
+Cole.
+Log on to your school
+Cowplaincloud account. Click
+on GMeet and enter the
+password: Money
+Online
+10/6
+1.30-
+2.30pm
+SEN College
+Introduction
+Specific students will be contacted to
+attend this workshop. Mrs Everritt and her
+team will contact you directly in school to
+offer this opportunity.
+By invitation only. School
+11/6
+11-12noon
+Southsea Driving
+Academy
+Want to learn to drive? Find out what you
+need to know and do before you embark
+on your first driving lesson.
+Log on to your school
+Cowplaincloud account. Click
+on GMeet and enter the
+password: Drive
+Online
+Week beginning 14th of June
+Date &
+time
+Session Title Summary of Session Other details Location
+14/6
+9.30-
+10.30am
+Intro to A level
+Biology
+Get prepared to join a very popular science
+A level and get a head start on your learning!
+This session will be led by Mr Goddard.
+School
+14/6
+12.10-
+1.10pm
+Intro to A level
+Psychology
+Want to know about how the human mind
+works and why we behave the way we do?
+Then join this workshop!
+School
+14/6
+11.10-
+12.10pm
+Introduction to
+Forensic Science
+Want to figure what happened and who did
+it? Then join this case cracking introduction
+to forensic science with Mrs Green.
+School
+15/5 Five-a-Side
+Football
+Tournament
+Get your boots on and join in this
+tournament! Five players per team, no subs.
+Mr Gates will be overseeing this activity as
+we all know what a football fanatic he is!
+You must sign up to a team,
+with members from 5
+separate tutor groups.
+School
+16/6
+10-11am
+Exploring Careers
+Workshop
+Hampshire Futures will be running this
+workshop online. So, if you are stuck for
+ideas and future careers, give this workshop
+a go!
+Log on to your school
+Cowplaincloud account.
+Click on GMeet and enter
+the password: Careers
+Online
+16/6 Job Interview
+Preparation
+Following on from the careers workshops,
+this will be a workshop on how to be
+Log on to your school
+Cowplaincloud account.
+Online
+11.30-
+12.30am
+successful in a job interview. This session will
+be led by Hampshire Futures
+Click on GMeet and enter
+the password: Careers
+17/6
+9-10.30am
+Insight into
+Hairdressing
+Apprenticeships
+This workshop is a great introduction for
+those wishing to venture into the Hair &
+Beauty business. No previous experience
+required.
+Sign up early as there are
+only 10 places available.
+School
+17/6
+11.15-
+12.45pm
+Excel with Excel In today’s job market, being competent
+with IT is a must. In this session you will
+develop the skills that employers want! This
+session will be led by Mrs Connell.
+Spaces are limited to 15 so
+sign up early!
+School
+18/6
+12.30-
+3.30pm
+Experimental
+Photography
+Skills
+Have you enjoyed photography? Want to
+learn a bit more that the GCSE course didn’t
+deliver? Sign up to this session with Miss
+Tomlin.
+You will need to bring your
+own camera as we only
+have 5 available to loan
+School
+Week beginning 21st of June
+Date Session Title Summary of Session Other details Location
+21/6
+9.30-10.30
+Finance
+Workshop
+Interested in investment? Want to make
+your money work for you? Then join Mr Cole
+as he takes you through money basics. This
+session will be delivered by Mr Cole
+Log on to your school
+Cowplaincloud account.
+Click on GMeet and enter
+the password: Finance
+Online
+22/6
+12-2pm
+Leavers’
+Barbeque and
+Celebration
+Your final chance to get together and see
+everyone! We invite you to join us eat, laugh
+and create those final memories! Yearbooks
+and hoodies will be available for collection at
+this event.
+You must purchase a ticket
+in advance to attend.
+Payment accepted on
+SCOPAY. Cost is £2. This
+covers your food and soft
+drinks.
+23/6
+10-
+11.30am
+CV Writing
+Workshop
+Want to make sure that you get onto any
+future employer’s shortlist? Make sure that
+you attend this online practical workshop
+delivered by Hampshire Futures.
+Log on to your school
+Cowplaincloud account.
+Click on GMeet and enter
+the password: CV
+Online
+23/6
+11.30-
+12.30am
+Job Interview
+Preparation
+This is a second opportunity to attend this
+workshop if you missed it the first time
+around. This session will be led by Hampshire
+Futures
+Log on to your school
+Cowplaincloud account.
+Click on GMeet and enter
+the password: Careers
+Online
+
+--_----------=bollinRi6YgHE0A0YLwofoHO.gnYbirXR10eP--
+--_-------sHUsRWn8pHwxmYQibwPt.LwIun20zoQJzaax-775134147823852sHUsRWn8pHwxmYQibwPt.LwIun20zoQJzaax=:
+
+18 May 2021
+Dear parent/carer
+I am writing to inform you of an exciting opportunity for our current Year 11 students. In accordance
+with the government guidelines, The Cowplain School will be offering a range of opportunities for
+the continued development of our students from 7
+th June through to 25th June.
+We have developed a programme of bespoke workshops that are designed to offer guidance and
+advice for our students, and to assist them in the next steps of their journey from secondary
+education to adulthood. These workshops will be a mixture of online and in-school sessions and will
+be hosted by The Cowplain School staff as well as select specialist providers.
+Please do have a look through the attached programme of workshops. I hope you will agree there
+are plenty of activities to further enrich our year eleven students before they say their final goodbye
+to The Cowplain School.
+Please do not hesitate to contact your child’s tutor if you have any questions regarding the activities
+listed in the programme. Tutors will be happy to assist with booking specific sessions or providing
+further information about individual sessions. If you already know what sessions you want to attend,
+please see Mr Simmons to book.
+Yours sincerely
+Mrs van den Braak
+Head of Upper School
+Programme of Workshops for Year Eleven
+Week beginning 7th of June
+Date &
+time
+Session Title Summary of Session Other details Location
+7/6- to
+25/6
+Oak Academy This is not a workshop but a website that
+students can use, should they wish to
+continue studying and preparing for
+college. This will be available to all students
+throughout the next 3 weeks
+Link:
+https://classroom.thenational
+.academy/subjects-by-keystage/key-stage-4
+Online
+8/6
+1.10-3pm
+Band jam One final chance to sing along and play
+instruments with Mrs Dobbyn.
+There are only 15 places
+available so sign up early.
+School
+9/6
+1.30-3pm
+Ready, Steady,
+Cook with the
+Kitchen
+Goddesses
+This is a practical workshop for those
+wanting to plan and prepare meals on a
+budget, especially if university is part of the
+plan. Mrs Ashley and Mrs Moore will be
+delivering this workshop.
+Sign up required as there are
+only 20 places.
+School
+10/6
+9-10.30am
+Insight into
+Hairdressing
+Apprenticeships
+This workshop is a great introduction for
+those wishing to venture into the Hair &
+Beauty business. No previous experience
+required.
+Sign up early as there are only
+10 places available.
+School
+10/6
+12.10-
+1.10pm
+Managing Your
+Money
+Want to know how to “use” money and
+avoid debt? Join this workshop led by Mr
+Cole.
+Log on to your school
+Cowplaincloud account. Click
+on GMeet and enter the
+password: Money
+Online
+10/6
+1.30-
+2.30pm
+SEN College
+Introduction
+Specific students will be contacted to
+attend this workshop. Mrs Everritt and her
+team will contact you directly in school to
+offer this opportunity.
+By invitation only. School
+11/6
+11-12noon
+Southsea Driving
+Academy
+Want to learn to drive? Find out what you
+need to know and do before you embark
+on your first driving lesson.
+Log on to your school
+Cowplaincloud account. Click
+on GMeet and enter the
+password: Drive
+Online
+Week beginning 14th of June
+Date &
+time
+Session Title Summary of Session Other details Location
+14/6
+9.30-
+10.30am
+Intro to A level
+Biology
+Get prepared to join a very popular science
+A level and get a head start on your learning!
+This session will be led by Mr Goddard.
+School
+14/6
+12.10-
+1.10pm
+Intro to A level
+Psychology
+Want to know about how the human mind
+works and why we behave the way we do?
+Then join this workshop!
+School
+14/6
+11.10-
+12.10pm
+Introduction to
+Forensic Science
+Want to figure what happened and who did
+it? Then join this case cracking introduction
+to forensic science with Mrs Green.
+School
+15/5 Five-a-Side
+Football
+Tournament
+Get your boots on and join in this
+tournament! Five players per team, no subs.
+Mr Gates will be overseeing this activity as
+we all know what a football fanatic he is!
+You must sign up to a team,
+with members from 5
+separate tutor groups.
+School
+16/6
+10-11am
+Exploring Careers
+Workshop
+Hampshire Futures will be running this
+workshop online. So, if you are stuck for
+ideas and future careers, give this workshop
+a go!
+Log on to your school
+Cowplaincloud account.
+Click on GMeet and enter
+the password: Careers
+Online
+16/6 Job Interview
+Preparation
+Following on from the careers workshops,
+this will be a workshop on how to be
+Log on to your school
+Cowplaincloud account.
+Online
+11.30-
+12.30am
+successful in a job interview. This session will
+be led by Hampshire Futures
+Click on GMeet and enter
+the password: Careers
+17/6
+9-10.30am
+Insight into
+Hairdressing
+Apprenticeships
+This workshop is a great introduction for
+those wishing to venture into the Hair &
+Beauty business. No previous experience
+required.
+Sign up early as there are
+only 10 places available.
+School
+17/6
+11.15-
+12.45pm
+Excel with Excel In today’s job market, being competent
+with IT is a must. In this session you will
+develop the skills that employers want! This
+session will be led by Mrs Connell.
+Spaces are limited to 15 so
+sign up early!
+School
+18/6
+12.30-
+3.30pm
+Experimental
+Photography
+Skills
+Have you enjoyed photography? Want to
+learn a bit more that the GCSE course didn’t
+deliver? Sign up to this session with Miss
+Tomlin.
+You will need to bring your
+own camera as we only
+have 5 available to loan
+School
+Week beginning 21st of June
+Date Session Title Summary of Session Other details Location
+21/6
+9.30-10.30
+Finance
+Workshop
+Interested in investment? Want to make
+your money work for you? Then join Mr Cole
+as he takes you through money basics. This
+session will be delivered by Mr Cole
+Log on to your school
+Cowplaincloud account.
+Click on GMeet and enter
+the password: Finance
+Online
+22/6
+12-2pm
+Leavers’
+Barbeque and
+Celebration
+Your final chance to get together and see
+everyone! We invite you to join us eat, laugh
+and create those final memories! Yearbooks
+and hoodies will be available for collection at
+this event.
+You must purchase a ticket
+in advance to attend.
+Payment accepted on
+SCOPAY. Cost is £2. This
+covers your food and soft
+drinks.
+23/6
+10-
+11.30am
+CV Writing
+Workshop
+Want to make sure that you get onto any
+future employer’s shortlist? Make sure that
+you attend this online practical workshop
+delivered by Hampshire Futures.
+Log on to your school
+Cowplaincloud account.
+Click on GMeet and enter
+the password: CV
+Online
+23/6
+11.30-
+12.30am
+Job Interview
+Preparation
+This is a second opportunity to attend this
+workshop if you missed it the first time
+around. This session will be led by Hampshire
+Futures
+Log on to your school
+Cowplaincloud account.
+Click on GMeet and enter
+the password: Careers
+Online
+--_-------sHUsRWn8pHwxmYQibwPt.LwIun20zoQJzaax-775134147823852sHUsRWn8pHwxmYQibwPt.LwIun20zoQJzaax=:--
+---------WbLtKJxd--==--254E-==--WbLtKJxd--==----
+

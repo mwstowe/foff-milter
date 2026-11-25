@@ -7,6 +7,37 @@ pub struct SenderAlignmentAnalyzer {
     brand_patterns: HashMap<String, Vec<String>>,
 }
 
+/// The original sender domain encoded in an SRS address (Sender Rewriting Scheme, used
+/// by forwarders): `SRS0=HHH=TT=domain=local@fwd` or, after several hops,
+/// `SRS1=HHH=hop.example==HHH=TT=domain=local@fwd`. `None` for other addresses.
+pub(crate) fn srs_original_domain(address: &str) -> Option<String> {
+    let addr = crate::milter::extract_email_from_header(address)
+        .unwrap_or_else(|| address.trim().trim_matches(['<', '>']).to_string());
+    let local = addr.rsplit_once('@')?.0;
+    let upper = local.get(..5)?.to_ascii_uppercase();
+    let fields: Vec<&str> = match upper.as_str() {
+        "SRS0=" => local[5..].split('=').collect(),
+        "SRS1=" => local[5..].split_once("==")?.1.split('=').collect(),
+        _ => return None,
+    };
+    // hash, timestamp, domain, local part (which may itself contain '=')
+    let domain = fields.get(2)?.to_ascii_lowercase();
+    (fields.len() >= 4 && domain.contains('.')).then_some(domain)
+}
+
+/// Whether the message carries a passing DKIM signature from `domain`'s organization.
+fn dkim_signed_by(context: &MailContext, domain: &str) -> bool {
+    context.dkim_verification.as_ref().is_some_and(|d| {
+        matches!(
+            d.auth_status,
+            crate::dkim_verification::DkimAuthStatus::Pass
+        ) && d
+            .domains
+            .iter()
+            .any(|s| crate::domain_utils::DomainUtils::same_registrable_domain(s, domain))
+    })
+}
+
 impl Default for SenderAlignmentAnalyzer {
     fn default() -> Self {
         Self::new()
@@ -94,11 +125,27 @@ impl SenderAlignmentAnalyzer {
             .cloned()
             .unwrap_or_default();
 
+        let from_domain = self.extract_domain(from_header);
+        // A forwarder rewrites the envelope sender to SRS (`SRS0=hash=tt=gmail.com=user@
+        // forwarder.example`). When the encoded original is the From domain and that domain
+        // signed the message, the envelope is forwarding, not a spoofed origin. The SRS
+        // hash can't be checked here, hence the DKIM requirement.
+        let unwrap_srs = |domain: String, address: &str| match srs_original_domain(address) {
+            Some(original)
+                if crate::domain_utils::DomainUtils::same_registrable_domain(
+                    &original,
+                    &from_domain,
+                ) && dkim_signed_by(context, &from_domain) =>
+            {
+                from_domain.clone()
+            }
+            _ => domain,
+        };
         SenderInfo {
-            from_domain: self.extract_domain(from_header),
-            sender_domain: self.extract_domain(sender_header),
-            return_path_domain: self.extract_domain(&return_path),
+            sender_domain: unwrap_srs(self.extract_domain(sender_header), sender_header),
+            return_path_domain: unwrap_srs(self.extract_domain(&return_path), &return_path),
             from_display_name: self.extract_display_name(from_header),
+            from_domain,
         }
     }
 
@@ -777,6 +824,8 @@ impl SenderAlignmentAnalyzer {
 
         // Established, self-contained: its links stay on its own domain as well
         let established_sender = crate::features::is_established_self_contained_sender(context);
+        let actionable = crate::features::has_actionable_content(context);
+        let identity = crate::features::from_identity(context);
 
         // Original brand pattern checking (for backward compatibility)
         for (brand, legitimate_domains) in &self.brand_patterns {
@@ -791,6 +840,11 @@ impl SenderAlignmentAnalyzer {
                 // part of the sender's own From display name (i.e. the sender is
                 // not claiming to be the brand).
                 if co_branding_ok && !sender_info.from_display_name.to_lowercase().contains(brand) {
+                    continue;
+                }
+                // A topic, not a claim: the brand isn't in the sender's identity and the
+                // message has nothing to act on
+                if !actionable && !identity.contains(brand.as_str()) {
                     continue;
                 }
                 // Likewise for an established domain signing its own mail, linking only to
@@ -2197,5 +2251,28 @@ mod display_name_tests {
         assert!(flagged(
             "\"service@paypal.com [Secure]\" <service@paypal.com>"
         ));
+    }
+}
+
+#[cfg(test)]
+mod srs_tests {
+    use super::srs_original_domain;
+
+    #[test]
+    fn decodes_srs_addresses() {
+        assert_eq!(
+            srs_original_domain(
+                "<SRS0=PRzX=JO=gmail.com=robvanhoose@eforward.registrar-servers.com>"
+            )
+            .as_deref(),
+            Some("gmail.com")
+        );
+        assert_eq!(
+            srs_original_domain("SRS1=XyZa=hop.example==PRzX=JO=Example.org=a=b@fwd.example")
+                .as_deref(),
+            Some("example.org")
+        );
+        assert_eq!(srs_original_domain("bounce@example.com"), None);
+        assert_eq!(srs_original_domain("SRS0=broken@fwd.example"), None);
     }
 }

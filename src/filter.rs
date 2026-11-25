@@ -3056,6 +3056,17 @@ impl FilterEngine {
             );
         }
 
+        let (anomaly_score, anomaly_findings) =
+            self.delivery_anomaly_score(&context_with_attachments);
+        if anomaly_score > 0 {
+            total_score += anomaly_score;
+            scoring_rules.push(format!(
+                "Delivery Anomaly: {} (+{})",
+                anomaly_findings.join("; "),
+                anomaly_score
+            ));
+        }
+
         let (credential_score, credential_reason) =
             self.credential_phishing_score(&context_with_attachments);
         if credential_score > 0 {
@@ -3819,16 +3830,18 @@ impl FilterEngine {
                             && (insurance_spam_score > 0
                                 || solar_spam_score > 0
                                 || has_health_vsl_content
-                                || young_sender_domain)
+                                || young_sender_domain
+                                || anomaly_score > 0)
                         {
                             log::info!(
-                                "Module '{}' Rule '{}' trust bonus withheld: spam content or young domain (insurance={}, solar={}, health_vsl={}, young_domain={})",
+                                "Module '{}' Rule '{}' trust bonus withheld: spam content, young domain or delivery anomaly (insurance={}, solar={}, health_vsl={}, young_domain={}, anomaly={})",
                                 module.name,
                                 rule.name,
                                 insurance_spam_score,
                                 solar_spam_score,
                                 has_health_vsl_content,
-                                young_sender_domain
+                                young_sender_domain,
+                                anomaly_score
                             );
                             continue;
                         }
@@ -5009,7 +5022,6 @@ impl FilterEngine {
         let body = context.body.as_deref().unwrap_or("");
         let subject = context.subject.as_deref().unwrap_or("");
         let text = format!("{} {}", subject, RE_HTML_TAGS.replace_all(body, " "));
-        let text_lower = text.to_lowercase();
 
         if !CREDENTIAL_CTA.is_match(&text) {
             return (0, String::new());
@@ -5041,11 +5053,22 @@ impl FilterEngine {
 
         let sender_domain = crate::features::from_registrable_domain(context).unwrap_or_default();
 
-        // Links to a site unrelated to both sides, and whether one embeds the recipient
+        // Clickable links to a site unrelated to both sides, and whether one embeds the
+        // recipient. In HTML only `<a href>` targets count: images, tracking pixels,
+        // fonts and stylesheets are not something the reader is asked to follow.
+        let hrefs: Vec<&str> =
+            crate::static_regex!(r#"(?i)<a\b[^>]*?\bhref\s*=\s*["']?(https?://[^"'\s>]+)"#)
+                .captures_iter(body)
+                .filter_map(|c| c.get(1).map(|m| m.as_str()))
+                .collect();
+        let links: Vec<&str> = if hrefs.is_empty() && !body.contains("<a") {
+            RE_URL.find_iter(body).map(|m| m.as_str()).collect()
+        } else {
+            hrefs
+        };
         let mut unrelated_link = false;
         let mut address_in_link = false;
-        for m in RE_URL.find_iter(body) {
-            let url = m.as_str();
+        for url in links {
             let Some(host) = self.extract_host_from_url(url) else {
                 continue;
             };
@@ -5070,12 +5093,9 @@ impl FilterEngine {
             return (0, String::new());
         }
 
-        let mentions_mailbox = MAILBOX_REF.is_match(&text)
-            || recipients.iter().any(|r| text_lower.contains(r.as_str()))
-            || recipient_domains
-                .iter()
-                .any(|d| text_lower.contains(&format!("@{d}")));
-        if !mentions_mailbox && !address_in_link {
+        // Explicit mailbox wording, not merely the recipient's address: marketing footers
+        // routinely say "This email was sent to <address>".
+        if !MAILBOX_REF.is_match(&text) && !address_in_link {
             return (0, String::new());
         }
 
@@ -5086,6 +5106,137 @@ impl FilterEngine {
             reason.push_str(", link embeds the recipient's address");
         }
         (score, reason)
+    }
+
+    /// Delivery signs that real senders don't produce, whatever the content says:
+    /// - a clickable link to a page in cloud object storage (phishing pages are hosted
+    ///   in storage buckets; legitimate senders link to their own sites),
+    /// - a consumer free-mail sender with a List-Unsubscribe header on an unrelated
+    ///   domain (personal accounts don't send list mail),
+    /// - an impossible MIME structure: `multipart/form-data` as a message, or
+    ///   `multipart/signed` without a signature part.
+    ///
+    /// Returns the total score and a description per finding.
+    fn delivery_anomaly_score(&self, context: &MailContext) -> (i32, Vec<String>) {
+        const OBJECT_STORAGE: &[&str] = &[
+            "digitaloceanspaces.com",
+            "s3.amazonaws.com",
+            "storage.googleapis.com",
+            "firebasestorage.googleapis.com",
+            "blob.core.windows.net",
+            "web.core.windows.net",
+            "r2.dev",
+            "r2.cloudflarestorage.com",
+            "backblazeb2.com",
+            "wasabisys.com",
+            "linodeobjects.com",
+        ];
+        let mut score = 0;
+        let mut findings = Vec::new();
+        let body = context.body.as_deref().unwrap_or("");
+        let from_domain = crate::features::from_registrable_domain(context).unwrap_or_default();
+
+        // Cloud storage links (S3 also uses s3.<region>.amazonaws.com and s3-<region>)
+        let in_storage = |host: &str| {
+            OBJECT_STORAGE
+                .iter()
+                .any(|s| host == *s || host.ends_with(&format!(".{s}")))
+                || (host.ends_with(".amazonaws.com")
+                    && host.split('.').any(|l| l == "s3" || l.starts_with("s3-")))
+        };
+        let storage_page = crate::static_regex!(
+            r#"(?i)<a\b[^>]*?\bhref\s*=\s*["']?(https?://([^/"'\s>:]+)[^"'\s>]*)"#
+        )
+        .captures_iter(body)
+        .filter_map(|c| Some((c.get(1)?.as_str(), c.get(2)?.as_str().to_lowercase())))
+        .find(|(_, host)| {
+            in_storage(host) && !DomainUtils::same_registrable_domain(host, &from_domain)
+        });
+        if let Some((url, host)) = storage_page {
+            let path = url.split(['?', '#']).next().unwrap_or("").to_lowercase();
+            if path.ends_with(".html") || path.ends_with(".htm") || path.ends_with(".php") {
+                score += 90;
+                findings.push(format!(
+                    "link to a web page hosted in cloud storage ({host})"
+                ));
+            } else {
+                score += 40;
+                findings.push(format!("link into cloud storage ({host})"));
+            }
+        }
+
+        // Free-mail sender with someone else's List-Unsubscribe
+        let from_host = context
+            .from_header
+            .as_deref()
+            .and_then(extract_email_from_header)
+            .and_then(|e| extract_domain_from_email(&e))
+            .unwrap_or_default()
+            .to_lowercase();
+        if self.domain_registry.is_consumer_email(&from_host)
+            && !context.headers.contains_key("list-id")
+        {
+            let unsubscribe_hosts: Vec<String> = context
+                .headers
+                .get("list-unsubscribe")
+                .map(|v| {
+                    crate::static_regex!(r"https?://([^/>\s:]+)")
+                        .captures_iter(v)
+                        .map(|c| c[1].to_lowercase())
+                        .collect()
+                })
+                .unwrap_or_default();
+            if let Some(host) = unsubscribe_hosts
+                .iter()
+                .find(|h| !DomainUtils::same_registrable_domain(h, &from_host))
+            {
+                score += 50;
+                findings.push(format!(
+                    "personal {from_host} sender with a List-Unsubscribe on {host}"
+                ));
+            }
+        }
+
+        // MIME structures no mail client produces
+        let content_type = context
+            .headers
+            .get("content-type")
+            .map(|c| c.to_lowercase())
+            .unwrap_or_default();
+        if content_type.starts_with("multipart/form-data") {
+            score += 60;
+            findings.push("message body is multipart/form-data".to_string());
+        } else if content_type.starts_with("multipart/signed") {
+            let raw = context
+                .raw_body
+                .as_deref()
+                .or(context.body.as_deref())
+                .unwrap_or("");
+            let header = context
+                .headers
+                .get("content-type")
+                .map(String::as_str)
+                .unwrap_or("");
+            let message = format!("Content-Type: {header}\r\n\r\n{raw}");
+            let has_signature = mail_parser::MessageParser::default()
+                .parse(message.as_bytes())
+                .is_some_and(|m| {
+                    use mail_parser::MimeHeaders;
+                    m.parts.iter().any(|p| {
+                        p.content_type().is_some_and(|ct| {
+                            ct.ctype().eq_ignore_ascii_case("application")
+                                && ct
+                                    .subtype()
+                                    .is_some_and(|s| s.to_lowercase().contains("signature"))
+                        })
+                    })
+                });
+            if !has_signature {
+                score += 60;
+                findings.push("multipart/signed message without a signature".to_string());
+            }
+        }
+        (score, findings)
     }
 
     /// True if the sender presents a valid DKIM-aligned signature on a
@@ -11463,6 +11614,57 @@ mod credential_phishing_tests {
             "<p>Read our latest news.</p><a href=\"https://news.other.example\">More</a>".into(),
         );
         assert_eq!(score(&context), 0);
+    }
+
+    #[test]
+    fn marketing_footer_and_pixels_are_not_a_mailbox_phish() {
+        // "update your account" + recipient address in the footer + a tracking pixel
+        let mut context = phish("https://www.sender-domain.example/account");
+        context.subject = Some("Come back for $1".to_string());
+        context.body = Some(
+            "<p>Changed your billing information? Please update your account information.</p>\
+             <a href=\"https://www.sender-domain.example/account\">Update</a>\
+             <img src=\"https://pxl.tracker.example/p.gif\">\
+             <p>This email was sent to victim@example.org</p>"
+                .into(),
+        );
+        assert_eq!(score(&context), 0);
+    }
+
+    fn anomalies(context: &MailContext) -> Vec<String> {
+        static ENGINE: std::sync::OnceLock<FilterEngine> = std::sync::OnceLock::new();
+        ENGINE
+            .get_or_init(|| FilterEngine::new(Config::default()).unwrap())
+            .delivery_anomaly_score(context)
+            .1
+    }
+
+    #[test]
+    fn cloud_storage_pages_are_delivery_anomalies() {
+        let mut context = phish("https://bucket.sfo2.digitaloceanspaces.com/1.html#x");
+        assert_eq!(
+            anomalies(&context),
+            ["link to a web page hosted in cloud storage (bucket.sfo2.digitaloceanspaces.com)"]
+        );
+        context.body =
+            Some("<a href=\"https://files.s3.us-east-1.amazonaws.com/a.pdf\">x</a>".into());
+        assert_eq!(
+            anomalies(&context),
+            ["link into cloud storage (files.s3.us-east-1.amazonaws.com)"]
+        );
+        // Images hosted in storage are fine
+        context.body = Some("<img src=\"https://bucket.s3.amazonaws.com/logo.png\">".into());
+        assert!(anomalies(&context).is_empty());
+    }
+
+    #[test]
+    fn form_data_message_is_a_delivery_anomaly() {
+        let mut context = phish("https://www.sender-domain.example/");
+        context.headers.insert(
+            "content-type".into(),
+            "multipart/form-data; boundary=x".into(),
+        );
+        assert_eq!(anomalies(&context), ["message body is multipart/form-data"]);
     }
 
     #[test]
